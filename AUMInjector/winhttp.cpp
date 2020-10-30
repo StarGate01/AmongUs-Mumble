@@ -1,4 +1,6 @@
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include "main.h"
 
 struct winhttp_dll { 
 	HMODULE dll;
@@ -144,8 +146,6 @@ __declspec(naked) void FakeWinHttpWriteData() { _asm { jmp[winhttp.OrignalWinHtt
 __declspec(naked) void FakeWinHttpWriteProxySettings() { _asm { jmp[winhttp.OrignalWinHttpWriteProxySettings] } }
 
 
-HMODULE payload;
-
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
 	char path[MAX_PATH];
 	switch (ul_reason_for_call)
@@ -229,13 +229,12 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 		winhttp.OrignalWinHttpWriteData = GetProcAddress(winhttp.dll, "WinHttpWriteData");
 		winhttp.OrignalWinHttpWriteProxySettings = GetProcAddress(winhttp.dll, "WinHttpWriteProxySettings");
 
-		payload = LoadLibrary("AUMPayload.dll");
+		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Run, NULL, 0, NULL);
 		break;
 	}
 	case DLL_PROCESS_DETACH:
 	{
 		FreeLibrary(winhttp.dll);
-		FreeLibrary(payload);
 	}
 	break;
 	}

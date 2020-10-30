@@ -1,11 +1,10 @@
 // Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
 // Custom injected code entry point
 
-#include "pch-il2cpp.h"
-
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <iostream>
+#include "il2cpp-init.h"
 #include "il2cpp-appdata.h"
 #include "helpers.h"
 
@@ -26,8 +25,12 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 void Run()
 {
     NewConsole();
-    printf("DLL hosting successfull\n");
+    printf("DLL hosting successfull, waiting 10s for Unity to load\n");
+    Sleep(10000);
 
+    init_il2cpp();
+    printf("Type and function mapping successfull\n");
+    
     DetourTransactionBegin();
     DetourUpdateThread(GetCurrentThread());
     DetourAttach(&(PVOID&)PlayerControl_FixedUpdate, PlayerControl_FixedUpdate_Hook);

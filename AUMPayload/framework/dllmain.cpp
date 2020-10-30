@@ -12,6 +12,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                        LPVOID lpReserved
                      )
 {
+	char path[MAX_PATH];
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:

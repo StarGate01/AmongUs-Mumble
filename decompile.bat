@@ -2,10 +2,14 @@
 
 set "AMONGUS=D:\Steam\steamapps\common\Among Us"
 
-Il2CppInspector-cli.exe -i "%AMONGUS%\GameAssembly.dll" -m "%AMONGUS%\Among Us_Data\il2cpp_data\Metadata\global-metadata.dat" -h "AUMPayload" --cpp-compiler MSVC
+mkdir tmp
+cd tmp
 
-del il2cpp.py metadata.json types.cs
+Il2CppInspector-cli.exe -i "%AMONGUS%\GameAssembly.dll" -m "%AMONGUS%\Among Us_Data\il2cpp_data\Metadata\global-metadata.dat" -h "cpp" --cpp-compiler MSVC
+xcopy "cpp\appdata\*.*" "..\AUMPayload\appdata\" /K /D /H /Y
 
-git checkout -- AUMPayload
+cd ..
+del /s /q tmp\*  >nul 2>&1
+rmdir /s /q tmp
 
 pause

@@ -8,6 +8,8 @@ All binaries are 32 bit, because the game ist 32 bit and also the free version o
 For building, use *Visual Studio Community 2019*.
 
 ## Installation
+If you don't have the `Visual C++ Redistributable for Visual Studio 2015` installed, get it from https://www.microsoft.com/en-us/download/details.aspx?id=48145 .
+
 Drop the `winhttp.dll` file into the same directory as the `Among Us.exe` program. Then run the game and observe the output of the console window. Mumble should notify when the game connects.
 
 In Mumble, the proximity audio options have to be enabled beforehand.

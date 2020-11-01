@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="winhttp.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="user\main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -27,12 +24,18 @@
     <ClCompile Include="framework\il2cpp-init.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="user\mumble-link.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="user\winhttp.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="winhttp.def">
+    <None Include="packages.config" />
+    <None Include="user\winhttp.def">
       <Filter>Quelldateien</Filter>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="user\main.h">
@@ -60,6 +63,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="appdata\il2cpp-types-ptr.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="user\mumble-link.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

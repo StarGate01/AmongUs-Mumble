@@ -48,7 +48,7 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 void Run()
 {
     NewConsole();
-    printf("DLL hosting successfull\n");
+    printf("AmongUs-Mumble plugin by StarGate01 (chrz.de)\n\nDLL hosting successfull\n");
 
     int init_err = initMumble();
     if (init_err == NO_ERROR) printf("Mumble link init successfull\n");

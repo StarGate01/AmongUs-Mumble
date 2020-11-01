@@ -1,7 +1,7 @@
 # AmongUs-Mumble
 Mumble VoIP Plugin and mod for the popular game "Among Us" to enable **Proximity Voice Chat**. Currently only for Windows PCs.
 
-Tested: **Version 2020.9.22s (Steam, Windows 10 x64)**
+Tested: **Version 2020.9.22s (Steam, Windows 10 x64)** (DLL version: 1.0.0.1)
 
 All binaries are 32 bit, because the game ist 32 bit and also the free version of the detours library cant do 64 bit. However, everything runs fine on a 64 bit system, too.
 

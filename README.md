@@ -13,6 +13,7 @@ All binaries are 32 bit, because the game ist 32 bit and also the free version o
  - [x] Pass the position to Mumble via the Link API
  - [ ] Handle mute after death
  - [ ] Handle voting events
+ - [ ] Port to Linux / Proton
 
 ## Installation
 If you don't have the `Visual C++ Redistributable for Visual Studio 2015` installed, get it from https://www.microsoft.com/en-us/download/details.aspx?id=48145 . Choose the x86 version, even if your PC is 64 bit.
@@ -36,10 +37,10 @@ Your anti-virus might flag this as malware, because some of these methods are al
 ## FAQ
 
 Does this work on mobile (Android / iOS)?
- - No. It might however be possible to implement a similar hooking mechanism on rooted / jailbroken devices. This would require a mobile Mumble client which is capable of the Mumble Link API. When Among Us eventually becomes open source software, this change of course becomes triveal.
+ - No. It might however be possible to implement a similar hooking mechanism on rooted / jailbroken devices. This would require a mobile Mumble client which is capable of the Mumble Link API. When all baseline features are implemented, I might look into this. When Among Us eventually becomes open source software, this change of course becomes triveal.
  
 Does this work on Linux / OSX?
- - No. As there is no native build of the game (runs via Proton), the native OS hooking methods cant be used, which complicates the whole thing. But it would not be impossible.
+ - Not yet. As there is no native build of the game (runs via Proton), the native OS IPC methods cant be used, which complicates the whole thing. But it is planned for the future.
 
 Why are you releasing this code? Hackers will use it to ruin the game!
  - (1) They already do, I have not invented something totally new here. Maybe try playing only with people you know. (2) Trust in this kind of software can only be achieved by open sourcing it. (3) It might lead to more cool mods by the community.

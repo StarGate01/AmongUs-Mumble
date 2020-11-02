@@ -66,6 +66,7 @@ For testing, I recommend setting up a private game server using https://github.c
  - https://github.com/NeighTools/UnityDoorstop
  - https://github.com/Impostor/Impostor
  - https://github.com/denverquane/amonguscapture
+ - https://github.com/ExtraConcentratedJuice/ChristWareAmongUs
 
 
 ## Disclaimer

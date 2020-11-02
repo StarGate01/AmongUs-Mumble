@@ -1,28 +1,83 @@
 # AmongUs-Mumble
-Mumble VoIP Plugin and mod for the popular game "Among Us" to enable **Proximity Voice Chat**. Currently only for Windows PCs.
+Mumble VoIP Plugin and mod for the popular game "Among Us" to enable **Proximity and Directional Voice Chat**. Currently only for Windows PCs.
 
-Tested: **Version 2020.9.22s (Steam, Windows 10 x64)** (DLL version: 1.0.0.1)
+Tested: **Version 2020.9.22s (Steam, Windows 10 x64)** (Mod version: 1.0.0.1)
 
-All binaries are 32 bit, because the game ist 32 bit and also the free version of the detours library cant do 64 bit. However, everything runs fine on a 64 bit system, too.
+All binaries are 32 bit, because the game ist 32 bit and also the free version of the Detours library cant do 64 bit. However, everything runs fine on a 64 bit system.
 
-For building, use *Visual Studio Community 2019*.
+## State of the Project
+
+ - [x] Load into the game using a DLL proxy
+ - [x] Hook into the game logic
+ - [x] Extract the player position
+ - [x] Pass the position to Mumble via the Link API
+ - [ ] Handle mute after death
+ - [ ] Handle voting events
 
 ## Installation
 If you don't have the `Visual C++ Redistributable for Visual Studio 2015` installed, get it from https://www.microsoft.com/en-us/download/details.aspx?id=48145 . Choose the x86 version, even if your PC is 64 bit.
 
 Drop the `winhttp.dll` file into the same directory as the `Among Us.exe` program. Then run the game and observe the output of the console window. Mumble should notify when the game connects.
 
-In Mumble, the proximity audio options have to be enabled beforehand.
-
+In Mumble, the proximity audio options have to be enabled and configured beforehand:
+ - Run `Configure -> Audio Wizard` and configure your Headset
+ - Enable `Plugins -> Options -> Link to Game and Transmit Position`
+ - Enable `Plugins -> Plugins -> Link v1.2.0` if its not already (note that the version can differ)
+ - Enable `Audio Output -> Interface -> Positional Audio`
+ - Set `Audio Output -> Positional Audio -> Minimum Distance` to 1.0m (lowest setting)
+ - Set `Audio Output -> Positional Audio -> Maximum Distance` to something between 2m and 6m - or even more, according to your preferences
+ - Set `Audio Output -> Positional Audio -> Minimum Volume` to 0% (lowest setting)
+ 
 ## How it works
-This is a DLL sideloading/hijacking proxy (proxies winhttp), which hooks the IL2CPP functions in memory and exposes game state to Mumble via the the Mumble Link protocol (shared memory). Created using:
+This is a DLL sideloading/hijacking proxy (proxies `winhttp.dll`), which hooks the IL2CPP functions in memory (using the Microsoft Detours library) and exposes the game state to Mumble via shared memory. Originally, I tried a memory-scanning approach (akin to https://github.com/shlifedev/AmongUsMemory/), but this proved to be way to slow.
+
+Your anti-virus might flag this as malware, because some of these methods are also sometimes used by malware. If you dont trust me, read and compile the code for yourself.
+
+## FAQ
+
+Does this work on mobile (Android / iOS)?
+ - No. It might however be possible to implement a similar hooking mechanism on rooted / jailbroken devices. This would require a mobile Mumble client which is capable of the Mumble Link API. When Among Us eventually becomes open source software, this change of course becomes triveal.
+ 
+Does this work on Linux / OSX?
+ - No. As there is no native build of the game (runs via Proton), the native OS hooking methods cant be used, which complicates the whole thing. But it would not be impossible.
+
+Why are you releasing this code? Hackers will use it to ruin the game!
+ - (1) They already do, I have not invented something totally new here. Maybe try playing only with people you know. (2) Trust in this kind of software can only be achieved by open sourcing it. (3) It might lead to more cool mods by the community.
+ 
+Somebody could just turn up the sliders in Mumble and listen to the whole map!
+ - Yes. This tool is intended to be uses by a group of friends who all play fair.
+
+## Development
+
+For building, use *Visual Studio Community 2019*.
+
+Please note that no decompiled source code of the game is provided, instead you must download `Il2CppInspector` and then run `decompile.bat` after adjusting the file locations in the script. This will decompile your own copy of the game. You might have to add `Il2CppInspector` to your PATH.
+
+For testing, I recommend setting up a private game server using https://github.com/Impostor/Impostor .
+
+## Thanks to / Sources
 
  - https://github.com/djkaty/Il2CppInspector
  - https://github.com/microsoft/Detours
  - https://github.com/maluramichael/dll-proxy-generator
  - https://wiki.mumble.info/wiki/Link
- 
-Please note that no decompiled source code of the game is provided, instead you must download `Il2CppInspector` and then run `decompile.bat` after adjusting the file locations in the script. This will decompile your own copy of the game. You might have to add `Il2CppInspector` to your PATH.
+ - https://github.com/shlifedev/AmongUsMemory
+ - https://github.com/NeighTools/UnityDoorstop
+ - https://github.com/Impostor/Impostor
 
-Your anti-virus might flag this as malware, because some methods used are also sometimes used by malware. If you dont trust me, read and compile the code yourself.
 
+## Disclaimer
+
+This modification would be detected by any simple anti-cheat engine. At the time of writing, Among Us uses no such technology. However, I am not responsible for any bans or other problems arising from the usage of this mod. 
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

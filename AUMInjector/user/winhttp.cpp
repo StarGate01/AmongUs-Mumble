@@ -2,6 +2,7 @@
 #include <windows.h>
 #include "main.h"
 
+#pragma region Proxy
 struct winhttp_dll { 
 	HMODULE dll;
 	FARPROC OrignalDllCanUnloadNow;
@@ -144,99 +145,106 @@ __declspec(naked) void FakeWinHttpWebSocketSend() { _asm { jmp[winhttp.OrignalWi
 __declspec(naked) void FakeWinHttpWebSocketShutdown() { _asm { jmp[winhttp.OrignalWinHttpWebSocketShutdown] } }
 __declspec(naked) void FakeWinHttpWriteData() { _asm { jmp[winhttp.OrignalWinHttpWriteData] } }
 __declspec(naked) void FakeWinHttpWriteProxySettings() { _asm { jmp[winhttp.OrignalWinHttpWriteProxySettings] } }
+#pragma endregion
 
+HANDLE hExit = NULL;
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
-	char path[MAX_PATH];
 	switch (ul_reason_for_call)
 	{
-	case DLL_PROCESS_ATTACH:
-	{
-		CopyMemory(path + GetSystemDirectory(path, MAX_PATH - 13), "\\winhttp.dll", 13);
-		winhttp.dll = LoadLibrary(path);
-		if (winhttp.dll == NULL)
+		case DLL_PROCESS_ATTACH:
 		{
-			MessageBox(0, TEXT("Cannot load original winhttp.dll library"), TEXT("Proxy"), MB_ICONERROR);
-			ExitProcess(0);
-		}
-		winhttp.OrignalDllCanUnloadNow = GetProcAddress(winhttp.dll, "DllCanUnloadNow");
-		winhttp.OrignalDllGetClassObject = GetProcAddress(winhttp.dll, "DllGetClassObject");
-		winhttp.OrignalPrivate1 = GetProcAddress(winhttp.dll, "Private1");
-		winhttp.OrignalSvchostPushServiceGlobals = GetProcAddress(winhttp.dll, "SvchostPushServiceGlobals");
-		winhttp.OrignalWinHttpAddRequestHeaders = GetProcAddress(winhttp.dll, "WinHttpAddRequestHeaders");
-		winhttp.OrignalWinHttpAddRequestHeadersEx = GetProcAddress(winhttp.dll, "WinHttpAddRequestHeadersEx");
-		winhttp.OrignalWinHttpAutoProxySvcMain = GetProcAddress(winhttp.dll, "WinHttpAutoProxySvcMain");
-		winhttp.OrignalWinHttpCheckPlatform = GetProcAddress(winhttp.dll, "WinHttpCheckPlatform");
-		winhttp.OrignalWinHttpCloseHandle = GetProcAddress(winhttp.dll, "WinHttpCloseHandle");
-		winhttp.OrignalWinHttpConnect = GetProcAddress(winhttp.dll, "WinHttpConnect");
-		winhttp.OrignalWinHttpConnectionDeletePolicyEntries = GetProcAddress(winhttp.dll, "WinHttpConnectionDeletePolicyEntries");
-		winhttp.OrignalWinHttpConnectionDeleteProxyInfo = GetProcAddress(winhttp.dll, "WinHttpConnectionDeleteProxyInfo");
-		winhttp.OrignalWinHttpConnectionFreeNameList = GetProcAddress(winhttp.dll, "WinHttpConnectionFreeNameList");
-		winhttp.OrignalWinHttpConnectionFreeProxyInfo = GetProcAddress(winhttp.dll, "WinHttpConnectionFreeProxyInfo");
-		winhttp.OrignalWinHttpConnectionFreeProxyList = GetProcAddress(winhttp.dll, "WinHttpConnectionFreeProxyList");
-		winhttp.OrignalWinHttpConnectionGetNameList = GetProcAddress(winhttp.dll, "WinHttpConnectionGetNameList");
-		winhttp.OrignalWinHttpConnectionGetProxyInfo = GetProcAddress(winhttp.dll, "WinHttpConnectionGetProxyInfo");
-		winhttp.OrignalWinHttpConnectionGetProxyList = GetProcAddress(winhttp.dll, "WinHttpConnectionGetProxyList");
-		winhttp.OrignalWinHttpConnectionSetPolicyEntries = GetProcAddress(winhttp.dll, "WinHttpConnectionSetPolicyEntries");
-		winhttp.OrignalWinHttpConnectionSetProxyInfo = GetProcAddress(winhttp.dll, "WinHttpConnectionSetProxyInfo");
-		winhttp.OrignalWinHttpConnectionUpdateIfIndexTable = GetProcAddress(winhttp.dll, "WinHttpConnectionUpdateIfIndexTable");
-		winhttp.OrignalWinHttpCrackUrl = GetProcAddress(winhttp.dll, "WinHttpCrackUrl");
-		winhttp.OrignalWinHttpCreateProxyResolver = GetProcAddress(winhttp.dll, "WinHttpCreateProxyResolver");
-		winhttp.OrignalWinHttpCreateUrl = GetProcAddress(winhttp.dll, "WinHttpCreateUrl");
-		winhttp.OrignalWinHttpDetectAutoProxyConfigUrl = GetProcAddress(winhttp.dll, "WinHttpDetectAutoProxyConfigUrl");
-		winhttp.OrignalWinHttpFreeProxyResult = GetProcAddress(winhttp.dll, "WinHttpFreeProxyResult");
-		winhttp.OrignalWinHttpFreeProxyResultEx = GetProcAddress(winhttp.dll, "WinHttpFreeProxyResultEx");
-		winhttp.OrignalWinHttpFreeProxySettings = GetProcAddress(winhttp.dll, "WinHttpFreeProxySettings");
-		winhttp.OrignalWinHttpGetDefaultProxyConfiguration = GetProcAddress(winhttp.dll, "WinHttpGetDefaultProxyConfiguration");
-		winhttp.OrignalWinHttpGetIEProxyConfigForCurrentUser = GetProcAddress(winhttp.dll, "WinHttpGetIEProxyConfigForCurrentUser");
-		winhttp.OrignalWinHttpGetProxyForUrl = GetProcAddress(winhttp.dll, "WinHttpGetProxyForUrl");
-		winhttp.OrignalWinHttpGetProxyForUrlEx = GetProcAddress(winhttp.dll, "WinHttpGetProxyForUrlEx");
-		winhttp.OrignalWinHttpGetProxyForUrlEx2 = GetProcAddress(winhttp.dll, "WinHttpGetProxyForUrlEx2");
-		winhttp.OrignalWinHttpGetProxyForUrlHvsi = GetProcAddress(winhttp.dll, "WinHttpGetProxyForUrlHvsi");
-		winhttp.OrignalWinHttpGetProxyResult = GetProcAddress(winhttp.dll, "WinHttpGetProxyResult");
-		winhttp.OrignalWinHttpGetProxyResultEx = GetProcAddress(winhttp.dll, "WinHttpGetProxyResultEx");
-		winhttp.OrignalWinHttpGetProxySettingsVersion = GetProcAddress(winhttp.dll, "WinHttpGetProxySettingsVersion");
-		winhttp.OrignalWinHttpGetTunnelSocket = GetProcAddress(winhttp.dll, "WinHttpGetTunnelSocket");
-		winhttp.OrignalWinHttpOpen = GetProcAddress(winhttp.dll, "WinHttpOpen");
-		winhttp.OrignalWinHttpOpenRequest = GetProcAddress(winhttp.dll, "WinHttpOpenRequest");
-		winhttp.OrignalWinHttpPacJsWorkerMain = GetProcAddress(winhttp.dll, "WinHttpPacJsWorkerMain");
-		winhttp.OrignalWinHttpProbeConnectivity = GetProcAddress(winhttp.dll, "WinHttpProbeConnectivity");
-		winhttp.OrignalWinHttpQueryAuthSchemes = GetProcAddress(winhttp.dll, "WinHttpQueryAuthSchemes");
-		winhttp.OrignalWinHttpQueryDataAvailable = GetProcAddress(winhttp.dll, "WinHttpQueryDataAvailable");
-		winhttp.OrignalWinHttpQueryHeaders = GetProcAddress(winhttp.dll, "WinHttpQueryHeaders");
-		winhttp.OrignalWinHttpQueryOption = GetProcAddress(winhttp.dll, "WinHttpQueryOption");
-		winhttp.OrignalWinHttpReadData = GetProcAddress(winhttp.dll, "WinHttpReadData");
-		winhttp.OrignalWinHttpReadProxySettings = GetProcAddress(winhttp.dll, "WinHttpReadProxySettings");
-		winhttp.OrignalWinHttpReadProxySettingsHvsi = GetProcAddress(winhttp.dll, "WinHttpReadProxySettingsHvsi");
-		winhttp.OrignalWinHttpReceiveResponse = GetProcAddress(winhttp.dll, "WinHttpReceiveResponse");
-		winhttp.OrignalWinHttpResetAutoProxy = GetProcAddress(winhttp.dll, "WinHttpResetAutoProxy");
-		winhttp.OrignalWinHttpSaveProxyCredentials = GetProcAddress(winhttp.dll, "WinHttpSaveProxyCredentials");
-		winhttp.OrignalWinHttpSendRequest = GetProcAddress(winhttp.dll, "WinHttpSendRequest");
-		winhttp.OrignalWinHttpSetCredentials = GetProcAddress(winhttp.dll, "WinHttpSetCredentials");
-		winhttp.OrignalWinHttpSetDefaultProxyConfiguration = GetProcAddress(winhttp.dll, "WinHttpSetDefaultProxyConfiguration");
-		winhttp.OrignalWinHttpSetOption = GetProcAddress(winhttp.dll, "WinHttpSetOption");
-		winhttp.OrignalWinHttpSetProxySettingsPerUser = GetProcAddress(winhttp.dll, "WinHttpSetProxySettingsPerUser");
-		winhttp.OrignalWinHttpSetStatusCallback = GetProcAddress(winhttp.dll, "WinHttpSetStatusCallback");
-		winhttp.OrignalWinHttpSetTimeouts = GetProcAddress(winhttp.dll, "WinHttpSetTimeouts");
-		winhttp.OrignalWinHttpTimeFromSystemTime = GetProcAddress(winhttp.dll, "WinHttpTimeFromSystemTime");
-		winhttp.OrignalWinHttpTimeToSystemTime = GetProcAddress(winhttp.dll, "WinHttpTimeToSystemTime");
-		winhttp.OrignalWinHttpWebSocketClose = GetProcAddress(winhttp.dll, "WinHttpWebSocketClose");
-		winhttp.OrignalWinHttpWebSocketCompleteUpgrade = GetProcAddress(winhttp.dll, "WinHttpWebSocketCompleteUpgrade");
-		winhttp.OrignalWinHttpWebSocketQueryCloseStatus = GetProcAddress(winhttp.dll, "WinHttpWebSocketQueryCloseStatus");
-		winhttp.OrignalWinHttpWebSocketReceive = GetProcAddress(winhttp.dll, "WinHttpWebSocketReceive");
-		winhttp.OrignalWinHttpWebSocketSend = GetProcAddress(winhttp.dll, "WinHttpWebSocketSend");
-		winhttp.OrignalWinHttpWebSocketShutdown = GetProcAddress(winhttp.dll, "WinHttpWebSocketShutdown");
-		winhttp.OrignalWinHttpWriteData = GetProcAddress(winhttp.dll, "WinHttpWriteData");
-		winhttp.OrignalWinHttpWriteProxySettings = GetProcAddress(winhttp.dll, "WinHttpWriteProxySettings");
 
-		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Run, NULL, 0, NULL);
+			#pragma region Proxy
+			char path[MAX_PATH];
+			CopyMemory(path + GetSystemDirectory(path, MAX_PATH - 13), "\\winhttp.dll", 13);
+			winhttp.dll = LoadLibrary(path);
+			if (winhttp.dll == NULL)
+			{
+				MessageBox(0, TEXT("Cannot load original winhttp.dll library"), TEXT("Proxy"), MB_ICONERROR);
+				ExitProcess(0);
+			}
+			winhttp.OrignalDllCanUnloadNow = GetProcAddress(winhttp.dll, "DllCanUnloadNow");
+			winhttp.OrignalDllGetClassObject = GetProcAddress(winhttp.dll, "DllGetClassObject");
+			winhttp.OrignalPrivate1 = GetProcAddress(winhttp.dll, "Private1");
+			winhttp.OrignalSvchostPushServiceGlobals = GetProcAddress(winhttp.dll, "SvchostPushServiceGlobals");
+			winhttp.OrignalWinHttpAddRequestHeaders = GetProcAddress(winhttp.dll, "WinHttpAddRequestHeaders");
+			winhttp.OrignalWinHttpAddRequestHeadersEx = GetProcAddress(winhttp.dll, "WinHttpAddRequestHeadersEx");
+			winhttp.OrignalWinHttpAutoProxySvcMain = GetProcAddress(winhttp.dll, "WinHttpAutoProxySvcMain");
+			winhttp.OrignalWinHttpCheckPlatform = GetProcAddress(winhttp.dll, "WinHttpCheckPlatform");
+			winhttp.OrignalWinHttpCloseHandle = GetProcAddress(winhttp.dll, "WinHttpCloseHandle");
+			winhttp.OrignalWinHttpConnect = GetProcAddress(winhttp.dll, "WinHttpConnect");
+			winhttp.OrignalWinHttpConnectionDeletePolicyEntries = GetProcAddress(winhttp.dll, "WinHttpConnectionDeletePolicyEntries");
+			winhttp.OrignalWinHttpConnectionDeleteProxyInfo = GetProcAddress(winhttp.dll, "WinHttpConnectionDeleteProxyInfo");
+			winhttp.OrignalWinHttpConnectionFreeNameList = GetProcAddress(winhttp.dll, "WinHttpConnectionFreeNameList");
+			winhttp.OrignalWinHttpConnectionFreeProxyInfo = GetProcAddress(winhttp.dll, "WinHttpConnectionFreeProxyInfo");
+			winhttp.OrignalWinHttpConnectionFreeProxyList = GetProcAddress(winhttp.dll, "WinHttpConnectionFreeProxyList");
+			winhttp.OrignalWinHttpConnectionGetNameList = GetProcAddress(winhttp.dll, "WinHttpConnectionGetNameList");
+			winhttp.OrignalWinHttpConnectionGetProxyInfo = GetProcAddress(winhttp.dll, "WinHttpConnectionGetProxyInfo");
+			winhttp.OrignalWinHttpConnectionGetProxyList = GetProcAddress(winhttp.dll, "WinHttpConnectionGetProxyList");
+			winhttp.OrignalWinHttpConnectionSetPolicyEntries = GetProcAddress(winhttp.dll, "WinHttpConnectionSetPolicyEntries");
+			winhttp.OrignalWinHttpConnectionSetProxyInfo = GetProcAddress(winhttp.dll, "WinHttpConnectionSetProxyInfo");
+			winhttp.OrignalWinHttpConnectionUpdateIfIndexTable = GetProcAddress(winhttp.dll, "WinHttpConnectionUpdateIfIndexTable");
+			winhttp.OrignalWinHttpCrackUrl = GetProcAddress(winhttp.dll, "WinHttpCrackUrl");
+			winhttp.OrignalWinHttpCreateProxyResolver = GetProcAddress(winhttp.dll, "WinHttpCreateProxyResolver");
+			winhttp.OrignalWinHttpCreateUrl = GetProcAddress(winhttp.dll, "WinHttpCreateUrl");
+			winhttp.OrignalWinHttpDetectAutoProxyConfigUrl = GetProcAddress(winhttp.dll, "WinHttpDetectAutoProxyConfigUrl");
+			winhttp.OrignalWinHttpFreeProxyResult = GetProcAddress(winhttp.dll, "WinHttpFreeProxyResult");
+			winhttp.OrignalWinHttpFreeProxyResultEx = GetProcAddress(winhttp.dll, "WinHttpFreeProxyResultEx");
+			winhttp.OrignalWinHttpFreeProxySettings = GetProcAddress(winhttp.dll, "WinHttpFreeProxySettings");
+			winhttp.OrignalWinHttpGetDefaultProxyConfiguration = GetProcAddress(winhttp.dll, "WinHttpGetDefaultProxyConfiguration");
+			winhttp.OrignalWinHttpGetIEProxyConfigForCurrentUser = GetProcAddress(winhttp.dll, "WinHttpGetIEProxyConfigForCurrentUser");
+			winhttp.OrignalWinHttpGetProxyForUrl = GetProcAddress(winhttp.dll, "WinHttpGetProxyForUrl");
+			winhttp.OrignalWinHttpGetProxyForUrlEx = GetProcAddress(winhttp.dll, "WinHttpGetProxyForUrlEx");
+			winhttp.OrignalWinHttpGetProxyForUrlEx2 = GetProcAddress(winhttp.dll, "WinHttpGetProxyForUrlEx2");
+			winhttp.OrignalWinHttpGetProxyForUrlHvsi = GetProcAddress(winhttp.dll, "WinHttpGetProxyForUrlHvsi");
+			winhttp.OrignalWinHttpGetProxyResult = GetProcAddress(winhttp.dll, "WinHttpGetProxyResult");
+			winhttp.OrignalWinHttpGetProxyResultEx = GetProcAddress(winhttp.dll, "WinHttpGetProxyResultEx");
+			winhttp.OrignalWinHttpGetProxySettingsVersion = GetProcAddress(winhttp.dll, "WinHttpGetProxySettingsVersion");
+			winhttp.OrignalWinHttpGetTunnelSocket = GetProcAddress(winhttp.dll, "WinHttpGetTunnelSocket");
+			winhttp.OrignalWinHttpOpen = GetProcAddress(winhttp.dll, "WinHttpOpen");
+			winhttp.OrignalWinHttpOpenRequest = GetProcAddress(winhttp.dll, "WinHttpOpenRequest");
+			winhttp.OrignalWinHttpPacJsWorkerMain = GetProcAddress(winhttp.dll, "WinHttpPacJsWorkerMain");
+			winhttp.OrignalWinHttpProbeConnectivity = GetProcAddress(winhttp.dll, "WinHttpProbeConnectivity");
+			winhttp.OrignalWinHttpQueryAuthSchemes = GetProcAddress(winhttp.dll, "WinHttpQueryAuthSchemes");
+			winhttp.OrignalWinHttpQueryDataAvailable = GetProcAddress(winhttp.dll, "WinHttpQueryDataAvailable");
+			winhttp.OrignalWinHttpQueryHeaders = GetProcAddress(winhttp.dll, "WinHttpQueryHeaders");
+			winhttp.OrignalWinHttpQueryOption = GetProcAddress(winhttp.dll, "WinHttpQueryOption");
+			winhttp.OrignalWinHttpReadData = GetProcAddress(winhttp.dll, "WinHttpReadData");
+			winhttp.OrignalWinHttpReadProxySettings = GetProcAddress(winhttp.dll, "WinHttpReadProxySettings");
+			winhttp.OrignalWinHttpReadProxySettingsHvsi = GetProcAddress(winhttp.dll, "WinHttpReadProxySettingsHvsi");
+			winhttp.OrignalWinHttpReceiveResponse = GetProcAddress(winhttp.dll, "WinHttpReceiveResponse");
+			winhttp.OrignalWinHttpResetAutoProxy = GetProcAddress(winhttp.dll, "WinHttpResetAutoProxy");
+			winhttp.OrignalWinHttpSaveProxyCredentials = GetProcAddress(winhttp.dll, "WinHttpSaveProxyCredentials");
+			winhttp.OrignalWinHttpSendRequest = GetProcAddress(winhttp.dll, "WinHttpSendRequest");
+			winhttp.OrignalWinHttpSetCredentials = GetProcAddress(winhttp.dll, "WinHttpSetCredentials");
+			winhttp.OrignalWinHttpSetDefaultProxyConfiguration = GetProcAddress(winhttp.dll, "WinHttpSetDefaultProxyConfiguration");
+			winhttp.OrignalWinHttpSetOption = GetProcAddress(winhttp.dll, "WinHttpSetOption");
+			winhttp.OrignalWinHttpSetProxySettingsPerUser = GetProcAddress(winhttp.dll, "WinHttpSetProxySettingsPerUser");
+			winhttp.OrignalWinHttpSetStatusCallback = GetProcAddress(winhttp.dll, "WinHttpSetStatusCallback");
+			winhttp.OrignalWinHttpSetTimeouts = GetProcAddress(winhttp.dll, "WinHttpSetTimeouts");
+			winhttp.OrignalWinHttpTimeFromSystemTime = GetProcAddress(winhttp.dll, "WinHttpTimeFromSystemTime");
+			winhttp.OrignalWinHttpTimeToSystemTime = GetProcAddress(winhttp.dll, "WinHttpTimeToSystemTime");
+			winhttp.OrignalWinHttpWebSocketClose = GetProcAddress(winhttp.dll, "WinHttpWebSocketClose");
+			winhttp.OrignalWinHttpWebSocketCompleteUpgrade = GetProcAddress(winhttp.dll, "WinHttpWebSocketCompleteUpgrade");
+			winhttp.OrignalWinHttpWebSocketQueryCloseStatus = GetProcAddress(winhttp.dll, "WinHttpWebSocketQueryCloseStatus");
+			winhttp.OrignalWinHttpWebSocketReceive = GetProcAddress(winhttp.dll, "WinHttpWebSocketReceive");
+			winhttp.OrignalWinHttpWebSocketSend = GetProcAddress(winhttp.dll, "WinHttpWebSocketSend");
+			winhttp.OrignalWinHttpWebSocketShutdown = GetProcAddress(winhttp.dll, "WinHttpWebSocketShutdown");
+			winhttp.OrignalWinHttpWriteData = GetProcAddress(winhttp.dll, "WinHttpWriteData");
+			winhttp.OrignalWinHttpWriteProxySettings = GetProcAddress(winhttp.dll, "WinHttpWriteProxySettings");
+			#pragma endregion
+
+			hExit = CreateEvent(NULL, TRUE, FALSE, TEXT("ExitThread"));
+			CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Run, NULL, 0, NULL);
+			break;
+		}
+		case DLL_PROCESS_DETACH:
+		{
+			FreeLibrary(winhttp.dll);
+			SetEvent(hExit);
+		}
 		break;
-	}
-	case DLL_PROCESS_DETACH:
-	{
-		FreeLibrary(winhttp.dll);
-	}
-	break;
 	}
 	return TRUE;
 }

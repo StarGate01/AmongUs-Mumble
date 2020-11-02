@@ -24,6 +24,7 @@
 
 using namespace app;
 
+extern HANDLE hExit;
 extern const LPCWSTR LOG_FILE = L"il2cpp-log.txt";
 
 const wchar_t* team_alive = L"ALIV";
@@ -33,41 +34,51 @@ const wchar_t* team_dead = L"DEAD";
 void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 {
     PlayerControl_FixedUpdate(__this, method);
+    
+    if (lm != NULL && __this->fields.LightPrefab != nullptr)
+    {
+        app::Vector2 pos = PlayerControl_GetTruePosition(__this, method);
+        writeMumble();
+        lm->fAvatarPosition[0] = pos.x;
+        lm->fCameraPosition[0] = pos.x;
+        lm->fAvatarPosition[2] = pos.y;
+        lm->fCameraPosition[2] = pos.y;
+        lm->uiTick++;
+    }
+}
 
-    app::Vector2 pos = PlayerControl_GetTruePosition(__this, method);
+void PlayerControl_Die_Hook(PlayerControl* __this, NPLMBOLMMLB__Enum NMGPLGPEHPP, MethodInfo* method)
+{
+    PlayerControl_Die(__this, NMGPLGPEHPP, method);
 
-    lm->fAvatarPosition[0] = pos.x;
-    lm->fCameraPosition[0] = pos.x;
-    lm->fAvatarPosition[2] = pos.y;
-    lm->fCameraPosition[2] = pos.y;
-    lm->uiTick++;
-
-    printf("%.6f, %.6f\n", pos.x, pos.y);
+    if (lm != NULL && __this->fields.LightPrefab != nullptr)
+    {
+        printf("YOU DIED\n");
+    }
 }
 
 void Run()
 {
     NewConsole();
-    printf("AmongUs-Mumble plugin by StarGate01 (chrz.de)\n\nDLL hosting successfull\n");
+    printf("AmongUs-Mumble mod by StarGate01 (chrz.de)\n\nDLL hosting successfull\n");
 
-    int init_err = initMumble();
-    if (init_err == NO_ERROR) printf("Mumble link init successfull\n");
-    else printf("Cannot init Mumble link: %d!\n", init_err);
+    int lErrMumble = initMumble();
+    if (lErrMumble == NO_ERROR) printf("Mumble link init successfull\n");
+    else printf("Cannot init Mumble link: %d\n", lErrMumble);
     
     printf("Waiting 10s for Unity to load\n");
     Sleep(10000);
-
     init_il2cpp();
     printf("Type and function memory mapping successfull\n");
     
     DetourTransactionBegin();
     DetourUpdateThread(GetCurrentThread());
-
     DetourAttach(&(PVOID&)PlayerControl_FixedUpdate, PlayerControl_FixedUpdate_Hook);
-
+    DetourAttach(&(PVOID&)PlayerControl_Die, PlayerControl_Die_Hook);
     LONG lError = DetourTransactionCommit();
-    if (lError == NO_ERROR) printf("Successfully detoured game functions\n");
-    else printf("Detouring failed: %d!\n", lError);
+    if (lError == NO_ERROR) printf("Successfully detoured game functions\n\n");
+    else printf("Detouring game functions failed: %d\n", lError);
 
-    while (true);
+    WaitForSingleObject(hExit, INFINITE);
+    printf("Exit\n");
 }

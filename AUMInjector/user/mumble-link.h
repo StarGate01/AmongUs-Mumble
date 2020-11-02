@@ -35,3 +35,5 @@ extern LinkedMem* lm;
 
 int initMumble();
 
+void writeMumble();
+

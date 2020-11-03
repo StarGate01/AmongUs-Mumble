@@ -31,8 +31,6 @@ In Mumble, the proximity audio options have to be enabled and configured beforeh
  - Set `Audio Output -> Positional Audio -> Maximum Distance` to something between 2m and 6m - or even more, according to your preferences
  - Set `Audio Output -> Positional Audio -> Minimum Volume` to 0% (lowest setting)
  
-If the path 
- 
 ## How it works
 This is a DLL sideloading/hijacking proxy (proxies `winhttp.dll`), which hooks the IL2CPP functions in memory (using the Microsoft Detours library) and exposes the game state to Mumble via shared memory. Originally, I tried a memory-scanning approach (akin to https://github.com/shlifedev/AmongUsMemory/), but this proved to be way to slow. In addition, Mumble is instrumented using RPC commands (for muting and unmuting).
 

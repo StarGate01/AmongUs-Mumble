@@ -1,7 +1,7 @@
 # AmongUs-Mumble
 Mumble VoIP Plugin and mod for the popular game "Among Us" to enable **Proximity and Directional Voice Chat**. Currently only for Windows PCs.
 
-Tested: **Version 2020.9.22s (Steam, Windows 10 x64)** (Mod version: 1.0.0.1)
+Tested: **Version 2020.9.22s (Steam, Windows 10 x64)**
 
 All binaries are 32 bit, because the game ist 32 bit and also the free version of the Detours library cant do 64 bit. However, everything runs fine on a 64 bit system.
 
@@ -13,11 +13,14 @@ All binaries are 32 bit, because the game ist 32 bit and also the free version o
  - [x] Pass the position to Mumble via the Link API
  - [ ] Handle mute after death
  - [ ] Handle voting events
+ - [ ] Port to Linux / Proton
 
 ## Installation
 If you don't have the `Visual C++ Redistributable for Visual Studio 2015` installed, get it from https://www.microsoft.com/en-us/download/details.aspx?id=48145 . Choose the x86 version, even if your PC is 64 bit.
 
 Drop the `winhttp.dll` file into the same directory as the `Among Us.exe` program. Then run the game and observe the output of the console window. Mumble should notify when the game connects.
+
+Install the 32 bit version of Mumble if you have not already: https://www.mumble.info/downloads/ . if the path Mumble was installed to differs from `C:\Program Files (x86)\Mumble\mumble.exe`, you have to specify it by editing the Steam launch options of Among Us like this: `-m C:\Your\Path\mumble.exe`.
 
 In Mumble, the proximity audio options have to be enabled and configured beforehand:
  - Run `Configure -> Audio Wizard` and configure your Headset
@@ -29,17 +32,17 @@ In Mumble, the proximity audio options have to be enabled and configured beforeh
  - Set `Audio Output -> Positional Audio -> Minimum Volume` to 0% (lowest setting)
  
 ## How it works
-This is a DLL sideloading/hijacking proxy (proxies `winhttp.dll`), which hooks the IL2CPP functions in memory (using the Microsoft Detours library) and exposes the game state to Mumble via shared memory. Originally, I tried a memory-scanning approach (akin to https://github.com/shlifedev/AmongUsMemory/), but this proved to be way to slow.
+This is a DLL sideloading/hijacking proxy (proxies `winhttp.dll`), which hooks the IL2CPP functions in memory (using the Microsoft Detours library) and exposes the game state to Mumble via shared memory. Originally, I tried a memory-scanning approach (akin to https://github.com/shlifedev/AmongUsMemory/), but this proved to be way to slow. In addition, Mumble is instrumented using RPC commands (for muting and unmuting).
 
 Your anti-virus might flag this as malware, because some of these methods are also sometimes used by malware. If you dont trust me, read and compile the code for yourself.
 
 ## FAQ
 
 Does this work on mobile (Android / iOS)?
- - No. It might however be possible to implement a similar hooking mechanism on rooted / jailbroken devices. This would require a mobile Mumble client which is capable of the Mumble Link API. When Among Us eventually becomes open source software, this change of course becomes triveal.
+ - No. It might however be possible to implement a similar hooking mechanism on rooted / jailbroken devices. This would require a mobile Mumble client which is capable of the Mumble Link API. When all baseline features are implemented, I might look into this. When Among Us eventually becomes open source software, this change of course becomes triveal.
  
 Does this work on Linux / OSX?
- - No. As there is no native build of the game (runs via Proton), the native OS hooking methods cant be used, which complicates the whole thing. But it would not be impossible.
+ - Not yet. As there is no native build of the game (runs via Proton), the native OS IPC methods cant be used, which complicates the whole thing. But it is planned for the future.
 
 Why are you releasing this code? Hackers will use it to ruin the game!
  - (1) They already do, I have not invented something totally new here. Maybe try playing only with people you know. (2) Trust in this kind of software can only be achieved by open sourcing it. (3) It might lead to more cool mods by the community.
@@ -53,6 +56,8 @@ For building, use *Visual Studio Community 2019*.
 
 Please note that no decompiled source code of the game is provided, instead you must download `Il2CppInspector` and then run `decompile.bat` after adjusting the file locations in the script. This will decompile your own copy of the game. You might have to add `Il2CppInspector` to your PATH.
 
+A post-build task ist defined in Visual Studio, which calls the file `vmupload.bat`. This script copies the compiled DLL to the Steam game installation directory, and pushes it to a few test VMs. You will probably have to disable or modify it. 
+
 For testing, I recommend setting up a private game server using https://github.com/Impostor/Impostor .
 
 ## Thanks to / Sources
@@ -64,6 +69,10 @@ For testing, I recommend setting up a private game server using https://github.c
  - https://github.com/shlifedev/AmongUsMemory
  - https://github.com/NeighTools/UnityDoorstop
  - https://github.com/Impostor/Impostor
+ - https://github.com/denverquane/amonguscapture
+ - https://github.com/ExtraConcentratedJuice/ChristWareAmongUs
+ - https://github.com/CLIUtils/CLI11
+ - https://github.com/TheNullicorn/among-us-api
 
 
 ## Disclaimer

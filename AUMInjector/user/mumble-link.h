@@ -5,6 +5,7 @@
 #include <sys/mman.h>
 #include <fcntl.h> /* For O_* constants */
 #endif // _WIN32
+#include <string>
 
 struct LinkedMem {
 #ifdef _WIN32
@@ -34,6 +35,6 @@ struct LinkedMem {
 extern LinkedMem* lm;
 
 int initMumble();
-
+void closeMumble();
 void writeMumble();
-
+void muteMumble(bool mute = true);

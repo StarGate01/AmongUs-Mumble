@@ -39,6 +39,7 @@
     <ClInclude Include="framework\il2cpp-appdata.h" />
     <ClInclude Include="framework\il2cpp-init.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="user\CLI11.hpp" />
     <ClInclude Include="user\main.h" />
     <ClInclude Include="user\mumble-link.h" />
   </ItemGroup>
@@ -100,22 +101,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <TargetName>winhttp</TargetName>
-    <OutDir>D:\Steam\steamapps\common\Among Us</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>winhttp</TargetName>
-    <OutDir>D:\Steam\steamapps\common\Among Us</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <TargetName>winhttp</TargetName>
-    <OutDir>D:\Steam\steamapps\common\Among Us</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>winhttp</TargetName>
-    <OutDir>D:\Steam\steamapps\common\Among Us</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -134,6 +135,16 @@
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>user\winhttp.def</ModuleDefinitionFile>
     </Link>
+    <PostBuildEvent>
+      <Command>$(ProjectDir)..\vmupload.bat</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copy to Steam and VMs</Message>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -156,6 +167,16 @@
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>user\winhttp.def</ModuleDefinitionFile>
     </Link>
+    <PostBuildEvent>
+      <Command>$(ProjectDir)..\vmupload.bat</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copy to Steam and VMs</Message>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -174,6 +195,16 @@
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>user\winhttp.def</ModuleDefinitionFile>
     </Link>
+    <PostBuildEvent>
+      <Command>$(ProjectDir)..\vmupload.bat</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copy to Steam and VMs</Message>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -196,6 +227,16 @@
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>user\winhttp.def</ModuleDefinitionFile>
     </Link>
+    <PostBuildEvent>
+      <Command>$(ProjectDir)..\vmupload.bat</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copy to Steam and VMs</Message>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

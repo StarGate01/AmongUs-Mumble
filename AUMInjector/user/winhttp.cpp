@@ -2,6 +2,7 @@
 #include <windows.h>
 #include "main.h"
 
+// DLL proxy definitions
 #pragma region Proxy
 struct winhttp_dll { 
 	HMODULE dll;
@@ -147,14 +148,14 @@ __declspec(naked) void FakeWinHttpWriteData() { _asm { jmp[winhttp.OrignalWinHtt
 __declspec(naked) void FakeWinHttpWriteProxySettings() { _asm { jmp[winhttp.OrignalWinHttpWriteProxySettings] } }
 #pragma endregion
 
-HANDLE hExit = NULL;
+HANDLE hExit = NULL; // Thread exit event
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
 	switch (ul_reason_for_call)
 	{
 		case DLL_PROCESS_ATTACH:
 		{
-
+			// DLL proxy assignments
 			#pragma region Proxy
 			char path[MAX_PATH];
 			CopyMemory(path + GetSystemDirectory(path, MAX_PATH - 13), "\\winhttp.dll", 13);
@@ -235,12 +236,14 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 			winhttp.OrignalWinHttpWriteProxySettings = GetProcAddress(winhttp.dll, "WinHttpWriteProxySettings");
 			#pragma endregion
 
+			// Create thread exit event and start injected thread
 			hExit = CreateEvent(NULL, TRUE, FALSE, TEXT("ExitThread"));
 			CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Run, NULL, 0, NULL);
 			break;
 		}
 		case DLL_PROCESS_DETACH:
 		{
+			// Cleanup and signal thread exit
 			FreeLibrary(winhttp.dll);
 			SetEvent(hExit);
 		}

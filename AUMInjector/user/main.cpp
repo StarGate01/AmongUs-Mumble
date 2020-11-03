@@ -19,7 +19,6 @@ extern std::string mumble_exe;
 
 // Game state
 float cache_x = 0.0f; float cache_y = 0.0f;
-bool alive = true;
 bool voting = false;
 InnerNetClient_IFLBIJFJPMK__Enum last_game_state = InnerNetClient_IFLBIJFJPMK__Enum_NotJoined;
 
@@ -47,7 +46,6 @@ void PlayerControl_Die_Hook(PlayerControl* __this, NPLMBOLMMLB__Enum NMGPLGPEHPP
     {
         printf("You died\n");
         muteMumble(true);
-        alive = false;
     }
 }
 
@@ -79,7 +77,6 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
     {
         printf("Game joined or ended");
         muteMumble(false);
-        alive = true;
     }
     last_game_state = __this->fields.GameState;
 

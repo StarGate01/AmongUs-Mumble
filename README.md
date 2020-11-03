@@ -20,7 +20,7 @@ If you don't have the `Visual C++ Redistributable for Visual Studio 2015` instal
 
 Drop the `winhttp.dll` file into the same directory as the `Among Us.exe` program. Then run the game and observe the output of the console window. Mumble should notify when the game connects.
 
-Install the 32 bit version of Mumble if you have not already: https://www.mumble.info/downloads/ . if the path Mumble was installed to differs from `C:\Program Files(x86)\Mumble\mumble.exe`, you have to specify it by editing the Steam launch options of Among Us like this: `-m C:\Your\Path\mumble.exe`.
+Install the 32 bit version of Mumble if you have not already: https://www.mumble.info/downloads/ . if the path Mumble was installed to differs from `C:\Program Files (x86)\Mumble\mumble.exe`, you have to specify it by editing the Steam launch options of Among Us like this: `-m C:\Your\Path\mumble.exe`.
 
 In Mumble, the proximity audio options have to be enabled and configured beforehand:
  - Run `Configure -> Audio Wizard` and configure your Headset

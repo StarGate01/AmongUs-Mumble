@@ -10,8 +10,48 @@
 #include <detours.h>
 #include "mumble-link.h"
 
+#define GAME_VERSION_2020_9_22s 2020922
+#define GAME_VERSION_2020_10_22s 20201022
+#ifndef GAME_VERSION
+    #define GAME_VERSION GAME_VERSION_2020_10_22s
+#endif
 
 using namespace app;
+
+// Deobfuscate game bindings, depending on version
+#if GAME_VERSION == GAME_VERSION_2020_9_22s
+    #define version_text "2020.9.22s"
+    using InnerNetClient_GameState__Enum = InnerNetClient_IFLBIJFJPMK__Enum;
+    using Player_Die_Reason__Enum = NPLMBOLMMLB__Enum;
+    InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = InnerNetClient_IFLBIJFJPMK__Enum_Joined;
+    InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = InnerNetClient_IFLBIJFJPMK__Enum_Ended;
+    #define PlayerControl_FixedUpdate_Trampoline PlayerControl_FixedUpdate
+    #define PlayerControl_GetTruePosition_Trampoline PlayerControl_GetTruePosition
+    #define PlayerControl_Die_Trampoline PlayerControl_Die
+    #define MeetingHud_Close_Trampoline MeetingHud_Close
+    #define MeetingHud_Start_Trampoline MeetingHud_Start
+    #define InnerNetClient_FixedUpdate_Trampoline InnerNetClient_FixedUpdate
+#elif GAME_VERSION == GAME_VERSION_2020_10_22s
+    #define version_text "2020.10.22s"
+    using InnerNetClient_GameState__Enum = DNAFMCDBMCI_JPCEFDHGHAK__Enum;
+    using PlayerControl = GLHCHLEDNBA;
+    using Player_Die_Reason__Enum = CCCHKEBONBN__Enum;
+    using MeetingHud = GPOHFPAIEMA;
+    using InnerNetClient = DNAFMCDBMCI;
+    InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = DNAFMCDBMCI_JPCEFDHGHAK__Enum_Joined;
+    InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = DNAFMCDBMCI_JPCEFDHGHAK__Enum_Ended;
+    #define PlayerControl_FixedUpdate_Trampoline GLHCHLEDNBA_FixedUpdate
+    #define PlayerControl_GetTruePosition_Trampoline GLHCHLEDNBA_GetTruePosition
+    #define PlayerControl_Die_Trampoline GLHCHLEDNBA_Die
+    #define MeetingHud_Close_Trampoline GPOHFPAIEMA_Close
+    #define MeetingHud_Start_Trampoline GPOHFPAIEMA_Start
+    #define InnerNetClient_FixedUpdate_Trampoline DNAFMCDBMCI_FixedUpdate
+#else
+    #error Unknown game version!
+#endif
+
+#pragma message("Compiling for game version " version_text)
+
 
 extern const LPCWSTR LOG_FILE = L"il2cpp-log.txt";
 extern HANDLE hExit; // Thread exit event
@@ -20,27 +60,27 @@ extern std::string mumble_exe;
 // Game state
 float cache_x = 0.0f; float cache_y = 0.0f;
 bool voting = false;
-InnerNetClient_IFLBIJFJPMK__Enum last_game_state = InnerNetClient_IFLBIJFJPMK__Enum_NotJoined;
+InnerNetClient_GameState__Enum last_game_state = InnerNetClient_GameState__Enum_Joined;
 
 
 // Fixed loop for a player object, but only get called when a player moves
 void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 {
-    PlayerControl_FixedUpdate(__this, method);
+    PlayerControl_FixedUpdate_Trampoline(__this, method);
     
     if (lm != NULL && __this->fields.LightPrefab != nullptr && !voting)
     {
         // Cache position
-        app::Vector2 pos = PlayerControl_GetTruePosition(__this, method);
+        Vector2 pos = PlayerControl_GetTruePosition_Trampoline(__this, method);
         cache_x = pos.x;
         cache_y = pos.y;
     }
 }
 
 // Gets called when a player dies
-void PlayerControl_Die_Hook(PlayerControl* __this, NPLMBOLMMLB__Enum NMGPLGPEHPP, MethodInfo* method)
+void PlayerControl_Die_Hook(PlayerControl* __this, Player_Die_Reason__Enum reason, MethodInfo* method)
 {
-    PlayerControl_Die(__this, NMGPLGPEHPP, method);
+    PlayerControl_Die_Trampoline(__this, reason, method);
 
     if (__this->fields.LightPrefab != nullptr)
     {
@@ -52,7 +92,7 @@ void PlayerControl_Die_Hook(PlayerControl* __this, NPLMBOLMMLB__Enum NMGPLGPEHPP
 // Gets called when a meeting ends
 void MeetingHud_Close_Hook(MeetingHud* __this, MethodInfo* method)
 {
-    MeetingHud_Close(__this, method);
+    MeetingHud_Close_Trampoline(__this, method);
     printf("Meeting ended\n");
     voting = false;
 }
@@ -60,7 +100,7 @@ void MeetingHud_Close_Hook(MeetingHud* __this, MethodInfo* method)
 // Gets called when a meeting starts
 void MeetingHud_Start_Hook(MeetingHud* __this, MethodInfo* method)
 {
-    MeetingHud_Start(__this, method);
+    MeetingHud_Start_Trampoline(__this, method);
     printf("Meeting started\n");
     voting = true;
 }
@@ -68,14 +108,14 @@ void MeetingHud_Start_Hook(MeetingHud* __this, MethodInfo* method)
 // Fixed loop for the game client
 void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
 {
-    InnerNetClient_FixedUpdate(__this, method);
+    InnerNetClient_FixedUpdate_Trampoline(__this, method);
 
     // Check if game state changed to lobby
     if (__this->fields.GameState != last_game_state &&
-            (__this->fields.GameState == InnerNetClient_IFLBIJFJPMK__Enum_Joined ||
-            __this->fields.GameState == InnerNetClient_IFLBIJFJPMK__Enum_Ended))
+            (__this->fields.GameState == InnerNetClient_GameState__Enum_Joined ||
+            __this->fields.GameState == InnerNetClient_GameState__Enum_Ended))
     {
-        printf("Game joined or ended");
+        printf("Game joined or ended\n");
         muteMumble(false);
     }
     last_game_state = __this->fields.GameState;
@@ -108,7 +148,7 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
 void Run()
 {
     NewConsole();
-    printf("AmongUs-Mumble mod by StarGate01 (chrz.de)\nDLL hosting successful\n\n");
+    printf("AmongUs-Mumble mod by StarGate01 (chrz.de)\nCompiled for game version %s\nDLL hosting successful\n\n", version_text);
 
     // Setup mumble
     int lErrMumble = initMumble();
@@ -128,11 +168,11 @@ void Run()
     // Setup hooks
     DetourTransactionBegin();
     DetourUpdateThread(GetCurrentThread());
-    DetourAttach(&(PVOID&)PlayerControl_FixedUpdate, PlayerControl_FixedUpdate_Hook);
-    DetourAttach(&(PVOID&)PlayerControl_Die, PlayerControl_Die_Hook);
-    DetourAttach(&(PVOID&)MeetingHud_Close, MeetingHud_Close_Hook);
-    DetourAttach(&(PVOID&)MeetingHud_Start, MeetingHud_Start_Hook);
-    DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate, InnerNetClient_FixedUpdate_Hook);
+    DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
+    DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
+    DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);
+    DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
+    DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
     LONG lError = DetourTransactionCommit();
     if (lError == NO_ERROR) printf("Successfully detoured game functions\n\n");
     else printf("Detouring game functions failed: %d\n", lError);

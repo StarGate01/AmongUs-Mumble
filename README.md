@@ -1,9 +1,12 @@
 # AmongUs-Mumble
-Mumble VoIP Plugin and mod for the popular game "Among Us" to enable **Proximity and Directional Voice Chat**. Currently only for Windows PCs.
+Mumble VoIP Plugin and mod for the popular game "Among Us" to enable **Proximity and Directional Voice Chat**. Currently only for Windows PCs and the Steam version.
 
-Tested: **Version 2020.9.22s (Steam, Windows 10 x64)**
+| Game version | DLL release | GAME_VERSION |
+| ------------ | ----------- | ------------ |
+| 2020.9.22s   | 1.0.0.1     | `2020922`    |
+| 2020.10.22s  | 1.0.0.2     | `20201022`   |
 
-All binaries are 32 bit, because the game ist 32 bit and also the free version of the Detours library cant do 64 bit. However, everything runs fine on a 64 bit system.
+Please ensure that you use the correct version for your game installation. All binaries are 32 bit, because the game ist 32 bit and also the free version of the Detours library cant do 64 bit. However, everything runs fine on a 64 bit system.
 
 ## State of the Project
 
@@ -13,6 +16,7 @@ All binaries are 32 bit, because the game ist 32 bit and also the free version o
  - [x] Pass the position to Mumble via the Link API
  - [x] Handle mute after death, and unmute at game start
  - [x] Handle voting events
+ - [x] Port to 2020.10.22s
  - [ ] Implement differentiation between multiple lobbies in the same voice channel
  - [ ] Port to Linux / Proton
 
@@ -60,6 +64,8 @@ Please note that no decompiled source code of the game is provided, instead you 
 A post-build task ist defined in Visual Studio, which calls the file `vmupload.bat`. This script copies the compiled DLL to the Steam game installation directory, and pushes it to a few test VMs. You will probably have to disable or modify it. 
 
 For testing, I recommend setting up a private game server using https://github.com/Impostor/Impostor .
+
+If you want to build for a specific version of the game (each build uses different obfuscated names), append the preprocessor macro `GAME_VERSION` in the project configuration like this: `GAME_VERSION=2020922`. See the table above for version numbers.
 
 ## Thanks to / Sources
 

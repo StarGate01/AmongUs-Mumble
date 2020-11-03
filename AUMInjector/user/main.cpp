@@ -18,25 +18,23 @@ extern HANDLE hExit; // Thread exit event
 extern std::string mumble_exe;
 
 // Game state
+float cache_x = 0.0f; float cache_y = 0.0f;
 bool alive = true;
 bool voting = false;
 InnerNetClient_IFLBIJFJPMK__Enum last_game_state = InnerNetClient_IFLBIJFJPMK__Enum_NotJoined;
 
 
-// Fixed loop for a player object
+// Fixed loop for a player object, but only get called when a player moves
 void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 {
     PlayerControl_FixedUpdate(__this, method);
     
     if (lm != NULL && __this->fields.LightPrefab != nullptr && !voting)
     {
+        // Cache position
         app::Vector2 pos = PlayerControl_GetTruePosition(__this, method);
-        writeMumble();
-        lm->fAvatarPosition[0] = pos.x;
-        lm->fCameraPosition[0] = pos.x;
-        lm->fAvatarPosition[2] = pos.y;
-        lm->fCameraPosition[2] = pos.y;
-        lm->uiTick++;
+        cache_x = pos.x;
+        cache_y = pos.y;
     }
 }
 
@@ -85,16 +83,23 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
     }
     last_game_state = __this->fields.GameState;
 
-    // When voting, all players can hear each other -> same position
+    writeMumble();
     if (voting)
     {
-        writeMumble();
+        // When voting, all players can hear each other -> same position
         lm->fAvatarPosition[0] = 0.0f;
         lm->fCameraPosition[0] = 0.0f;
         lm->fAvatarPosition[2] = 0.0f;
         lm->fCameraPosition[2] = 0.0f;
-        lm->uiTick++;
     }
+    else
+    {
+        lm->fAvatarPosition[0] = cache_x;
+        lm->fCameraPosition[0] = cache_x;
+        lm->fAvatarPosition[2] = cache_y;
+        lm->fCameraPosition[2] = cache_y;
+    }
+    lm->uiTick++;
 }
 
 // Entrypoint of the injected thread

@@ -11,8 +11,9 @@ All binaries are 32 bit, because the game ist 32 bit and also the free version o
  - [x] Hook into the game logic
  - [x] Extract the player position
  - [x] Pass the position to Mumble via the Link API
- - [ ] Handle mute after death
- - [ ] Handle voting events
+ - [x] Handle mute after death, and unmute at game start
+ - [x] Handle voting events
+ - [ ] Implement differentiation between multiple lobbies in the same voice channel
  - [ ] Port to Linux / Proton
 
 ## Installation

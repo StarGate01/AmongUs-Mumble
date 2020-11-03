@@ -17,11 +17,11 @@ All binaries are 32 bit, because the game ist 32 bit and also the free version o
  - [ ] Port to Linux / Proton
 
 ## Installation
+Download the latest compatible release from https://github.com/StarGate01/AmongUs-Mumble/releases/ , or build it yourself (see below). Drop the `winhttp.dll` file into the same directory as the `Among Us.exe` program. 
+
 If you don't have the `Visual C++ Redistributable for Visual Studio 2015` installed, get it from https://www.microsoft.com/en-us/download/details.aspx?id=48145 . Choose the x86 version, even if your PC is 64 bit.
 
-Drop the `winhttp.dll` file into the same directory as the `Among Us.exe` program. Then run the game and observe the output of the console window. Mumble should notify when the game connects.
-
-Install the 32 bit version of Mumble if you have not already: https://www.mumble.info/downloads/ . if the path Mumble was installed to differs from `C:\Program Files (x86)\Mumble\mumble.exe`, you have to specify it by editing the Steam launch options of Among Us like this: `-m C:\Your\Path\mumble.exe`.
+Install the 32 bit version of Mumble (at least version 1.3.3) if you have not already: https://www.mumble.info/downloads/ . if the path Mumble was installed to differs from `C:\Program Files (x86)\Mumble\mumble.exe`, you have to specify it by editing the Steam launch options of Among Us like this: `-m C:\Your\Path\mumble.exe`.
 
 In Mumble, the proximity audio options have to be enabled and configured beforehand:
  - Run `Configure -> Audio Wizard` and configure your Headset
@@ -31,6 +31,8 @@ In Mumble, the proximity audio options have to be enabled and configured beforeh
  - Set `Audio Output -> Positional Audio -> Minimum Distance` to 1.0m (lowest setting)
  - Set `Audio Output -> Positional Audio -> Maximum Distance` to something between 2m and 6m - or even more, according to your preferences
  - Set `Audio Output -> Positional Audio -> Minimum Volume` to 0% (lowest setting)
+ 
+Then run the game and observe the output of the console window (if you run the game in full screen, you might want to tab out or switch to windowed mode). Ensure that the mumble binary path is correct. Mumble should notify when the game connects.
  
 ## How it works
 This is a DLL sideloading/hijacking proxy (proxies `winhttp.dll`), which hooks the IL2CPP functions in memory (using the Microsoft Detours library) and exposes the game state to Mumble via shared memory. Originally, I tried a memory-scanning approach (akin to https://github.com/shlifedev/AmongUsMemory/), but this proved to be way to slow. In addition, Mumble is instrumented using RPC commands (for muting and unmuting).

@@ -20,6 +20,8 @@ If you don't have the `Visual C++ Redistributable for Visual Studio 2015` instal
 
 Drop the `winhttp.dll` file into the same directory as the `Among Us.exe` program. Then run the game and observe the output of the console window. Mumble should notify when the game connects.
 
+Install the 32 bit version of Mumble if you have not already: https://www.mumble.info/downloads/ . if the path Mumble was installed to differs from `C:\Program Files(x86)\Mumble\mumble.exe`, you have to specify it by editing the Steam launch options of Among Us like this: `-m C:\Your\Path\mumble.exe`.
+
 In Mumble, the proximity audio options have to be enabled and configured beforehand:
  - Run `Configure -> Audio Wizard` and configure your Headset
  - Enable `Plugins -> Options -> Link to Game and Transmit Position`
@@ -29,8 +31,10 @@ In Mumble, the proximity audio options have to be enabled and configured beforeh
  - Set `Audio Output -> Positional Audio -> Maximum Distance` to something between 2m and 6m - or even more, according to your preferences
  - Set `Audio Output -> Positional Audio -> Minimum Volume` to 0% (lowest setting)
  
+If the path 
+ 
 ## How it works
-This is a DLL sideloading/hijacking proxy (proxies `winhttp.dll`), which hooks the IL2CPP functions in memory (using the Microsoft Detours library) and exposes the game state to Mumble via shared memory. Originally, I tried a memory-scanning approach (akin to https://github.com/shlifedev/AmongUsMemory/), but this proved to be way to slow.
+This is a DLL sideloading/hijacking proxy (proxies `winhttp.dll`), which hooks the IL2CPP functions in memory (using the Microsoft Detours library) and exposes the game state to Mumble via shared memory. Originally, I tried a memory-scanning approach (akin to https://github.com/shlifedev/AmongUsMemory/), but this proved to be way to slow. In addition, Mumble is instrumented using RPC commands (for muting and unmuting).
 
 Your anti-virus might flag this as malware, because some of these methods are also sometimes used by malware. If you dont trust me, read and compile the code for yourself.
 

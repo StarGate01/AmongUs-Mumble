@@ -17,6 +17,7 @@ All binaries are 32 bit, because the game ist 32 bit and also the free version o
  - [ ] Port to Linux / Proton
 
 ## Installation
+
 Download the latest compatible release from https://github.com/StarGate01/AmongUs-Mumble/releases/ , or build it yourself (see below). Drop the `winhttp.dll` file into the same directory as the `Among Us.exe` program. 
 
 If you don't have the `Visual C++ Redistributable for Visual Studio 2015` installed, get it from https://www.microsoft.com/en-us/download/details.aspx?id=48145 . Choose the x86 version, even if your PC is 64 bit.
@@ -33,8 +34,11 @@ In Mumble, the proximity audio options have to be enabled and configured beforeh
  - Set `Audio Output -> Positional Audio -> Minimum Volume` to 0% (lowest setting)
  
 Then run the game and observe the output of the console window (if you run the game in full screen, you might want to tab out or switch to windowed mode). Ensure that the mumble binary path is correct. Mumble should notify when the game connects.
- 
+
+If you have any issues, report them here: https://github.com/StarGate01/AmongUs-Mumble/issues .
+
 ## How it works
+
 This is a DLL sideloading/hijacking proxy (proxies `winhttp.dll`), which hooks the IL2CPP functions in memory (using the Microsoft Detours library) and exposes the game state to Mumble via shared memory. Originally, I tried a memory-scanning approach (akin to https://github.com/shlifedev/AmongUsMemory/), but this proved to be way to slow. In addition, Mumble is instrumented using RPC commands (for muting and unmuting).
 
 Your anti-virus might flag this as malware, because some of these methods are also sometimes used by malware. If you dont trust me, read and compile the code for yourself.

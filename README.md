@@ -35,7 +35,7 @@ In Mumble, the proximity audio options have to be enabled and configured beforeh
  
 Then run the game and observe the output of the console window (if you run the game in full screen, you might want to tab out or switch to windowed mode). Ensure that the mumble binary path is correct. Mumble should notify when the game connects.
 
-If you have any issues, report them here: https://github.com/StarGate01/AmongUs-Mumble/issues .
+If you have any issues or find bugs, report them here: https://github.com/StarGate01/AmongUs-Mumble/issues .
 
 ## How it works
 

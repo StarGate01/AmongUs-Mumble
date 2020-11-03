@@ -36,5 +36,4 @@ extern LinkedMem* lm;
 
 int initMumble();
 void closeMumble();
-void writeMumble();
 void muteMumble(bool mute = true);

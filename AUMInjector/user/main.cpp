@@ -83,7 +83,13 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
     }
     last_game_state = __this->fields.GameState;
 
-    writeMumble();
+    if (lm->uiVersion != 2)
+    {
+        wcsncpy_s(lm->name, L"Among Us", 256);
+        wcsncpy_s(lm->description, L"Among Us support via the Link plugin.", 2048);
+        lm->uiVersion = 2;
+    }
+    lm->uiTick++;
     if (voting)
     {
         // When voting, all players can hear each other -> same position
@@ -99,20 +105,19 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
         lm->fAvatarPosition[2] = cache_y;
         lm->fCameraPosition[2] = cache_y;
     }
-    lm->uiTick++;
 }
 
 // Entrypoint of the injected thread
 void Run()
 {
     NewConsole();
-    printf("AmongUs-Mumble mod by StarGate01 (chrz.de)\nDLL hosting successfull\n\n");
+    printf("AmongUs-Mumble mod by StarGate01 (chrz.de)\nDLL hosting successful\n\n");
 
     // Setup mumble
     int lErrMumble = initMumble();
     if (lErrMumble == NO_ERROR)
     {
-        printf("Mumble link init successfull\n");
+        printf("Mumble link init successful\n");
         printf("Mumble exe: %s\n", mumble_exe.c_str());
     }
     else printf("Cannot init Mumble link: %d\n", lErrMumble);
@@ -121,7 +126,7 @@ void Run()
     printf("Waiting 10s for Unity to load\n");
     Sleep(10000);
     init_il2cpp();
-    printf("Type and function memory mapping successfull\n");
+    printf("Type and function memory mapping successful\n");
     
     // Setup hooks
     DetourTransactionBegin();

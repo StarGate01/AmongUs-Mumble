@@ -55,12 +55,32 @@ int initMumble()
 	}
 
 	// Write inital state to IPC
-	writeMumble();
-	lm->fAvatarPosition[0] = 0.0f;
-	lm->fCameraPosition[0] = 0.0f;
-	lm->fAvatarPosition[2] = 0.0f;
-	lm->fCameraPosition[2] = 0.0f;
+	if (lm->uiVersion != 2)
+	{
+		wcsncpy_s(lm->name, L"Among Us", 256);
+		wcsncpy_s(lm->description, L"Among Us support via the Link plugin.", 2048);
+		lm->uiVersion = 2;
+	}
 	lm->uiTick++;
+	// Write identity and context
+	wcsncpy_s(lm->identity, L"Default", 256);
+	memcpy(lm->context, L"TEAM", 4);
+	lm->context_len = 4;
+	// Write position
+	lm->fAvatarFront[0] = 0.0f;
+	lm->fAvatarFront[1] = 0.0f;
+	lm->fAvatarFront[2] = 1.0f;
+	lm->fAvatarTop[0] = 0.0f;
+	lm->fAvatarTop[1] = 1.0f;
+	lm->fAvatarTop[2] = 0.0f;
+	lm->fAvatarPosition[0] = 0.0f;
+	lm->fAvatarPosition[1] = 0.0f;
+	lm->fAvatarPosition[2] = 0.0f;
+	for (int i = 0; i < 3; i++) {
+		lm->fCameraFront[i] = lm->fAvatarFront[i];
+		lm->fCameraTop[i] = lm->fAvatarTop[i];
+		lm->fCameraPosition[i] = lm->fAvatarPosition[i];
+	}
 
 	return NO_ERROR;
 }
@@ -79,39 +99,6 @@ void closeMumble()
 		CloseHandle(hMapObject);
 		hMapObject = NULL;
 	}
-}
-
-// Writes to the mumble IPC file
-void writeMumble()
-{
-	if (!lm) return;
-
-	// Write metadata
-	if (lm->uiVersion != 2) 
-	{
-		wcsncpy_s(lm->name, L"Among Us", 256);
-		wcsncpy_s(lm->description, L"Among Us support via the Link plugin.", 2048);
-		lm->uiVersion = 2;
-	}
-
-	// Write identity and context
-	wcsncpy_s(lm->identity, L"Default", 256);
-	memcpy(lm->context, L"TEAM", 4);
-	lm->context_len = 4;
-
-	// Write position, excluding x and z
-	lm->fAvatarFront[0] = 0.0f;
-	lm->fAvatarFront[1] = 0.0f;
-	lm->fAvatarFront[2] = 1.0f;
-	lm->fAvatarTop[0] = 0.0f;
-	lm->fAvatarTop[1] = 1.0f;
-	lm->fAvatarTop[2] = 0.0f;
-	lm->fAvatarPosition[1] = 0.0f;
-	for (int i = 0; i < 3; i++) {
-		lm->fCameraFront[i] = lm->fAvatarFront[i];
-		lm->fCameraTop[i] = lm->fAvatarTop[i];
-	}
-	lm->fCameraPosition[1] = lm->fAvatarPosition[1];
 }
 
 // Mutes or unmutes mumble via RPC

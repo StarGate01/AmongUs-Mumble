@@ -1,7 +1,7 @@
 # AmongUs-Mumble
 Mumble VoIP Plugin and mod for the popular game "Among Us" to enable **Proximity and Directional Voice Chat**. Currently only for Windows PCs.
 
-Tested: **Version 2020.9.22s (Steam, Windows 10 x64)** (Mod version: 1.0.0.1)
+Tested: **Version 2020.9.22s (Steam, Windows 10 x64)**
 
 All binaries are 32 bit, because the game ist 32 bit and also the free version of the Detours library cant do 64 bit. However, everything runs fine on a 64 bit system.
 
@@ -57,6 +57,8 @@ Somebody could just turn up the sliders in Mumble and listen to the whole map!
 For building, use *Visual Studio Community 2019*.
 
 Please note that no decompiled source code of the game is provided, instead you must download `Il2CppInspector` and then run `decompile.bat` after adjusting the file locations in the script. This will decompile your own copy of the game. You might have to add `Il2CppInspector` to your PATH.
+
+A post-build task ist defined in Visual Studio, which calls the file `vmupload.bat`. This script copies the compiled DLL to the Steam game installation directory, and pushes it to a few test VMs. You will probably have to disable or modify it. 
 
 For testing, I recommend setting up a private game server using https://github.com/Impostor/Impostor .
 

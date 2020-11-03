@@ -47,11 +47,11 @@ Does this work on mobile (Android / iOS)?
 Does this work on Linux / OSX?
  - Not yet. As there is no native build of the game (runs via Proton), the native OS IPC methods cant be used, which complicates the whole thing. But it is planned for the future.
 
-Why are you releasing this code? Hackers will use it to ruin the game!
+Why are you releasing this codebase? Hackers will use it to ruin the game!
  - (1) They already do, I have not invented something totally new here. Maybe try playing only with people you know. (2) Trust in this kind of software can only be achieved by open sourcing it. (3) It might lead to more cool mods by the community.
  
 Somebody could just turn up the sliders in Mumble and listen to the whole map!
- - Yes. This tool is intended to be uses by a group of friends who all play fair.
+ - Yes. This tool is intended to be used by a group of friends who all play fair.
 
 ## Development
 

@@ -26,7 +26,7 @@ Download the latest compatible release from https://github.com/StarGate01/AmongU
 
 If you don't have the `Visual C++ Redistributable for Visual Studio 2015` installed, get it from https://www.microsoft.com/en-us/download/details.aspx?id=48145 . Choose the x86 version, even if your PC is 64 bit.
 
-Install the 32 bit version of Mumble (Tested: Version 1.3.3) if you have not already: https://www.mumble.info/downloads/ . if the path Mumble was installed to differs from `C:\Program Files (x86)\Mumble\mumble.exe`, you have to specify it by editing the Steam launch options of Among Us like this: `-m C:\Your\Path\mumble.exe`.
+Instal Mumble (Tested: Version 1.3.3) if you have not already: https://www.mumble.info/downloads/ . if the path Mumble was installed to differs from `C:\Program Files (x86)\Mumble\mumble.exe` (if you installed the 64 bit version), you have to specify it by editing the Steam launch options of Among Us like this: `-m "C:\Your\Path\mumble.exe"`.
 
 In Mumble, the proximity audio options have to be enabled and configured beforehand:
  - Run `Configure -> Audio Wizard` and configure your Headset

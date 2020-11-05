@@ -68,7 +68,7 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 {
     PlayerControl_FixedUpdate_Trampoline(__this, method);
     
-    if (lm != NULL && __this->fields.LightPrefab != nullptr && !voting)
+    if (__this->fields.LightPrefab != nullptr && !voting)
     {
         // Cache position
         Vector2 pos = PlayerControl_GetTruePosition_Trampoline(__this, method);
@@ -120,27 +120,30 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
     }
     last_game_state = __this->fields.GameState;
 
-    if (lm->uiVersion != 2)
+    if (lm != NULL)
     {
-        wcsncpy_s(lm->name, L"Among Us", 256);
-        wcsncpy_s(lm->description, L"Among Us support via the Link plugin.", 2048);
-        lm->uiVersion = 2;
-    }
-    lm->uiTick++;
-    if (voting)
-    {
-        // When voting, all players can hear each other -> same position
-        lm->fAvatarPosition[0] = 0.0f;
-        lm->fCameraPosition[0] = 0.0f;
-        lm->fAvatarPosition[2] = 0.0f;
-        lm->fCameraPosition[2] = 0.0f;
-    }
-    else
-    {
-        lm->fAvatarPosition[0] = cache_x;
-        lm->fCameraPosition[0] = cache_x;
-        lm->fAvatarPosition[2] = cache_y;
-        lm->fCameraPosition[2] = cache_y;
+        if (lm->uiVersion != 2)
+        {
+            wcsncpy_s(lm->name, L"Among Us", 256);
+            wcsncpy_s(lm->description, L"Among Us support via the Link plugin.", 2048);
+            lm->uiVersion = 2;
+        }
+        lm->uiTick++;
+        if (voting)
+        {
+            // When voting, all players can hear each other -> same position
+            lm->fAvatarPosition[0] = 0.0f;
+            lm->fCameraPosition[0] = 0.0f;
+            lm->fAvatarPosition[2] = 0.0f;
+            lm->fCameraPosition[2] = 0.0f;
+        }
+        else
+        {
+            lm->fAvatarPosition[0] = cache_x;
+            lm->fCameraPosition[0] = cache_x;
+            lm->fAvatarPosition[2] = cache_y;
+            lm->fCameraPosition[2] = cache_y;
+        }
     }
 }
 

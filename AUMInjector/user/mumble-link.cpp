@@ -64,7 +64,7 @@ int initMumble()
 	lm->uiTick++;
 	// Write identity and context
 	wcsncpy_s(lm->identity, L"Default", 256);
-	memcpy(lm->context, L"TEAM", 4);
+	memcpy(lm->context, "TEAM", 4);
 	lm->context_len = 4;
 	// Write position
 	lm->fAvatarFront[0] = 0.0f;

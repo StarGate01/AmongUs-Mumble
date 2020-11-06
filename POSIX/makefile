@@ -1,7 +1,7 @@
 .PHONY: all clean run
 
 all: clean
-	g++ fakeclient.cpp -o fakeclient
+	g++ -lrt fakeclient.cpp -o fakeclient
 
 clean:
 	rm -f fakeclient

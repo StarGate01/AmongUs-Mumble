@@ -1,10 +1,13 @@
 #include <iostream>
 #include <sys/mman.h>
+#include <sys/stat.h>
 #include <fcntl.h> 
 #include <wchar.h>
 #include <thread>
 #include <chrono>
 #include <unistd.h>
+#include <cstring>
+#include <math.h>
 
 struct LinkedMem {
      uint32_t uiVersion;
@@ -35,14 +38,14 @@ int main()
     int shmfd = shm_open(memname, O_RDWR, S_IRUSR | S_IWUSR);
     if (shmfd < 0) 
     {
-        printf("Cannot open shared memory: %d", shmfd);
+        printf("Cannot open shared memory: %d\n", shmfd);
         return 1;
     }
     lm = (LinkedMem *)(mmap(NULL, sizeof(struct LinkedMem), PROT_READ | PROT_WRITE, MAP_SHARED, shmfd,0));
     if (lm == (void *)(-1)) 
     {
         lm = NULL;
-        printf("Cannot map shared memory!");
+        printf("Cannot map shared memory!\n");
         return 1;
     }
 
@@ -58,7 +61,7 @@ int main()
         lm->uiTick++;
         // Write identity and context
         wcsncpy(lm->identity, L"Default", 256);
-        memcpy(lm->context, L"TEAM", 4);
+        memcpy(lm->context, "TEAM", 4);
         lm->context_len = 4;
         // Write position
         for (int i = 0; i < 3; i++) 
@@ -68,12 +71,14 @@ int main()
             lm->fCameraFront[i] = 0.0f;
             lm->fCameraTop[i] = 0.0f;
         }
-        lm->fAvatarPosition[0] = 0.1f;
+
+        lm->fAvatarPosition[0] = 0.0001f; // 0 would disable all positional audio
         lm->fAvatarPosition[1] = 0.0f;
-        lm->fAvatarPosition[2] = 0.1f;
-        lm->fCameraPosition[0] = 0.1f;
-        lm->fCameraPosition[1] = 0.0f;
-        lm->fCameraPosition[2] = 0.1f;
+        lm->fAvatarPosition[2] = 0.0f;
+        lm->fCameraPosition[0] = lm->fAvatarPosition[0] ;
+        lm->fCameraPosition[1] = lm->fAvatarPosition[1];
+        lm->fCameraPosition[2] = lm->fAvatarPosition[2];
+
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }

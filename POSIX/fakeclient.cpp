@@ -7,19 +7,19 @@
 #include <unistd.h>
 
 struct LinkedMem {
- 	uint32_t uiVersion;
- 	uint32_t uiTick;
- 	float	fAvatarPosition[3];
- 	float	fAvatarFront[3];
- 	float	fAvatarTop[3];
- 	wchar_t	name[256];
- 	float	fCameraPosition[3];
- 	float	fCameraFront[3];
- 	float	fCameraTop[3];
- 	wchar_t	identity[256];
- 	uint32_t context_len;
- 	unsigned char context[256];
- 	wchar_t description[2048];
+     uint32_t uiVersion;
+     uint32_t uiTick;
+     float	fAvatarPosition[3];
+     float	fAvatarFront[3];
+     float	fAvatarTop[3];
+     wchar_t	name[256];
+     float	fCameraPosition[3];
+     float	fCameraFront[3];
+     float	fCameraTop[3];
+     wchar_t	identity[256];
+     uint32_t context_len;
+     unsigned char context[256];
+     wchar_t description[2048];
 };
 LinkedMem *lm = NULL;
 
@@ -29,21 +29,21 @@ int main()
     printf("Press ctrl-c / cmd-c to exit\n");
 
     // Open shared memory file IPC
-	char memname[256];
- 	snprintf(memname, 256, "/MumbleLink.%d", getuid());
+    char memname[256];
+    snprintf(memname, 256, "/MumbleLink.%d", getuid());
  
- 	int shmfd = shm_open(memname, O_RDWR, S_IRUSR | S_IWUSR);
- 	if (shmfd < 0) 
+    int shmfd = shm_open(memname, O_RDWR, S_IRUSR | S_IWUSR);
+    if (shmfd < 0) 
     {
         printf("Cannot open shared memory: %d", shmfd);
- 		return 1;
- 	}
- 	lm = (LinkedMem *)(mmap(NULL, sizeof(struct LinkedMem), PROT_READ | PROT_WRITE, MAP_SHARED, shmfd,0));
- 	if (lm == (void *)(-1)) 
+         return 1;
+    }
+    lm = (LinkedMem *)(mmap(NULL, sizeof(struct LinkedMem), PROT_READ | PROT_WRITE, MAP_SHARED, shmfd,0));
+    if (lm == (void *)(-1)) 
     {
- 		lm = NULL;
+         lm = NULL;
         printf("Cannot map shared memory!");
- 		return 1;
+         return 1;
     }
 
     while(true)

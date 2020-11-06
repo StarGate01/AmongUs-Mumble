@@ -36,14 +36,14 @@ int main()
     if (shmfd < 0) 
     {
         printf("Cannot open shared memory: %d", shmfd);
-         return 1;
+        return 1;
     }
     lm = (LinkedMem *)(mmap(NULL, sizeof(struct LinkedMem), PROT_READ | PROT_WRITE, MAP_SHARED, shmfd,0));
     if (lm == (void *)(-1)) 
     {
-         lm = NULL;
+        lm = NULL;
         printf("Cannot map shared memory!");
-         return 1;
+        return 1;
     }
 
     while(true)

@@ -76,7 +76,7 @@ If you want to build for a specific version of the game (each build uses differe
 
 ### Using the POSIX fake client
 
-The fake client bind to the Mumble Link plugin on Linux and Mac OSX and sets your ingame position to zero. This is not optimal, but better than nothing.
+The fake client binds to the Mumble Link plugin on Linux and Mac OSX and sets your ingame position to zero. This is not optimal, but better than nothing.
 
 Install `make` and `g++`, on OSX you can use Homebrew (https://brew.sh). Then open your terminal, change into the `POSIX` directory. Run `make` to build the tool, and `make run` to run it.
 

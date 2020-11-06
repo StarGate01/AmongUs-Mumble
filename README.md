@@ -4,7 +4,7 @@ Mumble VoIP Plugin and mod for the popular game "Among Us" to enable **Proximity
 | Game version | DLL release                                                                   | GAME_VERSION |
 | ------------ | ----------------------------------------------------------------------------- | ------------ |
 | 2020.9.22s   | [1.0.0.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.1) | `2020922`    |
-| 2020.10.22s  | [1.0.0.2](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.2) | `20201022`   |
+| 2020.10.22s  | [1.0.0.3](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.3) | `20201022`   |
 
 Please ensure that you use the correct version for your game installation. All binaries are 32 bit, because the game ist 32 bit and also the free version of the Detours library cant do 64 bit. However, everything runs fine on a 64 bit system.
 
@@ -26,7 +26,7 @@ Download the latest compatible release from https://github.com/StarGate01/AmongU
 
 If you don't have the `Visual C++ Redistributable for Visual Studio 2015` installed, get it from https://www.microsoft.com/en-us/download/details.aspx?id=48145 . Choose the x86 version, even if your PC is 64 bit.
 
-Instal Mumble (Tested: Version 1.3.3) if you have not already: https://www.mumble.info/downloads/ . If the path Mumble was installed to is not `C:\Program Files (x86)\Mumble\mumble.exe` (if you installed the 32 bit version), you have to specify it by editing the Steam launch options of Among Us, for example like this: `-m "C:\Program Files\Mumble\mumble.exe"` if you installed the 64 bit version.
+Install Mumble (Tested: Version 1.3.3) if you have not already: https://www.mumble.info/downloads/ . If the path Mumble was installed to is not `C:\Program Files (x86)\Mumble\mumble.exe` (if you installed the 32 bit version), you have to specify it by editing the Steam launch options of Among Us, for example like this: `-m "C:\Program Files\Mumble\mumble.exe"` if you installed the 64 bit version.
 
 In Mumble, the proximity audio options have to be enabled and configured beforehand:
  - Run `Configure -> Audio Wizard` and configure your Headset

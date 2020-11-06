@@ -54,6 +54,7 @@ Does this work on mobile (Android / iOS)?
  
 Does this work on Linux / OSX?
  - Not yet. As there is no native build of the game (runs via Proton), the native OS IPC methods cant be used, which complicates the whole thing. But it is planned for the future.
+ - However, a small fake client is provided, which just sets your ingame position to `(0, 0)`.
 
 Why are you releasing this codebase? Hackers will use it to ruin the game!
  - (1) They already do, I have not invented something totally new here. Maybe try playing only with people you know. (2) Trust in this kind of software can only be achieved by open sourcing it. (3) It might lead to more cool mods by the community.
@@ -72,6 +73,12 @@ A post-build task ist defined in Visual Studio, which calls the file `vmupload.b
 For testing, I recommend setting up a private game server using https://github.com/Impostor/Impostor .
 
 If you want to build for a specific version of the game (each build uses different obfuscated names), append the preprocessor macro `GAME_VERSION` in the project configuration like this: `GAME_VERSION=2020922`. See the table above for version numbers.
+
+### Using the POSIX fake client
+
+The fake client bind to the Mumble Link plugin on Linux and Mac OSX and sets your ingame position to zero. This is not optimal, but better than nothing.
+
+Install `make` and `g++`, on OSX you can use Homebrew (https://brew.sh). Then open your terminal, change into the `POSIX` directory. Run `make` to build the tool, and `make run` to run it.
 
 ## Thanks to / Sources
 

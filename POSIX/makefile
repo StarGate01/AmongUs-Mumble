@@ -4,7 +4,7 @@ all: clean
 	g++ fakeclient.cpp -o fakeclient
 
 clean:
-	rm fakeclient
+	rm -f fakeclient
 
 run:
 	./fakeclient

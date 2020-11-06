@@ -65,11 +65,15 @@ int main()
         {
             lm->fAvatarFront[i] = 0.0f;
             lm->fAvatarTop[i] = 0.0f;
-            lm->fAvatarPosition[i] = 0.0f;
             lm->fCameraFront[i] = 0.0f;
             lm->fCameraTop[i] = 0.0f;
-            lm->fCameraPosition[i] = 0.0f;
         }
+        lm->fAvatarPosition[0] = 0.1f;
+        lm->fAvatarPosition[1] = 0.0f;
+        lm->fAvatarPosition[2] = 0.1f;
+        lm->fCameraPosition[0] = 0.1f;
+        lm->fCameraPosition[1] = 0.0f;
+        lm->fCameraPosition[2] = 0.1f;
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }

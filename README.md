@@ -49,6 +49,9 @@ Your anti-virus might flag this as malware, because some of these methods are al
 
 ## FAQ
 
+Who has to install this mod?
+ - Everyone in the lobby.
+
 Does this work on mobile (Android / iOS)?
  - No. It might however be possible to implement a similar hooking mechanism on rooted / jailbroken devices. This would require a mobile Mumble client which is capable of the Mumble Link API. When all baseline features are implemented, I might look into this. When Among Us eventually becomes open source software, this change of course becomes triveal.
  

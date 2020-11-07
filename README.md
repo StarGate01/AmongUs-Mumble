@@ -22,7 +22,7 @@ Please ensure that you use the correct version for your game installation. All b
 
 ## Installation
 
-Download the latest compatible release from https://github.com/StarGate01/AmongUs-Mumble/releases/ , or build it yourself (see below). Drop the `winhttp.dll` file into the same directory as the `Among Us.exe` program. 
+Download the latest compatible release from https://github.com/StarGate01/AmongUs-Mumble/releases/ , or build it yourself (see below). Drop the `winhttp.dll` file into the same directory as the `Among Us.exe` program (see [this explanation](https://github.com/StarGate01/AmongUs-Mumble/issues/1#issuecomment-723373278) if you are confused). 
 
 If you don't have the `Visual C++ Redistributable for Visual Studio 2015` installed, get it from https://www.microsoft.com/en-us/download/details.aspx?id=48145 . Choose the x86 version, even if your PC is 64 bit.
 

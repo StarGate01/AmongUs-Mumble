@@ -6,7 +6,7 @@
 | 2020.9.22s   | [1.0.0.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.1) | `2020922`    |
 | 2020.10.22s  | [1.0.0.4](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.4) | `20201022`   |
 
-Please ensure that you use the correct version for your game installation. All binaries are 32 bit, because the game ist 32 bit and also the free version of the Detours library cant do 64 bit. However, everything runs fine on a 64 bit system.
+Please ensure that you use the correct version for your game installation. All binaries are 32 bit, because the game ist 32 bit and also the free version of the Detours library cant do 64 bit. However, everything runs fine on a 64 bit system if you set it up as specified.
 
 ## State of the Project
 

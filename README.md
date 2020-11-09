@@ -17,8 +17,15 @@ Please ensure that you use the correct version for your game installation. All b
  - [x] Handle mute after death, and unmute at game start
  - [x] Handle voting events
  - [x] Port to 2020.10.22s
- - [ ] Implement differentiation between multiple lobbies in the same voice channel
+ 
+ #### Planned for the next release
+ 
+ - [ ] Change the default mumble binary path to the x64 one
  - [ ] Port to Linux / Proton
+ 
+ #### Planned for the future
+ 
+ - [ ] Implement differentiation between multiple lobbies in the same voice channel
 
 ## Installation
 

@@ -151,7 +151,14 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
 void Run()
 {
     NewConsole();
-    printf("AmongUs-Mumble mod by StarGate01 (chrz.de)\nCompiled for game version %s\nDLL hosting successful\n\n", version_text);
+
+	printf("AmongUs-Mumble mod by:\n");
+	printf("\tStarGate01 (chrz.de): Proxy DLL, Framework, Setup, Features.\n");
+	printf("\tAlisenai (Alien): Fixes, More Features.\n");
+	printf("\tBillyDaBongo (Billy): Management, Testing.\n");
+
+	printf("Compiled for game version %s\n", version_text);
+	printf("DLL hosting successful\n\n");
 
     // Setup mumble
     int lErrMumble = initMumble();

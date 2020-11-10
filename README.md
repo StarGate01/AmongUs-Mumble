@@ -10,6 +10,10 @@ Please ensure that you use the correct version for your game installation. All b
 
 ## [State of the Project](https://github.com/StarGate01/AmongUs-Mumble/projects/1)
 
+## Community
+
+If you are looking for a community that uses this mod, join the Discord server: https://discord.gg/4UkHEJ5sqg !
+
 ## Installation
 
 Download the latest compatible release from https://github.com/StarGate01/AmongUs-Mumble/releases/ , or build it yourself (see below). Drop the `winhttp.dll` file into the same directory as the `Among Us.exe` program (see [this explanation](https://github.com/StarGate01/AmongUs-Mumble/issues/1#issuecomment-723373278) if you are confused). 

@@ -10,7 +10,9 @@ Currently only for Windows PCs and the Steam version. On Linux and OSX a small M
 
 Please ensure that you use the correct version for your game installation.
 
-## [Project State](https://github.com/StarGate01/AmongUs-Mumble/projects/1)
+If you are looking for a community that uses this mod, join the Discord server: https://discord.gg/4UkHEJ5sqg !
+
+If you have any issues or find bugs, report them here: https://github.com/StarGate01/AmongUs-Mumble/issues .
 
 ## Documentation
  - [Installation and Setup](https://github.com/StarGate01/AmongUs-Mumble/wiki/Installation-and-Setup)
@@ -19,9 +21,9 @@ Please ensure that you use the correct version for your game installation.
  - [Development](https://github.com/StarGate01/AmongUs-Mumble/wiki/Development)
  - [Using the POSIX Fake Client](https://github.com/StarGate01/AmongUs-Mumble/wiki/Using-the-POSIX-Fake-Client)
 
-If you are looking for a community that uses this mod, join the Discord server: https://discord.gg/4UkHEJ5sqg !
 
-If you have any issues or find bugs, report them here: https://github.com/StarGate01/AmongUs-Mumble/issues .
+## Project State
+ - [Issues and Planned Features](https://github.com/StarGate01/AmongUs-Mumble/projects/1)
 
 ## Thanks to / Sources
 

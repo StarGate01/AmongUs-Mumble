@@ -6,26 +6,9 @@
 | 2020.9.22s   | [1.0.0.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.1) | `2020922`    |
 | 2020.10.22s  | [1.0.0.4](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.4) | `20201022`   |
 
-Please ensure that you use the correct version for your game installation. All binaries are 32 bit, because the game ist 32 bit and also the free version of the Detours library cant do 64 bit. However, everything runs fine on a 64 bit system if you set it up as specified.
+Please ensure that you use the correct version for your game installation. All binaries are 32 bit, because the game ist 32 bit and also the free version of the Detours library cant do 64 bit. However, everything runs fine on a 64 bit system.
 
-## State of the Project
-
- - [x] Load into the game using a DLL proxy
- - [x] Hook into the game logic
- - [x] Extract the player position
- - [x] Pass the position to Mumble via the Link API
- - [x] Handle mute after death, and unmute at game start
- - [x] Handle voting events
- - [x] Port to 2020.10.22s
- 
- #### Planned for the next release
- 
- - [ ] Change the default mumble binary path to the x64 one
- - [ ] Port to Linux / Proton
- 
- #### Planned for the future
- 
- - [ ] Implement differentiation between multiple lobbies in the same voice channel
+## [State of the Project](https://github.com/StarGate01/AmongUs-Mumble/projects/1)
 
 ## Installation
 
@@ -33,7 +16,7 @@ Download the latest compatible release from https://github.com/StarGate01/AmongU
 
 If you don't have the `Visual C++ Redistributable for Visual Studio 2015` installed, get it from https://www.microsoft.com/en-us/download/details.aspx?id=48145 . Choose the x86 version, even if your PC is 64 bit.
 
-Install Mumble (Tested: Version 1.3.3) if you have not already: https://www.mumble.info/downloads/ . If the path Mumble was installed to is not `C:\Program Files (x86)\Mumble\mumble.exe` (if you installed the 32 bit version), you have to specify it by editing the Steam launch options of Among Us, for example like this: `-m "C:\Program Files\Mumble\mumble.exe"` if you installed the 64 bit version.
+Install Mumble (Tested: Version 1.3.3) if you have not already: https://www.mumble.info/downloads/ . If the path Mumble was installed to is not `C:\Program Files\Mumble\mumble.exe` (if you installed the 64 bit version), you have to specify it by editing the Steam launch options of Among Us, for example like this: `-m "C:\Program Files (x86)\Mumble\mumble.exe"` if you installed the 32 bit version on a 64 bit system.
 
 In Mumble, the proximity audio options have to be enabled and configured beforehand:
  - Run `Configure -> Audio Wizard` and configure your Headset

@@ -5,8 +5,8 @@ Currently only for Windows PCs and the Steam version. On Linux and OSX a small M
 
 | Game version | DLL release                                                                   | GAME_VERSION |
 | ------------ | ----------------------------------------------------------------------------- | ------------ |
-| 2020.9.22s   | [1.0.0.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.1) | `2020922`    |
 | 2020.10.22s  | [1.0.0.4](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.4) | `20201022`   |
+| 2020.9.22s   | [1.0.0.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.1) | `2020922`    |
 
 Please ensure that you use the correct version for your game installation.
 

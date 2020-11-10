@@ -8,7 +8,7 @@
 
 LinkedMem* lm = NULL;
 HANDLE hMapObject = NULL;
-std::string mumble_exe = "C:\\Program Files (x86)\\Mumble\\mumble.exe";
+std::string mumble_exe = "C:\\Program Files\\Mumble\\mumble.exe";
 
 
 // Initializes mumble IPC and RPC

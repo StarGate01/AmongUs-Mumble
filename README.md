@@ -21,9 +21,10 @@ If you have any issues or find bugs, report them here: https://github.com/StarGa
  - [Development](https://github.com/StarGate01/AmongUs-Mumble/wiki/Development)
  - [Using the POSIX Fake Client](https://github.com/StarGate01/AmongUs-Mumble/wiki/Using-the-POSIX-Fake-Client)
 
-
 ## Project State
  - [Issues and Planned Features](https://github.com/StarGate01/AmongUs-Mumble/projects/1)
+ - [Release branch](https://github.com/StarGate01/AmongUs-Mumble/tree/master)
+ - [Development branch](https://github.com/StarGate01/AmongUs-Mumble/tree/dev)
 
 ## Thanks to / Sources
 

@@ -365,3 +365,5 @@ tmp
 /cmake-build-release/
 /cmake-build-debug/
 /.idea/
+
+Il2CppInspector*

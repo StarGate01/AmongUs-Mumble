@@ -1,0 +1,7 @@
+@echo off
+
+REM set the path to your game folder
+SET "AMONGUS=C:\Steam\steamapps\common\Among Us"
+
+REM set the path of IL2CPPInspector
+SET "IL2CPPINSPECTOR=Il2CppInspector-cli.exe"

@@ -74,6 +74,9 @@
     <ClInclude Include="framework\helpers.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="user\deobfuscate.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AUMInjector.rc">

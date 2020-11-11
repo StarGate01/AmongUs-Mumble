@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -34,6 +34,7 @@
     <ClInclude Include="user\CLI11.hpp" />
     <ClInclude Include="user\main.h" />
     <ClInclude Include="user\mumble-link.h" />
+    <ClInclude Include="user\deobfuscate.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AUMInjector.rc" />

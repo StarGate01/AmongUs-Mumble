@@ -110,51 +110,58 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
 // Entrypoint of the injected thread
 void Run()
 {
-    NewConsole();
-
-	printf("AmongUs-Mumble mod by:\n");
-	printf("   StarGate01 (chrz.de):\tProxy DLL, Framework, Setup, Features.\n");
-	printf("   Alisenai (Alien):\t\tFixes, More Features.\n");
-	printf("   BillyDaBongo (Billy):\tManagement, Testing.\n");
-    printf("   LelouBi:\t\t\tDeobfuscation.\n");
-
-	printf("\nCompiled for game version %s\n", version_text);
-	printf("DLL hosting successful\n\n");
-
-    app_settings.parse();
-    app_settings.print_usage();
-    printf("Current configuration:\n----\n");
-    app_settings.print_config();
-    printf("----\n\n");
-
-    // Setup mumble
-    int lErrMumble = initMumble();
-    if (lErrMumble == NO_ERROR)
+    // Check what process the dll was loaded into
+    // If loaded into the wrong process, exit injected thread
+    TCHAR hostExe[MAX_PATH];
+    GetModuleFileName(NULL, hostExe, MAX_PATH);
+    char fname[_MAX_FNAME];
+    _splitpath_s(hostExe, NULL, 0, NULL, 0, fname, _MAX_FNAME, NULL, 0);
+    if (strcmp(fname, "Among Us") == 0)
     {
-        printf("Mumble link init successful\n");
-    }
-    else printf("Cannot init Mumble link: %d\n", lErrMumble);
-    
-    // Setup type and memory info
-    printf("Waiting 10s for Unity to load\n");
-    Sleep(10000);
-    init_il2cpp();
-    printf("Type and function memory mapping successful\n");
-    
-    // Setup hooks
-    DetourTransactionBegin();
-    DetourUpdateThread(GetCurrentThread());
-    DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
-    DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
-    DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);
-    DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
-    DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
-    LONG lError = DetourTransactionCommit();
-    if (lError == NO_ERROR) printf("Successfully detoured game functions\n\n");
-    else printf("Detouring game functions failed: %d\n", lError);
+        NewConsole();
 
-    // Wait for thread exit and then clean up
-    WaitForSingleObject(hExit, INFINITE);
-    closeMumble();
-    printf("Unloading done\n");
+        printf("AmongUs-Mumble mod by:\n");
+        printf("   StarGate01 (chrz.de):\tProxy DLL, Framework, Setup, Features.\n");
+        printf("   Alisenai (Alien):\t\tFixes, More Features.\n");
+        printf("   BillyDaBongo (Billy):\tManagement, Testing.\n");
+        printf("   LelouBi:\t\t\tDeobfuscation.\n");
+
+        printf("\nCompiled for game version %s\n", version_text);
+        printf("DLL hosting successful\n\n");
+
+        // Load settings
+        app_settings.parse();
+        app_settings.print_usage();
+        printf("Current configuration:\n----\n");
+        app_settings.print_config();
+        printf("----\n\n");
+
+        // Setup mumble
+        int lErrMumble = initMumble();
+        if (lErrMumble == NO_ERROR) printf("Mumble link init successful\n");
+        else printf("Cannot init Mumble link: %d\n", lErrMumble);
+
+        // Setup type and memory info
+        printf("Waiting 10s for Unity to load\n");
+        Sleep(10000);
+        init_il2cpp();
+        printf("Type and function memory mapping successful\n");
+
+        // Setup hooks
+        DetourTransactionBegin();
+        DetourUpdateThread(GetCurrentThread());
+        DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
+        DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
+        DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);
+        DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
+        DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
+        LONG lError = DetourTransactionCommit();
+        if (lError == NO_ERROR) printf("Successfully detoured game functions\n\n");
+        else printf("Detouring game functions failed: %d\n", lError);
+
+        // Wait for thread exit and then clean up
+        WaitForSingleObject(hExit, INFINITE);
+        closeMumble();
+        printf("Unloading done\n");
+    }
 }

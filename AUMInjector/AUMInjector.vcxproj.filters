@@ -30,6 +30,9 @@
     <ClCompile Include="framework\helpers.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="user\LoggingSystem.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -72,6 +75,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="framework\helpers.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="user\LoggingSystem.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

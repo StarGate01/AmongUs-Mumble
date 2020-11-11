@@ -1,2 +1,1 @@
-copy /b /v /y "..\Release\winhttp.dll" "D:\Steam\steamapps\common\Among Us\winhttp.dll"
-for %%x in (A B C) do copy /b /v /y "..\Release\winhttp.dll" "\\GAMECLIENT%%x\Users\Christoph\Desktop\Among Us\winhttp.dll"
+copy /b /v /y "..\Release\winhttp.dll" "C:\Program Files (x86)\Steam\steamapps\common\Among Us\winhttp.dll"

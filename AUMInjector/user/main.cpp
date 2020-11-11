@@ -9,6 +9,7 @@
 #include "helpers.h"
 #include <detours.h>
 #include "mumble-link.h"
+#include <LoggingSystem.h>
 
 #define GAME_VERSION_2020_9_22s 2020922
 #define GAME_VERSION_2020_10_22s 20201022
@@ -62,6 +63,10 @@ float cache_x = 0.0f; float cache_y = 0.0f;
 bool voting = false;
 InnerNetClient_GameState__Enum last_game_state = InnerNetClient_GameState__Enum_Joined;
 
+// Ints for tracking when to print the position
+int frameCounter = 0;
+const int timeToPrintPosition = 25;
+
 
 // Fixed loop for a player object, but only get called when a player moves
 void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
@@ -84,7 +89,7 @@ void PlayerControl_Die_Hook(PlayerControl* __this, Player_Die_Reason__Enum reaso
 
     if (__this->fields.LightPrefab != nullptr)
     {
-        printf("You died\n");
+        logger.Log("You died\n");
         muteMumble(true);
     }
 }
@@ -93,7 +98,7 @@ void PlayerControl_Die_Hook(PlayerControl* __this, Player_Die_Reason__Enum reaso
 void MeetingHud_Close_Hook(MeetingHud* __this, MethodInfo* method)
 {
     MeetingHud_Close_Trampoline(__this, method);
-    printf("Meeting ended\n");
+    logger.Log("Meeting ended\n");
     voting = false;
 }
 
@@ -101,7 +106,7 @@ void MeetingHud_Close_Hook(MeetingHud* __this, MethodInfo* method)
 void MeetingHud_Start_Hook(MeetingHud* __this, MethodInfo* method)
 {
     MeetingHud_Start_Trampoline(__this, method);
-    printf("Meeting started\n");
+    logger.Log("Meeting started\n");
     voting = true;
 }
 
@@ -115,7 +120,7 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             (__this->fields.GameState == InnerNetClient_GameState__Enum_Joined ||
             __this->fields.GameState == InnerNetClient_GameState__Enum_Ended))
     {
-        printf("Game joined or ended\n");
+        logger.Log("Game joined or ended\n");
         muteMumble(false);
     }
     last_game_state = __this->fields.GameState;
@@ -143,6 +148,13 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             lm->fCameraPosition[0] = cache_x;
             lm->fAvatarPosition[2] = cache_y;
             lm->fCameraPosition[2] = cache_y;
+
+            if (++frameCounter > timeToPrintPosition)
+            {
+                frameCounter = 0;
+                // Log the current player position to let the player know it is working
+                logger.BeginLog(LOG_CODE::INF) << "Current Position: (" << cache_x << ", " << cache_y << ")" << std::endl;
+            }
         }
     }
 }
@@ -150,30 +162,31 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
 // Entrypoint of the injected thread
 void Run()
 {
-    NewConsole();
+    // Enable logging to file so we can debug user problems easier in the future
+    logger.EnableFileLogging();
 
-	printf("AmongUs-Mumble mod by:\n");
-	printf("\tStarGate01 (chrz.de): Proxy DLL, Framework, Setup, Features.\n");
-	printf("\tAlisenai (Alien): Fixes, More Features.\n");
-	printf("\tBillyDaBongo (Billy): Management, Testing.\n");
+	logger.Log("AmongUs-Mumble mod by:", LOG_CODE::MSG);
+	logger.Log("\tStarGate01 (chrz.de): Proxy DLL, Framework, Setup, Features.", LOG_CODE::MSG);
+	logger.Log("\tAlisenai (Alien): Fixes, More Features.", LOG_CODE::MSG);
+	logger.Log("\tBillyDaBongo (Billy): Management, Testing.", LOG_CODE::MSG);
 
-	printf("Compiled for game version %s\n", version_text);
-	printf("DLL hosting successful\n\n");
+    logger.BeginLog(LOG_CODE::MSG) << "Compiled for game version" << version_text << std::endl;
+	logger.Log("DLL hosting successful", LOG_CODE::INF);
 
     // Setup mumble
     int lErrMumble = initMumble();
     if (lErrMumble == NO_ERROR)
     {
-        printf("Mumble link init successful\n");
-        printf("Mumble exe: %s\n", mumble_exe.c_str());
+        logger.Log("Mumble link init successful", LOG_CODE::INF);
+        logger.Log("Mumble exe: " + mumble_exe, LOG_CODE::INF);
     }
-    else printf("Cannot init Mumble link: %d\n", lErrMumble);
+    else logger.BeginLog(LOG_CODE::ERR) << "Cannot init Mumble link: " << lErrMumble << std::endl;
     
     // Setup type and memory info
-    printf("Waiting 10s for Unity to load\n");
+    logger.Log("Waiting 10s for Unity to load");
     Sleep(10000);
     init_il2cpp();
-    printf("Type and function memory mapping successful\n");
+    logger.Log("Type and function memory mapping successful");
     
     // Setup hooks
     DetourTransactionBegin();
@@ -184,11 +197,11 @@ void Run()
     DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
     DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
     LONG lError = DetourTransactionCommit();
-    if (lError == NO_ERROR) printf("Successfully detoured game functions\n\n");
-    else printf("Detouring game functions failed: %d\n", lError);
+    if (lError == NO_ERROR) logger.Log("Successfully detoured game functions");
+    else logger.Log("Detouring game functions failed: " + lError, LOG_CODE::ERR);
 
     // Wait for thread exit and then clean up
     WaitForSingleObject(hExit, INFINITE);
     closeMumble();
-    printf("Unloading done\n");
+    logger.Log("Unloading done");
 }

@@ -65,7 +65,7 @@ InnerNetClient_GameState__Enum last_game_state = InnerNetClient_GameState__Enum_
 
 // Ints for tracking when to print the position
 int frameCounter = 0;
-const int timeToPrintPosition = 25;
+const int timeToPrintPosition = 45;
 
 
 // Fixed loop for a player object, but only get called when a player moves
@@ -89,7 +89,7 @@ void PlayerControl_Die_Hook(PlayerControl* __this, Player_Die_Reason__Enum reaso
 
     if (__this->fields.LightPrefab != nullptr)
     {
-        logger.Log("You died\n");
+        logger.Log(LOG_CODE::MSG, "You died\n");
         muteMumble(true);
     }
 }
@@ -98,7 +98,7 @@ void PlayerControl_Die_Hook(PlayerControl* __this, Player_Die_Reason__Enum reaso
 void MeetingHud_Close_Hook(MeetingHud* __this, MethodInfo* method)
 {
     MeetingHud_Close_Trampoline(__this, method);
-    logger.Log("Meeting ended\n");
+    logger.Log(LOG_CODE::MSG, "Meeting ended\n");
     voting = false;
 }
 
@@ -106,7 +106,7 @@ void MeetingHud_Close_Hook(MeetingHud* __this, MethodInfo* method)
 void MeetingHud_Start_Hook(MeetingHud* __this, MethodInfo* method)
 {
     MeetingHud_Start_Trampoline(__this, method);
-    logger.Log("Meeting started\n");
+    logger.Log(LOG_CODE::MSG, "Meeting started\n");
     voting = true;
 }
 
@@ -120,7 +120,7 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             (__this->fields.GameState == InnerNetClient_GameState__Enum_Joined ||
             __this->fields.GameState == InnerNetClient_GameState__Enum_Ended))
     {
-        logger.Log("Game joined or ended\n");
+        logger.Log(LOG_CODE::MSG, "Game joined or ended");
         muteMumble(false);
     }
     last_game_state = __this->fields.GameState;
@@ -149,11 +149,12 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             lm->fAvatarPosition[2] = cache_y;
             lm->fCameraPosition[2] = cache_y;
 
+            // Only print the player position ever so many frames
             if (++frameCounter > timeToPrintPosition)
             {
                 frameCounter = 0;
                 // Log the current player position to let the player know it is working
-                logger.BeginLog(LOG_CODE::INF) << "Current Position: (" << cache_x << ", " << cache_y << ")" << std::endl;
+                logger.LogVariadic(LOG_CODE::INF, "Position: (% 7.3f, % 7.3f)", cache_x, cache_y);
             }
         }
     }
@@ -165,28 +166,28 @@ void Run()
     // Enable logging to file so we can debug user problems easier in the future
     logger.EnableFileLogging();
 
-	logger.Log("AmongUs-Mumble mod by:", LOG_CODE::MSG);
-	logger.Log("\tStarGate01 (chrz.de): Proxy DLL, Framework, Setup, Features.", LOG_CODE::MSG);
-	logger.Log("\tAlisenai (Alien): Fixes, More Features.", LOG_CODE::MSG);
-	logger.Log("\tBillyDaBongo (Billy): Management, Testing.", LOG_CODE::MSG);
+    logger.Log(LOG_CODE::MSG, "AmongUs-Mumble mod by:");
+    logger.Log(LOG_CODE::MSG, "\tStarGate01 (chrz.de): Proxy DLL, Framework, Setup, Features.");
+    logger.Log(LOG_CODE::MSG, "\tAlisenai (Alien): Fixes, More Features.");
+    logger.Log(LOG_CODE::MSG, "\tBillyDaBongo (Billy): Management, Testing.");
 
-    logger.BeginLog(LOG_CODE::MSG) << "Compiled for game version" << version_text << std::endl;
-	logger.Log("DLL hosting successful", LOG_CODE::INF);
+    logger.LogVariadic(LOG_CODE::MSG, "Compiled for game version: %s", version_text);
+    logger.Log(LOG_CODE::INF, "DLL hosting successful");
 
     // Setup mumble
     int lErrMumble = initMumble();
     if (lErrMumble == NO_ERROR)
     {
-        logger.Log("Mumble link init successful", LOG_CODE::INF);
-        logger.Log("Mumble exe: " + mumble_exe, LOG_CODE::INF);
+        logger.Log(LOG_CODE::INF, "Mumble link init successful");
+        logger.Log(LOG_CODE::INF, "Mumble exe: " + mumble_exe);
     }
-    else logger.BeginLog(LOG_CODE::ERR) << "Cannot init Mumble link: " << lErrMumble << std::endl;
+    else logger.LogVariadic(LOG_CODE::ERR, "Cannot init Mumble link: ", lErrMumble);
     
     // Setup type and memory info
-    logger.Log("Waiting 10s for Unity to load");
+    logger.Log(LOG_CODE::MSG, "Waiting 10s for Unity to load");
     Sleep(10000);
     init_il2cpp();
-    logger.Log("Type and function memory mapping successful");
+    logger.Log(LOG_CODE::INF, "Type and function memory mapping successful");
     
     // Setup hooks
     DetourTransactionBegin();
@@ -197,11 +198,11 @@ void Run()
     DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
     DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
     LONG lError = DetourTransactionCommit();
-    if (lError == NO_ERROR) logger.Log("Successfully detoured game functions");
-    else logger.Log("Detouring game functions failed: " + lError, LOG_CODE::ERR);
+    if (lError == NO_ERROR) logger.Log(LOG_CODE::INF, "Successfully detoured game functions");
+    else logger.LogVariadic(LOG_CODE::ERR, "Detouring game functions failed: ", lError);
 
     // Wait for thread exit and then clean up
     WaitForSingleObject(hExit, INFINITE);
     closeMumble();
-    logger.Log("Unloading done");
+    logger.Log(LOG_CODE::MSG, "Unloading done");
 }

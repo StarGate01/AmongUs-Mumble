@@ -9,15 +9,16 @@
 
 // Global externs for the logging system
 LoggingSystem logger;
-DevNullLogger devNullLogger;
 
-LoggingSystem::LoggingSystem() : std::ostream(this)
+// Opens a console to prepare for logging
+LoggingSystem::LoggingSystem()
 {
 	// Open a console (to log to)
 	AllocConsole();
 	freopen_s((FILE **) stdout, "CONOUT$", "w", stdout);
 }
 
+// Closes the file, if needed
 LoggingSystem::~LoggingSystem()
 {
 	// Close the file, if needed
@@ -37,11 +38,10 @@ void LoggingSystem::EnableFileLogging()
 		// Placement new because std::ofstream is NOT copyable
 		new(&logFile) std::ofstream(LOGGING_FILE, std::ios::out);
 
-		// Failed to open the log file
 		if (!logFile.is_open())
 		{
 			// Don't log to file, something went wrong
-			Log("Could not initalize the log file - will not log to file", LOG_CODE::LOG_CODE_WARNING);
+			Log(LOG_CODE::LOG_CODE_WARNING, "Could not initalize the log file - will not log to file");
 			logToFile = false;
 		}
 	}
@@ -53,51 +53,73 @@ void LoggingSystem::SetVerbosity(LOG_CODE verbosity)
 	this->verbosity = verbosity;
 }
 
-void LoggingSystem::LogCode(LOG_CODE logCode)
+// Prints the string for the code to the log (and possibly the file)
+std::string LoggingSystem::GetLogCodeString(LOG_CODE logCode)
 {
-	// Print to console
-	std::cout << "[" + logPrefixes[(unsigned) logCode] + "] ";
-
-	// Log to file (optionally)
-	if (logToFile)
-		logFile << "[" + logPrefixes[(unsigned) logCode] + "] ";
+	// Return the log code string
+	return ("[" + logPrefixes[(unsigned) logCode] + "] ");
 }
 
-// Implemented for operator<< to work (from the inherited class)
-int LoggingSystem::overflow(int c)
-{
-	// Print to console
-	std::cout.put((char)c);
-
-	// Log to file (optionally)
-	if (logToFile)
-		logFile << (char)c; //Would use "logFile.put(c);", but it has edge cases
-	return 0;
-}
-
-void LoggingSystem::Log(std::string message, LOG_CODE logCode, bool addNewLine)
+// Logs a message to the console window
+// Newline is ensured (for flushing)
+void LoggingSystem::Log(LOG_CODE logCode, std::string message)
 {
 	// Don't log due to set verbosity level
 	if (logCode > verbosity) return;
 
-	// Log the given code (in the right format)
-	LogCode(logCode);
+	// Build the whole string in one go, to prevent thread cross-printing
+	std::string finalText = GetLogCodeString(logCode) + message + "\n";
+	std::cout << finalText;
 
-	// Log to console
-	std::cout << message << std::endl;
-
-	// Log to file
+	// Log to file, if needed
 	if (logToFile)
-		logFile << message << std::endl;
+	{
+		logFile << finalText;
+		logFile.flush();
+	}
 }
 
-// Sets up the logging system for operator<<
-std::ostream &LoggingSystem::BeginLog(LOG_CODE logCode)
+// Logs a message to the console window, using the familiar "printf" format
+// Newline is ensured (for flushing)
+void LoggingSystem::LogVariadic(LOG_CODE logCode, const char* formatString, ...)
 {
-	// Return the null logger so the chained operators don't have any effect
-	if (logCode > verbosity) return devNullLogger;
+	// Don't log due to set verbosity level
+	if (logCode > verbosity) return;
 
-	// Prints the log and returns a reference to the extern
-	LogCode(logCode);
-	return *this;
+	va_list argp = { nullptr };
+
+	// Get the exact size needed by getting the size of the result string
+	va_start(argp, formatString);
+	int bufferLen = vsnprintf(nullptr, 0, formatString, argp) + 1;
+	va_end(argp);
+
+	// Create a buffer for the string
+	char* newString = (char*)malloc(bufferLen);
+
+	// Malloc returned null (bad, but only a single message is missed)
+	if (!newString) return;
+
+	// Null-terminate the string
+	newString[bufferLen - 1] = '\0';
+
+	// Format the string into the buffer
+	va_start(argp, formatString);
+	vsprintf_s(newString, bufferLen, formatString, argp);
+	va_end(argp);
+
+	// Add the prefix to the gives format string
+	std::string message = GetLogCodeString(logCode) + newString + "\n";
+	
+	// Print the message
+	printf("%s", message.c_str());
+
+	// Log to file, if needed
+	if (logToFile) 
+	{
+		logFile << message;
+		logFile.flush();
+	}
+
+	// Clean up dynamic memory
+	free(newString);
 }

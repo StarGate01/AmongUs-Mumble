@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include <shellapi.h>
 #include <Shlwapi.h>
+#include <thread>
 #include "mumble-link.h"
 #include "settings.h"
 
@@ -73,6 +74,9 @@ void closeMumble()
 // Mutes or unmutes mumble via RPC
 void muteMumble(bool mute)
 {
-	if(mute) system(("\"" + app_settings.mumble_exe + "\" rpc mute").c_str());
-	else system(("\"" + app_settings.mumble_exe + "\" rpc unmute").c_str());
+	std::thread t([mute] {
+		if (mute) system(("\"" + app_settings.mumble_exe + "\" rpc mute").c_str());
+		else system(("\"" + app_settings.mumble_exe + "\" rpc unmute").c_str());
+	});
+	t.detach();
 }

@@ -1,7 +1,14 @@
-@echo off
+@ECHO OFF
 
 REM set the path to your game folder
 SET "AMONGUS=C:\Steam\steamapps\common\Among Us"
 
 REM set the path of IL2CPPInspector
 SET "IL2CPPINSPECTOR=Il2CppInspector-cli.exe"
+
+REM setup virtual machines for deployment
+REM uncomment the following line to enable vm upload
+REM SET "VM_UPLOAD=yes"
+SET "VM_BASENAME=GAMECLIENT"
+SET "VM_SUFFIXES=A B C"
+SET "VM_AMONGUS=Users\Christoph\Desktop\Among Us"

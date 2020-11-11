@@ -10,12 +10,12 @@
 #include <detours.h>
 #include "mumble-link.h"
 #include "deobfuscate.h"
+#include "settings.h"
 
 using namespace app;
 
 extern const LPCWSTR LOG_FILE = L"il2cpp-log.txt";
 extern HANDLE hExit; // Thread exit event
-extern std::string mumble_exe;
 
 // Game state
 float cache_x = 0.0f; float cache_y = 0.0f;
@@ -121,12 +121,17 @@ void Run()
 	printf("\nCompiled for game version %s\n", version_text);
 	printf("DLL hosting successful\n\n");
 
+    app_settings.parse();
+    app_settings.print_usage();
+    printf("Current configuration:\n----\n");
+    app_settings.print_config();
+    printf("----\n\n");
+
     // Setup mumble
     int lErrMumble = initMumble();
     if (lErrMumble == NO_ERROR)
     {
         printf("Mumble link init successful\n");
-        printf("Mumble exe: %s\n", mumble_exe.c_str());
     }
     else printf("Cannot init Mumble link: %d\n", lErrMumble);
     

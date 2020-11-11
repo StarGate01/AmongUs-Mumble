@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="framework\helpers.cpp" />
     <ClCompile Include="framework\il2cpp-init.cpp" />
+    <ClCompile Include="user\settings.cpp" />
     <ClCompile Include="user\main.cpp" />
     <ClCompile Include="user\mumble-link.cpp" />
     <ClCompile Include="user\winhttp.cpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="framework\il2cpp-init.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="user\CLI11.hpp" />
+    <ClInclude Include="user\settings.h" />
     <ClInclude Include="user\main.h" />
     <ClInclude Include="user\mumble-link.h" />
     <ClInclude Include="user\deobfuscate.h" />

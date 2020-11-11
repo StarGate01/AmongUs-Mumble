@@ -31,4 +31,5 @@ void LogWrite(std::string text) {
 void NewConsole() {
     AllocConsole();
     freopen_s((FILE**) stdout, "CONOUT$", "w", stdout);
+    ShowWindow(GetConsoleWindow(), SW_MINIMIZE);
 }

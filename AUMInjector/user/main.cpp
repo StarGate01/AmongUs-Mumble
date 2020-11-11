@@ -12,8 +12,9 @@
 
 #define GAME_VERSION_2020_9_22s 2020922
 #define GAME_VERSION_2020_10_22s 20201022
+#define GAME_VERSION_2020_11_4s 20201104
 #ifndef GAME_VERSION
-    #define GAME_VERSION GAME_VERSION_2020_10_22s
+    #define GAME_VERSION GAME_VERSION_2020_11_4s
 #endif
 
 using namespace app;
@@ -46,6 +47,22 @@ using namespace app;
     #define MeetingHud_Close_Trampoline GPOHFPAIEMA_Close
     #define MeetingHud_Start_Trampoline GPOHFPAIEMA_Start
     #define InnerNetClient_FixedUpdate_Trampoline DNAFMCDBMCI_FixedUpdate
+
+#elif GAME_VERSION == GAME_VERSION_2020_11_4s
+    #define version_text "2020.11.4s"
+    using InnerNetClient_GameState__Enum = DBDDAJAICFN_DKEKFCCGGEO__Enum;
+    using PlayerControl = APNNOJFGDGP;
+    using Player_Die_Reason__Enum = LKBAAGPFMCB__Enum;
+    using MeetingHud = LFBAPIAFCFM;
+    using InnerNetClient = DBDDAJAICFN;
+    InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = DBDDAJAICFN_DKEKFCCGGEO__Enum_Joined;
+    InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = DBDDAJAICFN_DKEKFCCGGEO__Enum_Ended;
+    #define PlayerControl_FixedUpdate_Trampoline APNNOJFGDGP_FixedUpdate
+    #define PlayerControl_GetTruePosition_Trampoline APNNOJFGDGP_GetTruePosition
+    #define PlayerControl_Die_Trampoline APNNOJFGDGP_Die
+    #define MeetingHud_Close_Trampoline LFBAPIAFCFM_Close
+    #define MeetingHud_Start_Trampoline LFBAPIAFCFM_Start
+    #define InnerNetClient_FixedUpdate_Trampoline DBDDAJAICFN_FixedUpdate
 #else
     #error Unknown game version!
 #endif

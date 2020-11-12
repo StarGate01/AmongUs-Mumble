@@ -32,6 +32,7 @@ using namespace app;
 	using Player_Die_Reason__Enum = CCCHKEBONBN__Enum;
 	using MeetingHud = GPOHFPAIEMA;
 	using InnerNetClient = DNAFMCDBMCI;
+	using InnerNet_DisconnectReasons__Enum = NCBONGGBCNE__Enum;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = DNAFMCDBMCI_JPCEFDHGHAK__Enum_Joined;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = DNAFMCDBMCI_JPCEFDHGHAK__Enum_Ended;
 	#define PlayerControl_FixedUpdate_Trampoline GLHCHLEDNBA_FixedUpdate
@@ -40,6 +41,7 @@ using namespace app;
 	#define MeetingHud_Close_Trampoline GPOHFPAIEMA_Close
 	#define MeetingHud_Start_Trampoline GPOHFPAIEMA_Start
 	#define InnerNetClient_FixedUpdate_Trampoline DNAFMCDBMCI_FixedUpdate
+	#define InnerNetClient_Disconnect_Trampoline DNAFMCDBMCI_GPKBCOKMFHK
 #elif GAME_VERSION == GAME_VERSION_2020_11_4s
 	#define version_text "2020.11.4s"
 	using InnerNetClient_GameState__Enum = DBDDAJAICFN_DKEKFCCGGEO__Enum;

@@ -11,6 +11,7 @@
 #include "mumble-link.h"
 #include "deobfuscate.h"
 #include "settings.h"
+//#include "dynamic_analysis.h"
 
 using namespace app;
 
@@ -19,7 +20,7 @@ extern HANDLE hExit; // Thread exit event
 
 // Game state
 float cache_x = 0.0f; float cache_y = 0.0f;
-bool voting = false;
+bool send_position = true;
 InnerNetClient_GameState__Enum last_game_state = InnerNetClient_GameState__Enum_Joined;
 
 
@@ -28,7 +29,7 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 {
     PlayerControl_FixedUpdate_Trampoline(__this, method);
     
-    if (__this->fields.LightPrefab != nullptr && !voting)
+    if (__this->fields.LightPrefab != nullptr && send_position)
     {
         // Cache position
         Vector2 pos = PlayerControl_GetTruePosition_Trampoline(__this, method);
@@ -54,7 +55,7 @@ void MeetingHud_Close_Hook(MeetingHud* __this, MethodInfo* method)
 {
     MeetingHud_Close_Trampoline(__this, method);
     printf("Meeting ended\n");
-    voting = false;
+    send_position = true;
 }
 
 // Gets called when a meeting starts
@@ -62,7 +63,7 @@ void MeetingHud_Start_Hook(MeetingHud* __this, MethodInfo* method)
 {
     MeetingHud_Start_Trampoline(__this, method);
     printf("Meeting started\n");
-    voting = true;
+    send_position = false;
 }
 
 // Fixed loop for the game client
@@ -76,6 +77,7 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             __this->fields.GameState == InnerNetClient_GameState__Enum_Ended))
     {
         printf("Game joined or ended\n");
+        send_position = true;
         muteMumble(false);
     }
     last_game_state = __this->fields.GameState;
@@ -89,22 +91,30 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             lm->uiVersion = 2;
         }
         lm->uiTick++;
-        if (voting)
-        {
-            // When voting, all players can hear each other -> same position
-            lm->fAvatarPosition[0] = 0.0f;
-            lm->fCameraPosition[0] = 0.0f;
-            lm->fAvatarPosition[2] = 0.0f;
-            lm->fCameraPosition[2] = 0.0f;
-        }
-        else
+        if (send_position)
         {
             lm->fAvatarPosition[0] = cache_x;
             lm->fCameraPosition[0] = cache_x;
             lm->fAvatarPosition[2] = cache_y;
             lm->fCameraPosition[2] = cache_y;
         }
+        else
+        {
+            // When voting or in menu, all players can hear each other
+            lm->fAvatarPosition[0] = 0.0f;
+            lm->fCameraPosition[0] = 0.0f;
+            lm->fAvatarPosition[2] = 0.0f;
+            lm->fCameraPosition[2] = 0.0f;
+        }
     }
+}
+
+void InnerNetClient_Disconnect_Hook(InnerNetClient* __this, InnerNet_DisconnectReasons__Enum reason, String* stringReason, MethodInfo* method)
+{
+    InnerNetClient_Disconnect_Trampoline(__this, reason, stringReason, method);
+    printf("Disconnected from server\n");
+    send_position = false;
+    muteMumble(false);
 }
 
 // Entrypoint of the injected thread
@@ -155,6 +165,8 @@ void Run()
         DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);
         DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
         DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
+        DetourAttach(&(PVOID&)InnerNetClient_Disconnect_Trampoline, InnerNetClient_Disconnect_Hook);
+        //dynamic_analysis_attach();
         LONG lError = DetourTransactionCommit();
         if (lError == NO_ERROR) printf("Successfully detoured game functions\n\n");
         else printf("Detouring game functions failed: %d\n", lError);

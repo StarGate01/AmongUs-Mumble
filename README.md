@@ -3,12 +3,13 @@
 
 Currently only for Windows PCs and the Steam version. On Linux and OSX a small Mumble fake plugin is provided, which just sets your ingame position to `(0, 0)`.
 
-| Game version | DLL release                                                                   | GAME_VERSION |
-| ------------ | ----------------------------------------------------------------------------- | ------------ |
-| 2020.10.22s  | [1.0.0.4](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.4) | `20201022`   |
-| 2020.9.22s   | [1.0.0.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.1) | `2020922`    |
+Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0.1.X`. See the table for compatibility. Please ensure that you use the correct version for your game installation.
 
-Please ensure that you use the correct version for your game installation.
+| Game version | Game channel | DLL release                                                                   | GAME_VERSION |
+| ------------ | ------------ | ----------------------------------------------------------------------------- | ------------ |
+| 2020.11.4s   | Beta         | [1.0.1.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.1.1) | `202011040`  |
+| 2020.10.22s  | Release      | [1.0.0.4](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.4) | `202010220`  |
+| 2020.9.22s   | Release      | [1.0.0.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.1) | `20209220`   |
 
 If you are looking for a community that uses this mod, join the Discord server: https://discord.gg/4UkHEJ5sqg !
 
@@ -21,9 +22,11 @@ If you have any issues or find bugs, report them here: https://github.com/StarGa
  - [Development](https://github.com/StarGate01/AmongUs-Mumble/wiki/Development)
  - [Using the POSIX Fake Client](https://github.com/StarGate01/AmongUs-Mumble/wiki/Using-the-POSIX-Fake-Client)
 
-
 ## Project State
  - [Issues and Planned Features](https://github.com/StarGate01/AmongUs-Mumble/projects/1)
+ - [Release branch](https://github.com/StarGate01/AmongUs-Mumble/tree/master)
+ - [Beta branch](https://github.com/StarGate01/AmongUs-Mumble/tree/beta)
+ - [Development branch](https://github.com/StarGate01/AmongUs-Mumble/tree/dev)
 
 ## Thanks to / Sources
 

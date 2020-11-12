@@ -1,47 +1,17 @@
 #include <Windows.h>
 #include <shellapi.h>
 #include <Shlwapi.h>
-#include <comdef.h>
-#include "CLI11.hpp"
+#include <thread>
 #include "mumble-link.h"
+#include "settings.h"
 
 
 LinkedMem* lm = NULL;
 HANDLE hMapObject = NULL;
-std::string mumble_exe = "C:\\Program Files\\Mumble\\mumble.exe";
-
 
 // Initializes mumble IPC and RPC
 int initMumble()
 {
-	// Setup argument parser
-	CLI::App app{ "AmongUs-Mumble", "Among Us.exe" };
-	app.allow_extras();
-	app.add_option("-m,--mumble", mumble_exe, "Mumble executable path");
-	// Get arguments from OS
-	int argc;
-	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
-	// Convert arguments from unicode to narrow
-	_bstr_t** argv_bstr = (_bstr_t**)malloc(argc * sizeof(_bstr_t*));
-	char** argv_narrow = (char**)malloc(argc * sizeof(char*));
-	for (int i = 0; i < argc; i++)
-	{
-		argv_bstr[i] = new _bstr_t(argv[i]);
-		argv_narrow[i] = *argv_bstr[i];
-	}
-	// Parse arguments
-	app.parse(argc, argv_narrow);
-	printf("%s", app.help().c_str());
-	// Free temp buffers
-	LocalFree(argv);
-	for (int i = 0; i < argc; i++)
-	{
-		argv_bstr[i]->~_bstr_t();
-		free(argv_bstr[i]);
-	}
-	free(argv_bstr);
-	free(argv_narrow);
-
 	// Open shared memory file IPC
 	hMapObject = OpenFileMappingW(FILE_MAP_ALL_ACCESS, FALSE, L"MumbleLink");
 	if (hMapObject == NULL) return GetLastError();
@@ -104,6 +74,9 @@ void closeMumble()
 // Mutes or unmutes mumble via RPC
 void muteMumble(bool mute)
 {
-	if(mute) system(("\"" + mumble_exe + "\" rpc mute").c_str());
-	else system(("\"" + mumble_exe + "\" rpc unmute").c_str());
+	std::thread t([mute] {
+		if (mute) system(("\"" + app_settings.mumble_exe + "\" rpc mute").c_str());
+		else system(("\"" + app_settings.mumble_exe + "\" rpc unmute").c_str());
+	});
+	t.detach();
 }

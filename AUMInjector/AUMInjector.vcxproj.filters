@@ -30,6 +30,9 @@
     <ClCompile Include="framework\helpers.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="user\settings.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
     <ClCompile Include="user\LoggingSystem.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -75,6 +78,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="framework\helpers.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="user\deobfuscate.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="user\settings.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="user\LoggingSystem.h">

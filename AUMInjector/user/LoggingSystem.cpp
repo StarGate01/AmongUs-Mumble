@@ -10,20 +10,27 @@
 // Global externs for the logging system
 LoggingSystem logger;
 
-// Opens a console to prepare for logging
-LoggingSystem::LoggingSystem()
-{
-	// Open a console (to log to)
-	AllocConsole();
-	freopen_s((FILE **) stdout, "CONOUT$", "w", stdout);
-}
-
 // Closes the file, if needed
 LoggingSystem::~LoggingSystem()
 {
 	// Close the file, if needed
 	if (logToFile)
 		logFile.close();
+}
+
+// Enables logging to console
+void LoggingSystem::EnableConsoleLogging()
+{
+	// Only open the console if not already opened
+	if (!logToConsole)
+	{
+		logToConsole = true;
+
+		// Open a console (to log to)
+		AllocConsole();
+		freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
+		ShowWindow(GetConsoleWindow(), SW_MINIMIZE);
+	}
 }
 
 // Enables logging to file
@@ -41,7 +48,7 @@ void LoggingSystem::EnableFileLogging()
 		if (!logFile.is_open())
 		{
 			// Don't log to file, something went wrong
-			Log(LOG_CODE::LOG_CODE_WARNING, "Could not initalize the log file - will not log to file");
+			Log(LOG_CODE::LOG_CODE_WARNING, "Could not initialize the log file - will not log to file");
 			logToFile = false;
 		}
 	}
@@ -69,7 +76,10 @@ void LoggingSystem::Log(LOG_CODE logCode, std::string message)
 
 	// Build the whole string in one go, to prevent thread cross-printing
 	std::string finalText = GetLogCodeString(logCode) + message + "\n";
-	std::cout << finalText;
+
+	// Print the message, if needed
+	if (logToConsole)
+		std::cout << finalText << std::flush;
 
 	// Log to file, if needed
 	if (logToFile)
@@ -110,15 +120,13 @@ void LoggingSystem::LogVariadic(LOG_CODE logCode, const char* formatString, ...)
 	// Add the prefix to the gives format string
 	std::string message = GetLogCodeString(logCode) + newString + "\n";
 	
-	// Print the message
-	printf("%s", message.c_str());
+	// Print the message, if needed
+	if (logToConsole)
+		std::cout << message.c_str() << std::flush;
 
 	// Log to file, if needed
 	if (logToFile) 
-	{
-		logFile << message;
-		logFile.flush();
-	}
+		logFile << message << std::flush;
 
 	// Clean up dynamic memory
 	free(newString);

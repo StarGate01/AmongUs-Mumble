@@ -31,11 +31,11 @@ enum class LOG_CODE
 class LoggingSystem
 {
 public:
-	// Opens a console to prepare for logging
-	LoggingSystem();
-
 	// Closes the file, if needed
 	~LoggingSystem();
+
+	// Enables logging to console
+	void EnableConsoleLogging();
 
 	// Enables logging to file
 	void EnableFileLogging();
@@ -60,8 +60,11 @@ private:
 		"ERR", "WRN", "INF", "MSG", "DBG"
 	};
 
-	// If the logging system log to a file
+	// If the logging system should log to file
 	bool logToFile = false;
+
+	// If the logging system should log to console
+	bool logToConsole = false;
 
 	// Output log file
 	std::ofstream logFile;

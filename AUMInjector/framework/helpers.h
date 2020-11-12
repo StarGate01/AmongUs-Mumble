@@ -7,6 +7,9 @@
 #include <sstream>
 #include <iomanip>
 
+// Assert macro: M_ASSERT(Condition to check, message if condition is false)
+#define M_ASSERT(condition, message) do { if (! (condition)) { std::cerr << "Assertion `" #condition "` failed in " << __FILE__ << " line " << __LINE__ << ": " << message << std::endl; std::terminate(); } } while (false)
+
 // Helper function to get the module base address
 uintptr_t GetBaseAddress();
 

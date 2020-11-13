@@ -8,7 +8,7 @@ Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0
 | Game version | Game channel | DLL release                                                                   | GAME_VERSION |
 | ------------ | ------------ | ----------------------------------------------------------------------------- | ------------ |
 | 2020.11.4s   | Beta         | [1.0.1.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.1.1) | `202011040`  |
-| 2020.10.22s  | Release      | [1.0.0.4](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.4) | `202010220`  |
+| 2020.10.22s  | Release      | [1.0.0.5](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.5) | `202010220`  |
 | 2020.9.22s   | Release      | [1.0.0.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.1) | `20209220`   |
 
 If you are looking for a community that uses this mod, join the Discord server: https://discord.gg/4UkHEJ5sqg !

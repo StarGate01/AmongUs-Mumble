@@ -131,6 +131,7 @@ void LoggingSystem::LogVariadic(LOG_CODE logCode, bool sameLine, const char* for
 
 	// Add the prefix to the gives format string
 	// Do not print a new line if current line should be overwritten
+	sameLine = sameLine && logToConsole;
 	std::string message = (sameLine? "\r":(CursorAtEnd()? "\n":"")) +
 		GetLogCodeString(logCode) + newString + (sameLine? "":"\n");
 	

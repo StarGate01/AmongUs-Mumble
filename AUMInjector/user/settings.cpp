@@ -10,7 +10,8 @@ Settings::Settings():
 	disableLogConsole(false),
 	disableLogFile(false),
 	logVerbosity(LOG_CODE::MSG),
-	logFileName("ProximityLog.txt")
+	logFileName("ProximityLog.txt"),
+	directionalAudio(false)
 { }
 
 void Settings::Parse()
@@ -24,6 +25,7 @@ void Settings::Parse()
 	app.add_flag("--no-log-file", disableLogFile, "Disable logging to a file");
 	app.add_option("--log-file-path", logFileName, "Path to the log file", true);
 	app.add_option("--log-verbosity", logVerbosity, "Log verbosity", true);
+	app.add_flag("--directional-audio", directionalAudio, "Enable directional audio");
 	// Get arguments from OS
 	int argc;
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
@@ -53,6 +55,21 @@ void Settings::Parse()
 	// Serialize settings with annotations
 	configFileOut << app.config_to_str(true, true);
 	configFileOut.close();
+
+	// Generate audio coordinate map
+	// Mumble -> Ingame
+	if (directionalAudio)
+	{
+		audioCoordinateMap[0] = 0; // X -> X
+		audioCoordinateMap[1] = 2; // Y -> 0
+		audioCoordinateMap[2] = 1; // Z -> Y
+	}
+	else
+	{
+		audioCoordinateMap[0] = 2; // X -> 0
+		audioCoordinateMap[1] = 0; // Y -> X
+		audioCoordinateMap[2] = 1; // Z -> Y
+	}
 }
 
 Settings appSettings;

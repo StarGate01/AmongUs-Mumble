@@ -13,6 +13,8 @@ class Settings
 		bool disableLogFile;
 		LOG_CODE logVerbosity;
 		std::string logFileName;
+		bool directionalAudio;
+		int audioCoordinateMap[3];
 
 		Settings();
 		void Parse();

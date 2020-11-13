@@ -20,7 +20,7 @@ using namespace app;
 extern HANDLE hExit; // Thread exit event
 
 // Game state
-float posCache[2] = { 0.0f, 0.0f };
+float posCache[3] = { 0.0f, 0.0f, 0.0f };
 bool sendPosition = true;
 InnerNetClient_GameState__Enum lastGameState = InnerNetClient_GameState__Enum_Joined;
 
@@ -123,18 +123,21 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
         mumbleLink.linkedMem->uiTick++;
         if (sendPosition)
         {
-            mumbleLink.linkedMem->fAvatarPosition[0] = posCache[0];
-            mumbleLink.linkedMem->fCameraPosition[0] = posCache[0];
-            mumbleLink.linkedMem->fAvatarPosition[2] = posCache[1];
-            mumbleLink.linkedMem->fCameraPosition[2] = posCache[1];
+            // Map player position to mumble according to directional / non directional setting
+            for (int i = 0; i < 3; i++)
+            {
+                mumbleLink.linkedMem->fAvatarPosition[i] = posCache[appSettings.audioCoordinateMap[i]];
+                mumbleLink.linkedMem->fCameraPosition[i] = posCache[appSettings.audioCoordinateMap[i]];
+            }
         }
         else
         {
             // When voting or in menu, all players can hear each other
-            mumbleLink.linkedMem->fAvatarPosition[0] = 0.0f;
-            mumbleLink.linkedMem->fCameraPosition[0] = 0.0f;
-            mumbleLink.linkedMem->fAvatarPosition[2] = 0.0f;
-            mumbleLink.linkedMem->fCameraPosition[2] = 0.0f;
+            for (int i = 0; i < 3; i++)
+            {
+                mumbleLink.linkedMem->fAvatarPosition[i] = 0.0f;
+                mumbleLink.linkedMem->fCameraPosition[i] = 0.0f;
+            }
             // Reset cached position for logging
             posCache[0] = 0.0f;
             posCache[1] = 0.0f;

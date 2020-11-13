@@ -1,13 +1,10 @@
 #pragma once
-#ifdef _WIN32
+
 #include <windows.h>
-#else
-#include <sys/mman.h>
-#include <fcntl.h> /* For O_* constants */
-#endif // _WIN32
 #include <string>
 
-struct LinkedMem {
+struct LinkedMem
+{
 #ifdef _WIN32
 	UINT32	uiVersion;
 	DWORD	uiTick;
@@ -32,8 +29,19 @@ struct LinkedMem {
 	wchar_t description[2048];
 };
 
-extern LinkedMem* lm;
+class MumbleLink
+{
 
-int initMumble();
-void closeMumble();
-void muteMumble(bool mute = true);
+	public:
+		LinkedMem* linkedMem = nullptr;
+		DWORD Init();
+		void Close();
+		void Mute(bool mute = true);
+
+	private:
+		HANDLE mapHandle = nullptr;
+		void ExecCommand(const char* cmd);
+
+};
+
+extern MumbleLink mumbleLink;

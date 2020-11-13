@@ -21,13 +21,19 @@
     <ClCompile Include="framework\il2cpp-init.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="user\mumble-link.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="user\winhttp.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="framework\helpers.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="user\LoggingSystem.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="user\MumbleLink.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="user\Settings.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,9 +68,6 @@
     <ClInclude Include="appdata\il2cpp-types-ptr.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="user\mumble-link.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -72,6 +75,18 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="framework\helpers.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="user\deobfuscate.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="user\LoggingSystem.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="user\MumbleLink.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="user\Settings.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

@@ -362,3 +362,10 @@ MigrationBackup/
 FodyWeavers.xsd
 
 tmp
+/cmake-build-release/
+/cmake-build-debug/
+/.idea/
+
+Il2CppInspector*
+
+setup.bat

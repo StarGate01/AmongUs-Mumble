@@ -5,28 +5,31 @@
 #include "helpers.h"
 
 Settings::Settings():
-	mumble_exe("C:\\Program Files\\Mumble\\mumble.exe"),
-	noConsole(false),
-	app("AmongUs-Mumble", "Among Us.exe")
+	app("AmongUs-Mumble", "Among Us.exe"),
+	mumbleExe("C:\\Program Files\\Mumble\\mumble.exe"),
+	disableLogConsole(false),
+	disableLogFile(false),
+	logVerbosity(LOG_CODE::MSG),
+	logFileName("ProximityLog.txt")
 { }
 
-void Settings::parse()
+void Settings::Parse()
 {
 	// Setup argument parser
 	app.allow_extras(true);
 	app.allow_config_extras(true);
-	app.set_config("-c,--config", "config.ini", "Read an INI configuration file", false);
-	app.add_option("-m,--mumble", mumble_exe, "Mumble executable path", true);
-	app.add_flag("-n,--no-console", noConsole, "Disable the console");
+	app.set_config("-c,--config", "ProximityConfig.ini", "Read an INI configuration file", false);
+	app.add_option("-m,--mumble", mumbleExe, "Mumble executable path", true);
+	app.add_flag("--no-log-console", disableLogConsole, "Disable logging to the console");
+	app.add_flag("--no-log-file", disableLogFile, "Disable logging to a file");
+	app.add_option("--log-file-path", logFileName, "Path to the log file", true);
+	app.add_option("--log-verbosity", logVerbosity, "Log verbosity", true);
 	// Get arguments from OS
 	int argc;
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 	// Convert arguments from unicode to narrow
 	_bstr_t** argv_bstr = (_bstr_t**)malloc(argc * sizeof(_bstr_t*));
-	M_ASSERT(argv_bstr != nullptr, "Could not allocate sufficient memory.");
 	char** argv_narrow = (char**)malloc(argc * sizeof(char*));
-	M_ASSERT(argv_narrow != nullptr, "Could not allocate sufficient memory.");
-
 	for (int i = 0; i < argc; i++)
 	{
 		argv_bstr[i] = (_bstr_t*)new _bstr_t(argv[i]);
@@ -43,16 +46,13 @@ void Settings::parse()
 	}
 	free(argv_bstr);
 	free(argv_narrow);
+
+	// Write out config file
+	std::ofstream configFileOut;
+	configFileOut.open(app.get_config_ptr()->as<std::string>(), std::ios::out | std::ios::trunc);
+	// Serialize settings with annotations
+	configFileOut << app.config_to_str(true, true);
+	configFileOut.close();
 }
 
-void Settings::print_usage()
-{
-	std::cout << app.help();
-}
-
-void Settings::print_config()
-{
-	std::cout << app.config_to_str(true, true);
-}
-
-Settings app_settings;
+Settings appSettings;

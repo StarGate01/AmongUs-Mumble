@@ -1,10 +1,9 @@
+#pragma once
+
 #include <string>
 #include <fstream>
 #include <iostream>
 #include <cstdarg>
-
-// File to use for logging messages from the logging system
-#define LOGGING_FILE "ProximityLogFile.txt"
 
 enum class LOG_CODE
 {
@@ -30,49 +29,53 @@ enum class LOG_CODE
 // Basic logging system
 class LoggingSystem
 {
-public:
-	// Closes the file, if needed
-	~LoggingSystem();
 
-	// Enables logging to console
-	void EnableConsoleLogging();
+	public:
+		// Closes the file, if needed
+		~LoggingSystem();
 
-	// Enables logging to file
-	void EnableFileLogging();
+		// Enables logging to console
+		void EnableConsoleLogging();
 
-	// Sets the max verbosity to print (anything above will not be printed)
-	void SetVerbosity(LOG_CODE verbosity);
+		// Enables logging to file
+		void EnableFileLogging(const std::string& logFilePath);
 
-	// Logs a message to the console window
-	// Newline is ensured (for flushing)
-	void Log(LOG_CODE logCode, std::string message);
+		// Sets the max verbosity to print (anything above will not be printed)
+		void SetVerbosity(LOG_CODE verbosity);
 
-	// Logs a message to the console window, using the familiar "printf" format
-	// Newline is ensured (for flushing)
-	void LogVariadic(LOG_CODE logCode, const char* formatString, ...);
+		// Logs a message to the console window
+		// Newline is ensured (for flushing)
+		void Log(LOG_CODE logCode, std::string message, 
+			bool includePrefix = true);
 
-private:
-	// Returns the string for the code to the log (and possibly the file)
-	std::string GetLogCodeString(LOG_CODE logCode);
+		// Logs a message to the console window, using the familiar "printf" format
+		// Newline is ensured (for flushing)
+		void LogVariadic(LOG_CODE logCode, bool sameLine, const char* formatString, ...);
 
-	// Lookup tabe to be used with the LOG_CODE enum for message prefixes
-	std::string logPrefixes[(unsigned) LOG_CODE::COUNT] = {
-		"ERR", "WRN", "INF", "MSG", "DBG"
-	};
+	private:
+		// Returns the string for the code to the log (and possibly the file)
+		std::string GetLogCodeString(LOG_CODE logCode);
 
-	// If the logging system should log to file
-	bool logToFile = false;
+		// Checks if the cursor is at the end of a line
+		bool CursorAtEnd();
 
-	// If the logging system should log to console
-	bool logToConsole = false;
+		// Lookup tabe to be used with the LOG_CODE enum for message prefixes
+		std::string logPrefixes[(unsigned) LOG_CODE::COUNT] = {
+			"ERR", "WRN", "INF", "MSG", "DBG"
+		};
 
-	// Output log file
-	std::ofstream logFile;
+		// If the logging system should log to file
+		bool logToFile = false;
 
-	// Verbosity level, anything above will not be logged
-	LOG_CODE verbosity = LOG_CODE::DBG;
+		// If the logging system should log to console
+		bool logToConsole = false;
 
-	friend class ThreadSafeLogger;
+		// Output log file
+		std::ofstream logFile;
+
+		// Verbosity level, anything above will not be logged
+		LOG_CODE verbosity = LOG_CODE::DBG;
+
 };
 
 // Global extern logging system

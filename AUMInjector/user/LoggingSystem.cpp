@@ -1,11 +1,9 @@
-#include "LoggingSystem.h"
-#include <iostream>
-
-#define WIN32_LEAN_AND_MEAN
-
 #include <windows.h>
+#include <iostream>
 #include <string>
 #include "helpers.h"
+#include "LoggingSystem.h"
+
 
 // Global externs for the logging system
 LoggingSystem logger;
@@ -34,7 +32,7 @@ void LoggingSystem::EnableConsoleLogging()
 }
 
 // Enables logging to file
-void LoggingSystem::EnableFileLogging()
+void LoggingSystem::EnableFileLogging(const std::string& logFilePath)
 {
 	// Only open the file if not already opened
 	if (!logToFile)
@@ -43,7 +41,7 @@ void LoggingSystem::EnableFileLogging()
 
 		// Open the log file, based on the pre-defined location
 		// Placement new because std::ofstream is NOT copyable
-		new(&logFile) std::ofstream(LOGGING_FILE, std::ios::out);
+		new(&logFile) std::ofstream(logFilePath, std::ios::out | std::ios::trunc);
 
 		if (!logFile.is_open())
 		{
@@ -67,15 +65,29 @@ std::string LoggingSystem::GetLogCodeString(LOG_CODE logCode)
 	return ("[" + logPrefixes[(unsigned) logCode] + "] ");
 }
 
+// Checks if the cursor is at the end of the line
+bool LoggingSystem::CursorAtEnd()
+{
+	if (logToConsole)
+	{
+		CONSOLE_SCREEN_BUFFER_INFO cbsi;
+		if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cbsi))
+			return (cbsi.dwCursorPosition.X != 0);
+	}
+	return false;
+}
+
+
 // Logs a message to the console window
 // Newline is ensured (for flushing)
-void LoggingSystem::Log(LOG_CODE logCode, std::string message)
+void LoggingSystem::Log(LOG_CODE logCode, std::string message, bool includePrefix)
 {
 	// Don't log due to set verbosity level
 	if (logCode > verbosity) return;
 
-	// Build the whole string in one go, to prevent thread cross-printing
-	std::string finalText = GetLogCodeString(logCode) + message + "\n";
+	// Build the whole string in advance, to prevent thread cross-printing
+	std::string finalText = (CursorAtEnd()? "\n":"") + (includePrefix? GetLogCodeString(logCode) : "") +
+		message + "\n";
 
 	// Print the message, if needed
 	if (logToConsole)
@@ -91,7 +103,7 @@ void LoggingSystem::Log(LOG_CODE logCode, std::string message)
 
 // Logs a message to the console window, using the familiar "printf" format
 // Newline is ensured (for flushing)
-void LoggingSystem::LogVariadic(LOG_CODE logCode, const char* formatString, ...)
+void LoggingSystem::LogVariadic(LOG_CODE logCode, bool sameLine, const char* formatString, ...)
 {
 	// Don't log due to set verbosity level
 	if (logCode > verbosity) return;
@@ -118,15 +130,15 @@ void LoggingSystem::LogVariadic(LOG_CODE logCode, const char* formatString, ...)
 	va_end(argp);
 
 	// Add the prefix to the gives format string
-	std::string message = GetLogCodeString(logCode) + newString + "\n";
+	// Do not print a new line if current line should be overwritten
+	std::string message = (sameLine? "\r":(CursorAtEnd()? "\n":"")) +
+		GetLogCodeString(logCode) + newString + (sameLine? "":"\n");
 	
 	// Print the message, if needed
-	if (logToConsole)
-		std::cout << message.c_str() << std::flush;
+	if (logToConsole) std::cout << message.c_str() << std::flush;
 
 	// Log to file, if needed
-	if (logToFile) 
-		logFile << message << std::flush;
+	if (logToFile) logFile << message << std::flush;
 
 	// Clean up dynamic memory
 	free(newString);

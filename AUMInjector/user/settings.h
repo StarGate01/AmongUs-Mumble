@@ -2,20 +2,20 @@
 
 #include <string>
 #include "CLI11.hpp"
+#include "LoggingSystem.h"
 
 class Settings
 {
 	public:
-		std::string mumble_exe;
-		bool noConsole;
+		CLI::App app;
+		std::string mumbleExe;
+		bool disableLogConsole;
+		bool disableLogFile;
+		LOG_CODE logVerbosity;
+		std::string logFileName;
 
 		Settings();
-		void parse();
-		void print_usage();
-		void print_config();
-
-	private:
-		CLI::App app;
+		void Parse();
 };
 
-extern Settings app_settings;
+extern Settings appSettings;

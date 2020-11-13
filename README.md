@@ -11,7 +11,7 @@ Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0
 | 2020.10.22s  | Release      | [1.0.0.5](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.5) | `202010220`  |
 | 2020.9.22s   | Release      | [1.0.0.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.1) | `20209220`   |
 
-If you are looking for a community that uses this mod, join the Discord server: https://discord.gg/4UkHEJ5sqg !
+If you are looking for a community that uses this mod, join the [Discord server](https://discord.gg/4UkHEJ5sqg)!
 
 If you have any issues or find bugs, report them here: https://github.com/StarGate01/AmongUs-Mumble/issues .
 

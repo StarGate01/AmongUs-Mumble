@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <iostream>
 #include <limits>
+#include <thread>
 #include "il2cpp-init.h"
 #include "il2cpp-appdata.h"
 #include "helpers.h"
@@ -13,8 +14,6 @@
 #include "deobfuscate.h"
 #include "settings.h"
 #include "LoggingSystem.h"
-#include <chrono>
-#include <thread>
 //#include "dynamic_analysis.h"
 
 using namespace app;
@@ -35,21 +34,44 @@ float prevPosCache[2] = { std::numeric_limits<float>::lowest(), std::numeric_lim
 float cachePosEpsilon = 0.001f;
 
 // Will log the position, if needed
-void TryLogPosition(bool isLinked) 
+void TryLogPosition(bool force = false) 
 {
     // Only print the player position every so many frames, and if it has changed
-    if (++frameCounter > framesToPrintPosition && 
+    if (force || (++frameCounter > framesToPrintPosition &&
             (std::abs(prevPosCache[0] - posCache[0]) > cachePosEpsilon ||
             std::abs(prevPosCache[1] - posCache[1]) > cachePosEpsilon)
-       )
+       ))
     {
         frameCounter = 0;
         // Store the old position
         prevPosCache[0] = posCache[0];
         prevPosCache[1] = posCache[1];
         // Log the current player position to let the player know it is working
-        logger.LogVariadic(LOG_CODE::MSG, true, "%s - Position: (%.3f, %.3f)      ", 
-            (isLinked ? "Linked" : "Not linked"), posCache[0], posCache[1]);
+        if (mumbleLink.linkedMem != nullptr)
+        {
+            logger.LogVariadic(LOG_CODE::MSG, true, "Linked - Position: (%.3f, %.3f)      ",
+                posCache[0], posCache[1]);
+        }
+    }
+}
+
+// Try to reconnect every 3s until program unloads or mumble connects
+void TryConnectMumble()
+{
+    unsigned int attempt = 1;
+    while (mumbleLink.linkedMem == nullptr && WaitForSingleObject(hExit, 3000) == WAIT_TIMEOUT)
+    {
+        DWORD mumbleError = mumbleLink.Init();
+        if (mumbleError != NO_ERROR)
+        {
+            logger.LogVariadic(LOG_CODE::WRN, true, "Could not init Mumble link: %d, attempt %d", mumbleError, attempt);
+            attempt++;
+        }
+        else
+        {
+            logger.LogVariadic(LOG_CODE::INF, false, "Mumble link init successful, attempt %d", attempt);
+            TryLogPosition(true);
+        }
     }
 }
 
@@ -145,7 +167,7 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             posCache[1] = 0.0f;
 		}
 	}
-    TryLogPosition(mumbleLink.linkedMem != nullptr);
+    TryLogPosition();
 }
 
 void InnerNetClient_Disconnect_Hook(InnerNetClient* __this, InnerNet_DisconnectReasons__Enum reason, String* stringReason, MethodInfo* method)
@@ -157,6 +179,7 @@ void InnerNetClient_Disconnect_Hook(InnerNetClient* __this, InnerNet_DisconnectR
     posCache[0] = 0.0f;
     posCache[1] = 0.0f;
 }
+
 
 // Entrypoint of the injected thread
 void Run()
@@ -196,16 +219,8 @@ void Run()
 		init_il2cpp();
 		logger.Log(LOG_CODE::INF, "Type and function memory mapping successful");
 
-        // Setup mumble
-        bool firstTimeInit = true;
-        while (mumbleLink.Init() != NO_ERROR)
-        {
-            logger.LogVariadic(LOG_CODE::WRN, true, "Could not init Mumble link: %d", GetLastError());
-            firstTimeInit = false;
-            std::this_thread::sleep_for(std::chrono::seconds(3));
-        }
-        // Extra spaces are used to clear any other characters on the line
-        logger.LogVariadic(LOG_CODE::INF, !firstTimeInit, "Mumble link init successful    ");
+        // Start mumble connection thread
+        std::thread mumbleReconnectionThread(TryConnectMumble);
 
 		// Setup hooks
 		DetourTransactionBegin();

@@ -45,6 +45,10 @@ If you would like to donate to the project, You can do so on [Bountysource SALT]
  - https://github.com/CLIUtils/CLI11
  - https://github.com/TheNullicorn/among-us-api
 
+## Note
+
+Please note that we are NOT associated with [http://www.innersloth.com/](Innsersloth), the original developer of "Among Us". Please support them as well by buying their games and merch.
+
 ## Disclaimer
 
 This modification would be detected by any simple anti-cheat engine. At the time of writing, Among Us uses no such technology. However, I am not responsible for any bans or other problems arising from the usage of this mod. 

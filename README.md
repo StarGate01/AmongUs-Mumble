@@ -31,7 +31,7 @@ If you have any issues or find bugs, report them on our [issue tracker](https://
 ## Support
 If you would like to donate to the project, You can do so on [Bountysource SALT](https://salt.bountysource.com/teams/team-esdg) .
 
-Please note that we are NOT associated with [http://www.innersloth.com/](Innsersloth), the original developer of "Among Us". Please support them as well by buying their games and merch.
+Please note that we are NOT associated with [Innersloth](http://www.innersloth.com/), the original developer of "Among Us". Please support them as well by buying their games and merch.
 
 ## Thanks to / Sources
 

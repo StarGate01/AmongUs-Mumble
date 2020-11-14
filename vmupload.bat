@@ -12,3 +12,8 @@ IF DEFINED VM_UPLOAD (
         COPY /b /v /y ".\Release\winhttp.dll" "\\%VM_BASENAME%%%x\%VM_AMONGUS%\winhttp.dll"
     )
 )
+
+IF DEFINED REMOTE_UPLOAD (
+    ECHO "Copying to remote %REMOTE_NAME%"
+    COPY /b /v /y ".\Release\winhttp.dll" "\\%REMOTE_NAME%\%REMOTE_AMONGUS%\winhttp.dll"
+)

@@ -31,6 +31,8 @@ If you have any issues or find bugs, report them on our [issue tracker](https://
 ## Support
 If you would like to donate to the project, You can do so on [Bountysource SALT](https://salt.bountysource.com/teams/team-esdg) .
 
+Please note that we are NOT associated with [http://www.innersloth.com/](Innsersloth), the original developer of "Among Us". Please support them as well by buying their games and merch.
+
 ## Thanks to / Sources
 
  - https://github.com/djkaty/Il2CppInspector
@@ -44,10 +46,6 @@ If you would like to donate to the project, You can do so on [Bountysource SALT]
  - https://github.com/ExtraConcentratedJuice/ChristWareAmongUs
  - https://github.com/CLIUtils/CLI11
  - https://github.com/TheNullicorn/among-us-api
-
-## Note
-
-Please note that we are NOT associated with [http://www.innersloth.com/](Innsersloth), the original developer of "Among Us". Please support them as well by buying their games and merch.
 
 ## Disclaimer
 

@@ -13,6 +13,8 @@
 #include "deobfuscate.h"
 #include "settings.h"
 #include "LoggingSystem.h"
+#include <chrono>
+#include <thread>
 //#include "dynamic_analysis.h"
 
 using namespace app;
@@ -188,16 +190,22 @@ void Run()
         logger.Log(LOG_CODE::MSG, "Current configuration:\n");
         logger.Log(LOG_CODE::MSG, appSettings.app.config_to_str(true, false) + "\n", false);
 
-		// Setup mumble
-		DWORD errMumble = mumbleLink.Init();
-		if (errMumble == NO_ERROR) logger.Log(LOG_CODE::INF, "Mumble link init successful");
-		else logger.LogVariadic(LOG_CODE::ERR, false, "Cannot init Mumble link: %d", errMumble);
-
 		// Setup type and memory info
 		logger.Log(LOG_CODE::MSG, "Waiting 10s for Unity to load");
 		Sleep(10000);
 		init_il2cpp();
 		logger.Log(LOG_CODE::INF, "Type and function memory mapping successful");
+
+        // Setup mumble
+        bool firstTimeInit = true;
+        while (mumbleLink.Init() != NO_ERROR)
+        {
+            logger.LogVariadic(LOG_CODE::WRN, true, "Could not init Mumble link: %d", GetLastError());
+            firstTimeInit = false;
+            std::this_thread::sleep_for(std::chrono::seconds(3));
+        }
+        // Extra spaces are used to clear any other characters on the line
+        logger.LogVariadic(LOG_CODE::INF, !firstTimeInit, "Mumble link init successful    ");
 
 		// Setup hooks
 		DetourTransactionBegin();

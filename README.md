@@ -8,12 +8,12 @@ Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0
 | Game version | Game channel | DLL release                                                                   | GAME_VERSION |
 | ------------ | ------------ | ----------------------------------------------------------------------------- | ------------ |
 | 2020.11.4s   | Beta         | [1.0.1.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.1.1) | `202011040`  |
-| 2020.10.22s  | Release      | [1.0.0.4](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.4) | `202010220`  |
+| 2020.10.22s  | Release      | [1.0.0.5](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.5) | `202010220`  |
 | 2020.9.22s   | Release      | [1.0.0.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.1) | `20209220`   |
 
-If you are looking for a community that uses this mod, join the Discord server: https://discord.gg/4UkHEJ5sqg !
+If you are looking for a community that uses this mod, join the [Discord server](https://discord.gg/4UkHEJ5sqg)!
 
-If you have any issues or find bugs, report them here: https://github.com/StarGate01/AmongUs-Mumble/issues .
+If you have any issues or find bugs, report them on our [issue tracker](https://github.com/StarGate01/AmongUs-Mumble/issues) .
 
 ## Documentation
  - [Installation and Setup](https://github.com/StarGate01/AmongUs-Mumble/wiki/Installation-and-Setup)
@@ -27,6 +27,11 @@ If you have any issues or find bugs, report them here: https://github.com/StarGa
  - [Release branch](https://github.com/StarGate01/AmongUs-Mumble/tree/master)
  - [Beta branch](https://github.com/StarGate01/AmongUs-Mumble/tree/beta)
  - [Development branch](https://github.com/StarGate01/AmongUs-Mumble/tree/dev)
+
+## Support
+If you would like to donate to the project, You can do so on [Bountysource SALT](https://salt.bountysource.com/teams/team-esdg) .
+
+Please note that we are NOT associated with [Innersloth](http://www.innersloth.com/), the original developer of "Among Us". Please support them as well by buying their games and merch.
 
 ## Thanks to / Sources
 

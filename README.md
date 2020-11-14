@@ -1,5 +1,5 @@
 # AmongUs-Mumble
-[Mumble VoIP](https://www.mumble.info/) Plugin and mod for the popular game "Among Us" to enable **Proximity and Directional Voice Chat**.
+[Mumble VoIP](https://www.mumble.info/) Plugin and mod for the popular game "Among Us" by [Innersloth](http://www.innersloth.com/) to enable **Proximity and Directional Voice Chat**.
 
 Currently only for Windows PCs and the Steam version. On Linux and OSX a small Mumble fake plugin is provided, which just sets your ingame position to `(0, 0)`.
 

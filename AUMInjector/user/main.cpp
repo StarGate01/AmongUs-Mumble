@@ -204,7 +204,9 @@ void Run()
         logger.Log(LOG_CODE::ERR, "  StarGate01 (chrz.de):\tProxy DLL, Framework, Setup, Features.", false);
         logger.Log(LOG_CODE::ERR, "  Alisenai (Alien):\tFixes, More Features.", false);
         logger.Log(LOG_CODE::ERR, "  BillyDaBongo (Billy):\tManagement, Testing.", false);
-        logger.Log(LOG_CODE::ERR, "  LelouBi:\t\tDeobfuscation.\n\n", false);
+        logger.Log(LOG_CODE::ERR, "  LelouBi:\t\tDeobfuscation.\n", false);
+        logger.Log(LOG_CODE::ERR, "Source code and download: https://github.com/StarGate01/AmongUs-Mumble", false);
+        logger.Log(LOG_CODE::ERR, "Freely available and licensed under the GNU GPLv3.\n\n", false);
 
         logger.LogVariadic(LOG_CODE::INF, false, "Compiled for game version %s", version_text);
         logger.Log(LOG_CODE::INF, "DLL hosting successful");

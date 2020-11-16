@@ -14,6 +14,7 @@
 #include "deobfuscate.h"
 #include "settings.h"
 #include "LoggingSystem.h"
+#include "GUI.h"
 //#include "dynamic_analysis.h"
 
 using namespace app;
@@ -227,6 +228,7 @@ void Run()
 		// Setup hooks
 		DetourTransactionBegin();
 		DetourUpdateThread(GetCurrentThread());
+        GUIDetourAttach();
 		DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
 		DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
 		DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);

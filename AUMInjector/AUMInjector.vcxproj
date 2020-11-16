@@ -13,6 +13,14 @@
   <ItemGroup>
     <ClCompile Include="framework\helpers.cpp" />
     <ClCompile Include="framework\il2cpp-init.cpp" />
+    <ClCompile Include="gui\D3D11Hooking.cpp" />
+    <ClCompile Include="gui\GUI.cpp" />
+    <ClCompile Include="gui\imgui\imgui.cpp" />
+    <ClCompile Include="gui\imgui\imgui_demo.cpp" />
+    <ClCompile Include="gui\imgui\imgui_draw.cpp" />
+    <ClCompile Include="gui\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="gui\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="gui\imgui\imgui_widgets.cpp" />
     <ClCompile Include="user\LoggingSystem.cpp" />
     <ClCompile Include="user\MumbleLink.cpp" />
     <ClCompile Include="user\main.cpp" />
@@ -32,6 +40,16 @@
     <ClInclude Include="framework\helpers.h" />
     <ClInclude Include="framework\il2cpp-appdata.h" />
     <ClInclude Include="framework\il2cpp-init.h" />
+    <ClInclude Include="gui\D3D11Hooking.hpp" />
+    <ClInclude Include="gui\GUI.h" />
+    <ClInclude Include="gui\imgui\imconfig.h" />
+    <ClInclude Include="gui\imgui\imgui.h" />
+    <ClInclude Include="gui\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="gui\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="gui\imgui\imgui_internal.h" />
+    <ClInclude Include="gui\imgui\imstb_rectpack.h" />
+    <ClInclude Include="gui\imgui\imstb_textedit.h" />
+    <ClInclude Include="gui\imgui\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="user\CLI11.hpp" />
     <ClInclude Include="user\LoggingSystem.h" />
@@ -96,7 +114,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)gui;$(ProjectDir)gui\imgui</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
       <DisableSpecificWarnings>4359</DisableSpecificWarnings>
     </ClCompile>
@@ -127,7 +145,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)gui;$(ProjectDir)gui\imgui</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
       <DisableSpecificWarnings>4359</DisableSpecificWarnings>
     </ClCompile>

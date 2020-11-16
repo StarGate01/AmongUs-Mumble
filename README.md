@@ -3,7 +3,7 @@
 
 Currently only for Windows PCs and the Steam version. On Linux and OSX a small Mumble fake plugin is provided, which just sets your ingame position to `(0, 0)`.
 
-Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0.1.X`. See the table for compatibility. Please ensure that you use the correct version for your game installation.
+Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0.1.X`. See the table for compatibility. Please ensure that you use the correct version for your game installation. Please note *BETA BUILDS MIGHT BE UNSTABLE*.
 
 | Game version | Game channel | DLL release                                                                   | GAME_VERSION |
 | ------------ | ------------ | ----------------------------------------------------------------------------- | ------------ |

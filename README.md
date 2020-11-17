@@ -23,7 +23,7 @@ If you have any issues or find bugs, report them on our [issue tracker](https://
  - Automatic handling of round start, round end, emergency meetings and player deaths
  - Ghosts can always listen to emergency meetings
  - Three modes for ghosts:
-   - *Purgatory:* Ghosts can only talk to each other regardless of their position, but cannot listen to remaining players. (Default)
+   - *Purgatory:* Ghosts can talk to each other regardless of their position, but cannot listen to remaining players. (Default)
    - *Spectate:* Ghosts are muted, but can listen to remaining players if they are close enough. (Optional)
    - *Haunt:* Ghosts can talk and listen to remaining players if they are close enough. (Optional)
  - Everyone gets muted during communication sabotage events.

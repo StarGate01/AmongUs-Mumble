@@ -92,6 +92,7 @@ void MumblePlayer::HandleGhostUnmute()
     case Settings::GHOST_VOICE_MODE::PURGATORY:
     case Settings::GHOST_VOICE_MODE::HAUNT:
         mumbleLink.Mute(false);
+        break;
     case Settings::GHOST_VOICE_MODE::SPECTATE:
     default:
         mumbleLink.Mute(true);

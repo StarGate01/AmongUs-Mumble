@@ -105,8 +105,9 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
         logger.Log(LOG_CODE::MSG, "Game joined or ended");
         mumblePlayer.ResetState();
 
-        Sleep(1000);
-        mumblePlayer.EnterGhostState();
+        // For testing ghost voice modes (set user to "ghost" by default)
+//        Sleep(1000);
+//        mumblePlayer.EnterGhostState();
     }
     lastGameState = __this->fields.GameState;
 

@@ -10,9 +10,9 @@ class Settings
 	public:
 		enum class GHOST_VOICE_MODE
 		{
-			PURGATORY,
-			SPECTATE,
-			HAUNT
+			PURGATORY, // Only talk to other ghosts at full volume
+			SPECTATE,  // Can hear players, can't talk
+			HAUNT      // Can hear and talk to players
 		};
 
 		CLI::App app;

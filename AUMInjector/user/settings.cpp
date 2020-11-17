@@ -27,7 +27,7 @@ void Settings::Parse()
 	app.add_option("--log-file-path", logFileName, "Path to the log file", true);
 	app.add_option("--log-verbosity", logVerbosity, "Log verbosity", true);
 	app.add_flag("--directional-audio", directionalAudio, "Enable directional audio");
-	app.add_option("--ghost-voice-mode", ghostVoiceMode, "Set ghost voice mode", true);
+	app.add_option("--ghost-voice-mode", ghostVoiceMode, "Set ghost voice mode\n0 = Purgatory\n1 = Spectate\n2 = Haunt", true);
 	// Get arguments from OS
 	int argc;
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);

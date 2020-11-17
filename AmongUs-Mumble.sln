@@ -5,6 +5,19 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AUMInjector", "AUMInjector\AUMInjector.vcxproj", "{5A9DF862-B3B4-4125-A7C0-7F1058EC33E6}"
 EndProject
+Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "Among Us", "..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Among Us\Among Us.exe", "{DB93D055-D898-47A9-839F-05EEB09717C5}"
+	ProjectSection(DebuggerProjectSystem) = preProject
+		PortSupplier = 00000000-0000-0000-0000-000000000000
+		Executable = C:\Program Files (x86)\Steam\steamapps\common\Among Us\Among Us.exe
+		RemoteMachine = CODE-PC
+		StartingDirectory = C:\Program Files (x86)\Steam\steamapps\common\Among Us
+		Environment = Default
+		LaunchingEngine = 00000000-0000-0000-0000-000000000000
+		UseLegacyDebugEngines = No
+		LaunchSQLEngine = No
+		AttachLaunchAction = No
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,6 +28,8 @@ Global
 		{5A9DF862-B3B4-4125-A7C0-7F1058EC33E6}.Debug|x86.Build.0 = Debug|Win32
 		{5A9DF862-B3B4-4125-A7C0-7F1058EC33E6}.Release|x86.ActiveCfg = Release|Win32
 		{5A9DF862-B3B4-4125-A7C0-7F1058EC33E6}.Release|x86.Build.0 = Release|Win32
+		{DB93D055-D898-47A9-839F-05EEB09717C5}.Debug|x86.ActiveCfg = Release|x86
+		{DB93D055-D898-47A9-839F-05EEB09717C5}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

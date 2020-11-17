@@ -14,69 +14,17 @@
 #include "deobfuscate.h"
 #include "settings.h"
 #include "LoggingSystem.h"
+#include "MumblePlayer.h"
 //#include "dynamic_analysis.h"
 
 using namespace app;
 
 extern HANDLE hExit; // Thread exit event
 
-// Game state
-float posCache[3] = { 0.0f, 0.0f, 0.0f };
-bool sendPosition = true;
 InnerNetClient_GameState__Enum lastGameState = InnerNetClient_GameState__Enum_Joined;
 
-// Couters for tracking when to print the position
-unsigned int frameCounter = 0;
-const unsigned int framesToPrintPosition = 15;
-// Start old cache as an impossible limit, for first-frame printing
-float prevPosCache[2] = { std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest() };
-// Position difference treshold for printing
-float cachePosEpsilon = 0.001f;
-// Where dead ghosts, using position audio, hang out
-float graveyardOffset = 41134;
-bool playerIsDead = false;
-
-void PlayerDied()
-{
-	if(appSettings.ghostVoiceMode == Settings::GHOST_VOICE_MODE::SPECTATE)
-		mumbleLink.Mute(true);
-	playerIsDead = true;
-
-    // Purgatory voice settings
-    if (appSettings.ghostVoiceMode == Settings::GHOST_VOICE_MODE::PURGATORY)
-    {
-        posCache[0] = graveyardOffset;
-        posCache[1] = graveyardOffset;
-    }
-}
-
-void PlayerAlive()
-{
-	mumbleLink.Mute(false);
-	playerIsDead = false;
-}
-
-// Will log the position, if needed
-void TryLogPosition(bool force = false) 
-{
-    // Only print the player position every so many frames, and if it has changed
-    if (force || (++frameCounter > framesToPrintPosition &&
-            (std::abs(prevPosCache[0] - posCache[0]) > cachePosEpsilon ||
-            std::abs(prevPosCache[1] - posCache[1]) > cachePosEpsilon)
-       ))
-    {
-        frameCounter = 0;
-        // Store the old position
-        prevPosCache[0] = posCache[0];
-        prevPosCache[1] = posCache[1];
-        // Log the current player position to let the player know it is working
-        if (mumbleLink.linkedMem != nullptr)
-        {
-            logger.LogVariadic(LOG_CODE::MSG, true, "Linked - Position: (%.3f, %.3f)      ",
-               posCache[0], posCache[1]);
-        }
-    }
-}
+MumblePlayer mumblePlayer = MumblePlayer();
+bool playerConnected = false;
 
 // Try to reconnect every 3s until program unloads or mumble connects
 void TryConnectMumble()
@@ -93,7 +41,8 @@ void TryConnectMumble()
         else
         {
             logger.LogVariadic(LOG_CODE::INF, false, "Mumble link init successful, attempt %d", attempt);
-            TryLogPosition(true);
+            mumblePlayer.TryLogPosition(true);
+            mumbleLink.Mute(false);
         }
     }
 }
@@ -103,12 +52,12 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 {
     PlayerControl_FixedUpdate_Trampoline(__this, method);
     
-    if (__this->fields.LightPrefab != nullptr && sendPosition && !playerIsDead)
+    if (__this->fields.LightPrefab != nullptr)
     {
         // Cache position
         Vector2 pos = PlayerControl_GetTruePosition_Trampoline(__this, method);
-        posCache[0] = pos.x;
-        posCache[1] = pos.y;
+        mumblePlayer.SetPosX(pos.x);
+        mumblePlayer.SetPosY(pos.y);
     }
 }
 
@@ -120,7 +69,7 @@ void PlayerControl_Die_Hook(PlayerControl* __this, Player_Die_Reason__Enum reaso
     if (__this->fields.LightPrefab != nullptr)
     {
         logger.Log(LOG_CODE::MSG, "You died\n");
-        PlayerDied();
+        mumblePlayer.EnterGhostState();
     }
 }
 
@@ -129,9 +78,8 @@ void MeetingHud_Close_Hook(MeetingHud* __this, MethodInfo* method)
 {
     MeetingHud_Close_Trampoline(__this, method);
     logger.Log(LOG_CODE::MSG, "Meeting ended\n");
-    sendPosition = true;
-    if(appSettings.ghostVoiceMode != Settings::GHOST_VOICE_MODE::SPECTATE)
-    	mumbleLink.Mute(false);
+    // Spectators aren't allowd to talk
+    mumblePlayer.EndMeeting();
 }
 
 // Gets called when a meeting starts
@@ -139,11 +87,8 @@ void MeetingHud_Start_Hook(MeetingHud* __this, MethodInfo* method)
 {
     MeetingHud_Start_Trampoline(__this, method);
     logger.Log(LOG_CODE::MSG, "Meeting started\n");
-    if(playerIsDead)
-		mumbleLink.Mute(true);
-    sendPosition = false;
-    posCache[0] = 0.0f;
-    posCache[1] = 0.0f;
+    // Mute ALL ghosts
+    mumblePlayer.StartMeeting();
 }
 
 // Fixed loop for the game client
@@ -157,9 +102,11 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             __this->fields.GameState == InnerNetClient_GameState__Enum_Ended)
         )
     {
-        sendPosition = true;
         logger.Log(LOG_CODE::MSG, "Game joined or ended");
-        PlayerAlive();
+        mumblePlayer.ResetState();
+
+        Sleep(1000);
+        mumblePlayer.EnterGhostState();
     }
     lastGameState = __this->fields.GameState;
 
@@ -168,33 +115,19 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
         if (mumbleLink.linkedMem->uiVersion != 2)
         {
             wcsncpy_s(mumbleLink.linkedMem->name, L"Among Us", 256);
-            wcsncpy_s(mumbleLink.linkedMem->description, L"Among Us support via the Link plugin.", 2048);
-            mumbleLink.linkedMem->uiVersion = 2;
-        }
-        mumbleLink.linkedMem->uiTick++;
-        if (sendPosition)
-        {
-            // Map player position to mumble according to directional / non directional setting
-            for (int i = 0; i < 3; i++)
-            {
-                mumbleLink.linkedMem->fAvatarPosition[i] = posCache[appSettings.audioCoordinateMap[i]];
-                mumbleLink.linkedMem->fCameraPosition[i] = posCache[appSettings.audioCoordinateMap[i]];
-            }
-        }
-        else
-        {
-            // When voting or in menu, all players can hear each other
-            for (int i = 0; i < 3; i++)
-            {
-                mumbleLink.linkedMem->fAvatarPosition[i] = 0.0f;
-                mumbleLink.linkedMem->fCameraPosition[i] = 0.0f;
-            }
-            // Reset cached position for logging
-            posCache[0] = 0.0f;
-            posCache[1] = 0.0f;
+			wcsncpy_s(mumbleLink.linkedMem->description, L"Among Us support via the Link plugin.", 2048);
+			mumbleLink.linkedMem->uiVersion = 2;
+		}
+		mumbleLink.linkedMem->uiTick++;
+
+		// Map player position to mumble according to directional / non directional setting
+		for (int i = 0; i < 3; i++)
+		{
+			mumbleLink.linkedMem->fAvatarPosition[i] = mumblePlayer.GetMumblePos(i);
+			mumbleLink.linkedMem->fCameraPosition[i] = mumblePlayer.GetMumblePos(i);
 		}
 	}
-    TryLogPosition();
+	mumblePlayer.TryLogPosition();
 }
 
 // Gets called when the client disconencts for whatsever reason
@@ -202,10 +135,7 @@ void InnerNetClient_Disconnect_Hook(InnerNetClient* __this, InnerNet_DisconnectR
 {
     InnerNetClient_Disconnect_Trampoline(__this, reason, stringReason, method);
     logger.Log(LOG_CODE::MSG, "Disconnected from server");
-    sendPosition = false;
-    PlayerAlive();
-    posCache[0] = 0.0f;
-    posCache[1] = 0.0f;
+    mumblePlayer.ResetState();
 }
 
 // Comms sabotage helper
@@ -214,12 +144,12 @@ void updateComms(bool isSabotaged)
     if (isSabotaged)
     {
         logger.Log(LOG_CODE::MSG, "Comms sabotaged");
-        mumbleLink.Mute(true);
+        mumblePlayer.StartCommunicationsSabotaged();
     }
     else
     {
         logger.Log(LOG_CODE::MSG, "Comms repaired");
-        if (!isDead) mumbleLink.Mute(false);
+        mumblePlayer.EndCommunicationsSabotaged();
     }
 }
 

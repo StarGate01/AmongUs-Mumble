@@ -16,6 +16,7 @@
     <ClCompile Include="user\LoggingSystem.cpp" />
     <ClCompile Include="user\MumbleLink.cpp" />
     <ClCompile Include="user\main.cpp" />
+    <ClCompile Include="user\MumblePlayer.cpp" />
     <ClCompile Include="user\Settings.cpp" />
     <ClCompile Include="user\winhttp.cpp" />
   </ItemGroup>
@@ -38,6 +39,7 @@
     <ClInclude Include="user\MumbleLink.h" />
     <ClInclude Include="user\main.h" />
     <ClInclude Include="user\deobfuscate.h" />
+    <ClInclude Include="user\MumblePlayer.h" />
     <ClInclude Include="user\Settings.h" />
   </ItemGroup>
   <ItemGroup>

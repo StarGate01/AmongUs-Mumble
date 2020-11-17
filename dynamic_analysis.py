@@ -36,9 +36,13 @@ with open(output_file, "w") as ofp:
                     print(name)
                     hooks.append(name)
                     signature = returntype + " " + name + "_Hook(" + params + ")"
-                    trampoline_call = name + "(" +  ", ".join(list(map(lambda x: x.split(" ")[-1], params.split(",")))) + ");"
+                    paramnames = list(map(lambda x: x.split(" ")[-1], params.split(",")))
+                    trampoline_call = name + "(" +  ", ".join(paramnames) + ");"
                     if(returntype != "void"): trampoline_call = "return " + trampoline_call
                     ofp.write(signature + " { printf(\"" + name + "\\n\"); " + str(trampoline_call) + " }\n")
+                    # ofp.write(signature + " { " + str(trampoline_call)  + " std::string t((const char*)(" + paramnames[1] + 
+                    #     "->fields.m_ChunkChars->vector), " + paramnames[1] + "->fields.m_ChunkLength); std::cout << \"" + name + ": \" << t << \" (\" << (" + 
+                    #     paramnames[1] + "->fields.m_ChunkLength) << \")\" << std::endl; }\n")
             line = fp.readline()
             cnt += 1
     ofp.write("\nvoid dynamic_analysis_attach() {\n")

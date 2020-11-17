@@ -33,6 +33,8 @@ using namespace app;
 	using MeetingHud = GPOHFPAIEMA;
 	using InnerNetClient = DNAFMCDBMCI;
 	using InnerNet_DisconnectReasons__Enum = NCBONGGBCNE__Enum;
+	using HqHudOverrideTask = MMPIJGKLMDC;
+	using HudOverrideTask = GFBKIHICFNI;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = DNAFMCDBMCI_JPCEFDHGHAK__Enum_Joined;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = DNAFMCDBMCI_JPCEFDHGHAK__Enum_Ended;
 	#define PlayerControl_FixedUpdate_Trampoline GLHCHLEDNBA_FixedUpdate
@@ -41,8 +43,33 @@ using namespace app;
 	#define MeetingHud_Close_Trampoline GPOHFPAIEMA_Close
 	#define MeetingHud_Start_Trampoline GPOHFPAIEMA_Start
 	#define InnerNetClient_FixedUpdate_Trampoline DNAFMCDBMCI_FixedUpdate
-	#define InnerNetClient_Disconnect_Trampoline DNAFMCDBMCI_GPKBCOKMFHK
+	#define InnerNetClient_Disconnect_Trampoline DNAFMCDBMCI_GPKBCOKMFHK //DNAFMCDBMCI_HandleDisconnect ? 
+	#define HqHudOverrideTask_Initialize_Trampoline MMPIJGKLMDC_Initialize
+	#define HqHudOverrideTask_Complete_Trampoline MMPIJGKLMDC_Complete
+	#define HudOverrideTask_Initialize_Trampoline GFBKIHICFNI_Initialize
+	#define HudOverrideTask_Complete_Trampoline GFBKIHICFNI_Complete
+
+	// Stuff I researched at one point but thats not required atm
+	//SystemTypes__Enum SystemTypes__Enum_Comms = JBPEMAACAEP__Enum_Comms;
+	//using SystemTypes__Enum = JBPEMAACAEP__Enum;
+	//using ShipStatus = DAFPFFMKPJJ;
+	//#define ShipStatus_RepairSystem_Trampoline DAFPFFMKPJJ_RepairSystem
+	//#define ShipStatus_RpcRepairSystem_Trampoline DAFPFFMKPJJ_RpcRepairSystem
+	//auto HudOverrideSystemType_IsActive__BackingField = &HHIJNMBJCAE__Fields::_IPANONPMHHE_k__BackingField;
+	//using Dictionary_2_SystemType_ISystemType = Dictionary_2_JBPEMAACAEP_IOKAAHHLALE_;
+	//#define ShipStatus_FixedUpdate_Trampoline DAFPFFMKPJJ_FixedUpdate
+	//using ISystemType = IOKAAHHLALE;
+	//using HudOverrideSystemType = HHIJNMBJCAE;
+	//#define HudOverrideSystemType__ctor_Trampoline HHIJNMBJCAE__ctor
+	//#define HudOverrideSystemType__TypeInfo HHIJNMBJCAE__TypeInfo
+	//#define Dictionary_2_SystemType_ISystemType__TryGetValue_Trampoline Dictionary_2_JBPEMAACAEP_IOKAAHHLALE__TryGetValue
+	//#define ShipStatus_OnDestroy_Trampoline DAFPFFMKPJJ_OnDestroy
+	//#define ShipStatus_OnEnable_Trampoline DAFPFFMKPJJ_OnEnable
+	//#define ShipStatus_Deserialize_Trampoline DAFPFFMKPJJ_Deserialize
+	//#define HudOverrideSystemType_Deserialize_Trampoline HHIJNMBJCAE_Deserialize
+	//#define HudOverrideSystemType_RepairDamage_Trampoline HHIJNMBJCAE_RepairDamage
 #elif GAME_VERSION == GAME_VERSION_2020_11_4s
+	//TODO add new functions
 	#define version_text "2020.11.4s"
 	using InnerNetClient_GameState__Enum = DBDDAJAICFN_DKEKFCCGGEO__Enum;
 	using PlayerControl = APNNOJFGDGP;

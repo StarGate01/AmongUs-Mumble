@@ -73,7 +73,7 @@ void TryLogPosition(bool force = false)
         if (mumbleLink.linkedMem != nullptr)
         {
             logger.LogVariadic(LOG_CODE::MSG, true, "Linked - Position: (%.3f, %.3f)      ",
-                posCache[0], posCache[1]);
+               posCache[0], posCache[1]);
         }
     }
 }
@@ -153,9 +153,9 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
 
     // Check if game state changed to lobby
     if (__this->fields.GameState != lastGameState &&
-            (__this->fields.GameState == InnerNetClient_GameState__Enum_Joined ||
+        (__this->fields.GameState == InnerNetClient_GameState__Enum_Joined ||
             __this->fields.GameState == InnerNetClient_GameState__Enum_Ended)
-       )
+        )
     {
         sendPosition = true;
         logger.Log(LOG_CODE::MSG, "Game joined or ended");
@@ -197,6 +197,7 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
     TryLogPosition();
 }
 
+// Gets called when the client disconencts for whatsever reason
 void InnerNetClient_Disconnect_Hook(InnerNetClient* __this, InnerNet_DisconnectReasons__Enum reason, String* stringReason, MethodInfo* method)
 {
     InnerNetClient_Disconnect_Trampoline(__this, reason, stringReason, method);
@@ -207,6 +208,54 @@ void InnerNetClient_Disconnect_Hook(InnerNetClient* __this, InnerNet_DisconnectR
     posCache[1] = 0.0f;
 }
 
+// Comms sabotage helper
+void updateComms(bool isSabotaged)
+{
+    if (isSabotaged)
+    {
+        logger.Log(LOG_CODE::MSG, "Comms sabotaged");
+        mumbleLink.Mute(true);
+    }
+    else
+    {
+        logger.Log(LOG_CODE::MSG, "Comms repaired");
+        if (!isDead) mumbleLink.Mute(false);
+    }
+}
+
+// Gets called when comms on Mira HQ get sabotaged
+void HqHudOverrideTask_Initialize_Hook(HqHudOverrideTask* __this, MethodInfo* method)
+{
+    HqHudOverrideTask_Initialize_Trampoline(__this, method);
+    updateComms(true);
+}
+
+// Gets called when comms on Mira HQ get repaired
+void HqHudOverrideTask_Complete_Hook(HqHudOverrideTask* __this, MethodInfo* method)
+{
+    HqHudOverrideTask_Complete_Trampoline(__this, method);
+    updateComms(false);
+}
+
+// Gets called when comms on Skeld or Polus get sabotaged
+void HudOverrideTask_Initialize_Hook(HudOverrideTask* __this, MethodInfo* method)
+{
+    HudOverrideTask_Initialize_Trampoline(__this, method);
+    updateComms(true);
+}
+
+// Gets called when comms on Skeld or Polus get repaired
+void HudOverrideTask_Complete_Hook(HudOverrideTask* __this, MethodInfo* method)
+{
+    HudOverrideTask_Complete_Trampoline(__this, method);
+    updateComms(false);
+}
+
+//// This sets the keypad on mirahq to 10% speed for testing
+//void IGHKMHLJFLI_Detoriorate_Hook(IGHKMHLJFLI* __this, float PCHPGLOMPLD, MethodInfo* method)
+//{
+//    IGHKMHLJFLI_Detoriorate(__this, PCHPGLOMPLD * 0.1f, method);
+//}
 
 // Entrypoint of the injected thread
 void Run()
@@ -235,7 +284,7 @@ void Run()
         logger.Log(LOG_CODE::ERR, "Source code and download: https://github.com/StarGate01/AmongUs-Mumble", false);
         logger.Log(LOG_CODE::ERR, "Freely available and licensed under the GNU GPLv3.\n\n", false);
 
-		logger.LogVariadic(LOG_CODE::INF, false, "Compiled for game version %s", version_text);
+        logger.LogVariadic(LOG_CODE::INF, false, "Compiled for game version %s", version_text);
         logger.Log(LOG_CODE::INF, "DLL hosting successful");
 
         // Print current config
@@ -260,8 +309,13 @@ void Run()
 		DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
 		DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
 		DetourAttach(&(PVOID&)InnerNetClient_Disconnect_Trampoline, InnerNetClient_Disconnect_Hook);
+        DetourAttach(&(PVOID&)HqHudOverrideTask_Initialize_Trampoline, HqHudOverrideTask_Initialize_Hook);
+        DetourAttach(&(PVOID&)HqHudOverrideTask_Complete_Trampoline, HqHudOverrideTask_Complete_Hook);
+        DetourAttach(&(PVOID&)HudOverrideTask_Initialize_Trampoline, HudOverrideTask_Initialize_Hook);
+        DetourAttach(&(PVOID&)HudOverrideTask_Complete_Trampoline, HudOverrideTask_Complete_Hook);
+        //DetourAttach(&(PVOID&)IGHKMHLJFLI_Detoriorate, IGHKMHLJFLI_Detoriorate_Hook);
 
-		//dynamic_analysis_attach();
+        //dynamic_analysis_attach();
 		LONG errDetour = DetourTransactionCommit();
 		if (errDetour == NO_ERROR) logger.Log(LOG_CODE::INF, "Successfully detoured game functions");
 		else logger.LogVariadic(LOG_CODE::ERR, false, "Detouring game functions failed: %d", errDetour);

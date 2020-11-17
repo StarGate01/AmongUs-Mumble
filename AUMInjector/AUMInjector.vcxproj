@@ -40,6 +40,7 @@
     <ClInclude Include="user\main.h" />
     <ClInclude Include="user\deobfuscate.h" />
     <ClInclude Include="user\MumblePlayer.h" />
+    <ClInclude Include="user\OrderedLock.h" />
     <ClInclude Include="user\Settings.h" />
   </ItemGroup>
   <ItemGroup>

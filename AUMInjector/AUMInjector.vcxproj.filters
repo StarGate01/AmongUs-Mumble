@@ -95,6 +95,9 @@
     <ClInclude Include="user\MumblePlayer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="user\OrderedLock.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AUMInjector.rc">

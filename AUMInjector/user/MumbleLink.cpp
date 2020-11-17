@@ -4,9 +4,11 @@
 #include <thread>
 #include "MumbleLink.h"
 #include "Settings.h"
+#include "OrderedLock.h"
 
 
 MumbleLink mumbleLink;
+OrderedLock mumbleRPCLock;
 
 // Initializes mumble IPC and RPC
 DWORD MumbleLink::Init()
@@ -74,8 +76,12 @@ void MumbleLink::Close()
 // Mutes or unmutes mumble via RPC
 void MumbleLink::Mute(bool mute)
 {
+	// Defer to new thread because system() is slow
 	std::thread t([mute] 
 	{
+		// Aquire mutex to ensure sequential order of operation
+		// Autodestructor on scope exit will release it
+		OrderedLockRAII lock(mumbleRPCLock);
 		if (mute) system(("\"" + appSettings.mumbleExe + "\" rpc mute").c_str());
 		else system(("\"" + appSettings.mumbleExe + "\" rpc unmute").c_str());
 	});

@@ -2,22 +2,26 @@
 #include "Settings.h"
 #include "MumbleLink.h"
 
+// Will configure player to be a ghost, as per their config
 void MumblePlayer::EnterGhostState()
 {
+    isGhost = true;
     // Spectator ghosts don't get to speak
     if (appSettings.ghostVoiceMode == Settings::GHOST_VOICE_MODE::SPECTATE)
         mumbleLink.Mute(true);
-    isGhost = true;
 }
 
+// Will configure player to be a player
 void MumblePlayer::ExitGhostState()
 {
+    isGhost = false;
     // No longer a ghost, no need to have them muted
     mumbleLink.Mute(false);
-    isGhost = false;
-    SetFullVolume();
+    // Make sure log printing updates
+    InvalidatePositionCache();
 }
 
+// On start meeting
 void MumblePlayer::StartMeeting()
 {
     isInMeeting = true;
@@ -26,9 +30,11 @@ void MumblePlayer::StartMeeting()
         mumbleLink.Mute(true);
     else
         mumbleLink.Mute(isSabotaged);
+    // Make sure everyone can hear each other well
     SetFullVolume();
 }
 
+// On end meeting
 void MumblePlayer::EndMeeting()
 {
 	isInMeeting = false;
@@ -43,6 +49,7 @@ void MumblePlayer::EndMeeting()
 		HandleGhostUnmute();
 }
 
+// On start communications sabotaged
 void MumblePlayer::StartCommunicationsSabotaged()
 {
     // Mute players AND ghosts
@@ -50,6 +57,7 @@ void MumblePlayer::StartCommunicationsSabotaged()
     mumbleLink.Mute(true);
 }
 
+// On end communications sabotaged
 void MumblePlayer::EndCommunicationsSabotaged()
 {
     isSabotaged = false;
@@ -61,8 +69,10 @@ void MumblePlayer::EndCommunicationsSabotaged()
         HandleGhostUnmute();
 }
 
+// Regardless of current state, it sets the user up for a new game
 void MumblePlayer::ResetState()
 {
+    // Reset everything to allow for new state updates
     frameCounter = 0;
     InvalidatePositionCache();
     isSabotaged = false;
@@ -73,6 +83,7 @@ void MumblePlayer::ResetState()
     mumbleLink.Mute(false);
 }
 
+// Deals with unmuting a ghost based on the three voice settings
 void MumblePlayer::HandleGhostUnmute()
 {
     // Unmute based on ghost states
@@ -87,26 +98,33 @@ void MumblePlayer::HandleGhostUnmute()
     }
 }
 
+// Reset cache (will force a log print)
 void MumblePlayer::InvalidatePositionCache()
 {
     prevPosCache[0] = std::numeric_limits<float>::lowest();
     prevPosCache[1] = std::numeric_limits<float>::lowest();
 }
 
+// Returns if the player is a ghost or not
 bool MumblePlayer::IsGhost() { return isGhost; }
 
+// Returns the mumble-ready position of the player
 float MumblePlayer::GetMumblePos(int i) { return posCache[appSettings.audioCoordinateMap[i]]; }
 
+// Set the x position cache, class may choose to override this value
 void MumblePlayer::SetPosX(float posX) { SetPos(0, posX); }
 
+// Set the y position cache, class may choose to override this value
 void MumblePlayer::SetPosY(float posY) { SetPos(1, posY); }
 
+// In mumble (0.0f, 0.0f) lets users hear each other better
 void MumblePlayer::SetFullVolume()
 {
     posCache[0] = 0.0f;
     posCache[1] = 0.0f;
 }
 
+// Sets the position cache, class may choose to override this value
 void MumblePlayer::SetPos(int i, float pos)
 {
 	if (!IsGhost())
@@ -115,6 +133,7 @@ void MumblePlayer::SetPos(int i, float pos)
 		posCache[i] = 0.0f;
     else
     {
+        // Override position based on ghost voice mode
         switch (appSettings.ghostVoiceMode)
         {
         case Settings::GHOST_VOICE_MODE::PURGATORY:
@@ -145,6 +164,7 @@ void MumblePlayer::TryLogPosition(bool force)
         // Log the current player position to let the player know it is working
         if (mumbleLink.linkedMem != nullptr)
         {
+            // Change log message based on if player is a ghost or not
             if (isGhost)
                 logger.LogVariadic(LOG_CODE::MSG, true, "Linked - Ghost Position: (%.3f, %.3f)      ",
                     posCache[0], posCache[1]);

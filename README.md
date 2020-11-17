@@ -15,6 +15,21 @@ If you are looking for a community that uses this mod, join the [Discord server]
 
 If you have any issues or find bugs, report them on our [issue tracker](https://github.com/StarGate01/AmongUs-Mumble/issues) .
 
+## Main Features
+ - Real-time proximity voice chat based on ingame player position
+ - Directional audio depending on relative position of players. (Optional)
+ - Works with any official or unofficial Among Us server
+ - Works with any Mumble server
+ - Automatic handling of round start, round end, emergency meetings and player deaths
+ - Ghosts can always listen to emergency meetings
+ - Three modes for ghosts:
+   - *Purgatory:* Ghosts can only talk to each other regardless of their position, but cannot listen to remaining players. (Default)
+   - *Spectate:* Ghosts are muted, but can listen to remaining players if they are close enough. (Optional)
+   - *Haunt:* Ghosts can talk and listen to remaining players if they are close enough. (Optional)
+ - Everyone gets muted during communication sabotage events.
+ - Easy installation process, just copy one file.
+ - Smart linking, no need to start the game and Mumble in any particular order.
+
 ## Documentation
  - [Installation and Setup](https://github.com/StarGate01/AmongUs-Mumble/wiki/Installation-and-Setup)
  - [Frequently Asked Questions](https://github.com/StarGate01/AmongUs-Mumble/wiki/Frequently-Asked-Questions)

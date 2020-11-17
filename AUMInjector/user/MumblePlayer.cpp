@@ -45,6 +45,7 @@ void MumblePlayer::EndMeeting()
 
 void MumblePlayer::StartCommunicationsSabotaged()
 {
+    // Mute players AND ghosts
     isSabotaged = true;
     mumbleLink.Mute(true);
 }

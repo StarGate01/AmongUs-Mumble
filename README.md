@@ -29,6 +29,7 @@ If you have any issues or find bugs, report them on our [issue tracker](https://
  - Everyone gets muted during communication sabotage events.
  - Easy installation process, just copy one file.
  - Smart linking, no need to start the game and Mumble in any particular order.
+ - Easy configuration using a configuration file or command line options
 
 ## Documentation
  - [Installation and Setup](https://github.com/StarGate01/AmongUs-Mumble/wiki/Installation-and-Setup)

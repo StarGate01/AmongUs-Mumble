@@ -32,6 +32,29 @@ const unsigned int framesToPrintPosition = 15;
 float prevPosCache[2] = { std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest() };
 // Position difference treshold for printing
 float cachePosEpsilon = 0.001f;
+// Where dead ghosts, using position audio, hang out
+float graveyardOffset = 41134;
+bool playerIsDead = false;
+
+void PlayerDied()
+{
+	if(appSettings.ghostVoiceMode == Settings::GHOST_VOICE_MODE::SPECTATE)
+		mumbleLink.Mute(true);
+	playerIsDead = true;
+
+    // Purgatory voice settings
+    if (appSettings.ghostVoiceMode == Settings::GHOST_VOICE_MODE::PURGATORY)
+    {
+        posCache[0] = graveyardOffset;
+        posCache[1] = graveyardOffset;
+    }
+}
+
+void PlayerAlive()
+{
+	mumbleLink.Mute(false);
+	playerIsDead = false;
+}
 
 // Will log the position, if needed
 void TryLogPosition(bool force = false) 
@@ -80,7 +103,7 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 {
     PlayerControl_FixedUpdate_Trampoline(__this, method);
     
-    if (__this->fields.LightPrefab != nullptr && sendPosition)
+    if (__this->fields.LightPrefab != nullptr && sendPosition && !playerIsDead)
     {
         // Cache position
         Vector2 pos = PlayerControl_GetTruePosition_Trampoline(__this, method);
@@ -97,7 +120,7 @@ void PlayerControl_Die_Hook(PlayerControl* __this, Player_Die_Reason__Enum reaso
     if (__this->fields.LightPrefab != nullptr)
     {
         logger.Log(LOG_CODE::MSG, "You died\n");
-        mumbleLink.Mute(true);
+        PlayerDied();
     }
 }
 
@@ -107,6 +130,8 @@ void MeetingHud_Close_Hook(MeetingHud* __this, MethodInfo* method)
     MeetingHud_Close_Trampoline(__this, method);
     logger.Log(LOG_CODE::MSG, "Meeting ended\n");
     sendPosition = true;
+    if(appSettings.ghostVoiceMode != Settings::GHOST_VOICE_MODE::SPECTATE)
+    	mumbleLink.Mute(false);
 }
 
 // Gets called when a meeting starts
@@ -114,6 +139,8 @@ void MeetingHud_Start_Hook(MeetingHud* __this, MethodInfo* method)
 {
     MeetingHud_Start_Trampoline(__this, method);
     logger.Log(LOG_CODE::MSG, "Meeting started\n");
+    if(playerIsDead)
+		mumbleLink.Mute(true);
     sendPosition = false;
     posCache[0] = 0.0f;
     posCache[1] = 0.0f;
@@ -132,7 +159,7 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
     {
         sendPosition = true;
         logger.Log(LOG_CODE::MSG, "Game joined or ended");
-        mumbleLink.Mute(false);
+        PlayerAlive();
     }
     lastGameState = __this->fields.GameState;
 
@@ -175,7 +202,7 @@ void InnerNetClient_Disconnect_Hook(InnerNetClient* __this, InnerNet_DisconnectR
     InnerNetClient_Disconnect_Trampoline(__this, reason, stringReason, method);
     logger.Log(LOG_CODE::MSG, "Disconnected from server");
     sendPosition = false;
-    mumbleLink.Mute(false);
+    PlayerAlive();
     posCache[0] = 0.0f;
     posCache[1] = 0.0f;
 }
@@ -208,7 +235,7 @@ void Run()
         logger.Log(LOG_CODE::ERR, "Source code and download: https://github.com/StarGate01/AmongUs-Mumble", false);
         logger.Log(LOG_CODE::ERR, "Freely available and licensed under the GNU GPLv3.\n\n", false);
 
-        logger.LogVariadic(LOG_CODE::INF, false, "Compiled for game version %s", version_text);
+		logger.LogVariadic(LOG_CODE::INF, false, "Compiled for game version %s", version_text);
         logger.Log(LOG_CODE::INF, "DLL hosting successful");
 
         // Print current config

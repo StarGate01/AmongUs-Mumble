@@ -11,7 +11,8 @@ Settings::Settings():
 	disableLogFile(false),
 	logVerbosity(LOG_CODE::MSG),
 	logFileName("ProximityLog.txt"),
-	directionalAudio(false)
+	directionalAudio(false),
+	ghostVoiceMode(Settings::GHOST_VOICE_MODE::PURGATORY)
 { }
 
 void Settings::Parse()
@@ -26,6 +27,7 @@ void Settings::Parse()
 	app.add_option("--log-file-path", logFileName, "Path to the log file", true);
 	app.add_option("--log-verbosity", logVerbosity, "Log verbosity", true);
 	app.add_flag("--directional-audio", directionalAudio, "Enable directional audio");
+	app.add_option("--ghost-voice-mode", ghostVoiceMode, "Set ghost voice mode", true);
 	// Get arguments from OS
 	int argc;
 	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);

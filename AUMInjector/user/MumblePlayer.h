@@ -48,6 +48,9 @@ public:
 	// Regardless of current state, it sets the user up for a new game
 	void ResetState();
 
+	// Cached player network id
+	int netID = 0;
+
 private:
 	// --- Ghost State --- 
 	// Is the player currently a ghost

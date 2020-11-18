@@ -6,6 +6,7 @@
 #include <iostream>
 #include <limits>
 #include <thread>
+#include <codecvt>
 #include "il2cpp-init.h"
 #include "il2cpp-appdata.h"
 #include "helpers.h"
@@ -57,6 +58,8 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
         Vector2 pos = PlayerControl_GetTruePosition_Trampoline(__this, method);
         mumblePlayer.SetPosX(pos.x);
         mumblePlayer.SetPosY(pos.y);
+        // Cache network ID
+        mumblePlayer.netID = __this->fields._.NetId;
     }
 }
 
@@ -96,17 +99,42 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
     InnerNetClient_FixedUpdate_Trampoline(__this, method);
 
     // Check if game state changed to lobby
-    if (__this->fields.GameState != lastGameState &&
-        (__this->fields.GameState == InnerNetClient_GameState__Enum_Joined ||
-            __this->fields.GameState == InnerNetClient_GameState__Enum_Ended)
-        )
+    if (__this->fields.GameState != lastGameState)
     {
-        logger.Log(LOG_CODE::MSG, "Game joined or ended");
-        mumblePlayer.ResetState();
+        if (__this->fields.GameState == InnerNetClient_GameState__Enum_Joined ||
+            __this->fields.GameState == InnerNetClient_GameState__Enum_Ended)
+        {
+            logger.Log(LOG_CODE::MSG, "Game joined or ended");
 
-        // For testing ghost voice modes (set user to "ghost" by default)
-//        Sleep(1000);
-//        mumblePlayer.EnterGhostState();
+            // Reset options to local version
+            appSettings.Parse();
+            mumblePlayer.ResetState();
+
+            // For testing ghost voice modes (set user to "ghost" by default)
+            //        Sleep(1000);
+            //        mumblePlayer.EnterGhostState();
+        }
+        else if (__this->fields.GameState == InnerNetClient_GameState__Enum_Started)
+        {
+            logger.Log(LOG_CODE::MSG, "Round started");
+
+            // Check if client is hosting
+            if (__this->fields.ClientId == __this->fields.HostId)
+            {
+                logger.Log(LOG_CODE::MSG, "Sending configuration: " + appSettings.HumanReadableSync());
+
+                // Broadcast config via chat
+                std::string messageText = SYNC_HEADER + appSettings.SerializeSync();
+                String* messageString = (String*)il2cpp_string_new(messageText.c_str());
+                MessageWriter* writer = InnerNetClient_StartRpc(__this, mumblePlayer.netID, 13, SendOption__Enum_Reliable, method);
+                MessageWriter_Write_String(writer, messageString, method);
+                MessageWriter_EndMessage(writer, NULL);
+            }
+            else
+            {
+                logger.Log(LOG_CODE::MSG, "Will not broadcast configuration, waiting for host");
+            }
+        }
     }
     lastGameState = __this->fields.GameState;
 
@@ -139,7 +167,7 @@ void InnerNetClient_Disconnect_Hook(InnerNetClient* __this, InnerNet_DisconnectR
 }
 
 // Comms sabotage helper
-void updateComms(bool isSabotaged)
+void UpdateComms(bool isSabotaged)
 {
     if (isSabotaged)
     {
@@ -157,28 +185,28 @@ void updateComms(bool isSabotaged)
 void HqHudOverrideTask_Initialize_Hook(HqHudOverrideTask* __this, MethodInfo* method)
 {
     HqHudOverrideTask_Initialize_Trampoline(__this, method);
-    updateComms(true);
+    UpdateComms(true);
 }
 
 // Gets called when comms on Mira HQ get repaired
 void HqHudOverrideTask_Complete_Hook(HqHudOverrideTask* __this, MethodInfo* method)
 {
     HqHudOverrideTask_Complete_Trampoline(__this, method);
-    updateComms(false);
+    UpdateComms(false);
 }
 
 // Gets called when comms on Skeld or Polus get sabotaged
 void HudOverrideTask_Initialize_Hook(HudOverrideTask* __this, MethodInfo* method)
 {
     HudOverrideTask_Initialize_Trampoline(__this, method);
-    updateComms(true);
+    UpdateComms(true);
 }
 
 // Gets called when comms on Skeld or Polus get repaired
 void HudOverrideTask_Complete_Hook(HudOverrideTask* __this, MethodInfo* method)
 {
     HudOverrideTask_Complete_Trampoline(__this, method);
-    updateComms(false);
+    UpdateComms(false);
 }
 
 //// This sets the keypad on mirahq to 10% speed for testing
@@ -186,6 +214,42 @@ void HudOverrideTask_Complete_Hook(HudOverrideTask* __this, MethodInfo* method)
 //{
 //    IGHKMHLJFLI_Detoriorate(__this, PCHPGLOMPLD * 0.1f, method);
 //}
+
+// gets called when a chat message is received
+std::wstring_convert<std::codecvt_utf8<wchar_t>> wideToNarrow;
+void ChatController_AddChat_Hook(ChatController* __this, PlayerControl* sourcePlayer, String* chatText, MethodInfo* method)
+{
+    // Convert chat message to string
+    std::string messageText = wideToNarrow.to_bytes(std::wstring((const wchar_t*)(&((Il2CppString*)chatText)->chars), ((Il2CppString*)chatText)->length));
+    if (messageText.at(0) == SYNC_HEADER)
+    {
+        // Strip header character
+        std::string config = messageText.substr(1, std::string::npos);
+
+        // Parse config string
+        int result = appSettings.DeserializeSync(config);
+        switch (result)
+        {
+        case SYNC_SUCCESS:
+            logger.Log(LOG_CODE::INF, "Got configuration: " + appSettings.HumanReadableSync());
+            break;
+        case SYNC_ERROR_NUM_ARGS:
+            logger.Log(LOG_CODE::ERR, "Got bad configuration (invalid number of arguments), ignoring");
+            break;
+        case SYNC_ERROR_VERSION:
+            logger.Log(LOG_CODE::ERR, "Got bad configuration (incompatible version), ignoring");
+            break;
+        case SYNC_ERROR_FORMAT:
+            logger.Log(LOG_CODE::ERR, "Got bad configuration (invalid format), ignoring");
+            break;
+        }
+
+        // Swallow message if it was a config
+        return;
+    }
+
+    ChatController_AddChat_Trampoline(__this, sourcePlayer, chatText, method);
+}
 
 // Entrypoint of the injected thread
 void Run()
@@ -243,6 +307,7 @@ void Run()
         DetourAttach(&(PVOID&)HqHudOverrideTask_Complete_Trampoline, HqHudOverrideTask_Complete_Hook);
         DetourAttach(&(PVOID&)HudOverrideTask_Initialize_Trampoline, HudOverrideTask_Initialize_Hook);
         DetourAttach(&(PVOID&)HudOverrideTask_Complete_Trampoline, HudOverrideTask_Complete_Hook);
+        DetourAttach(&(PVOID&)ChatController_AddChat_Trampoline, ChatController_AddChat_Hook);
         //DetourAttach(&(PVOID&)IGHKMHLJFLI_Detoriorate, IGHKMHLJFLI_Detoriorate_Hook);
 
         //dynamic_analysis_attach();

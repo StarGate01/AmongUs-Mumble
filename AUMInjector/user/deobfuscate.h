@@ -35,8 +35,10 @@ using namespace app;
 	using InnerNet_DisconnectReasons__Enum = NCBONGGBCNE__Enum;
 	using HqHudOverrideTask = MMPIJGKLMDC;
 	using HudOverrideTask = GFBKIHICFNI;
+	using ChatController = MLINJDBIIEC;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = DNAFMCDBMCI_JPCEFDHGHAK__Enum_Joined;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = DNAFMCDBMCI_JPCEFDHGHAK__Enum_Ended;
+	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Started = DNAFMCDBMCI_JPCEFDHGHAK__Enum_Started;
 	#define PlayerControl_FixedUpdate_Trampoline GLHCHLEDNBA_FixedUpdate
 	#define PlayerControl_GetTruePosition_Trampoline GLHCHLEDNBA_GetTruePosition
 	#define PlayerControl_Die_Trampoline GLHCHLEDNBA_Die
@@ -48,6 +50,9 @@ using namespace app;
 	#define HqHudOverrideTask_Complete_Trampoline MMPIJGKLMDC_Complete
 	#define HudOverrideTask_Initialize_Trampoline GFBKIHICFNI_Initialize
 	#define HudOverrideTask_Complete_Trampoline GFBKIHICFNI_Complete
+	#define ChatController_AddChat_Trampoline MLINJDBIIEC_AddChat
+	#define InnerNetClient_StartRpc DNAFMCDBMCI_StartRpc
+	#define MessageWriter_Write_String MessageWriter_Write_6
 
 	// Stuff I researched at one point but thats not required atm
 	//SystemTypes__Enum SystemTypes__Enum_Comms = JBPEMAACAEP__Enum_Comms;

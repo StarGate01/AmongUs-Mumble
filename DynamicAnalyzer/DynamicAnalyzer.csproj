@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <AssemblyName>AUMDeobfuscator</AssemblyName>
+        <RootNamespace>AUMDeobfuscator</RootNamespace>
+        <LangVersion>9</LangVersion>
+        <Nullable>enable</Nullable>
+        <PackageId>AUMDeobfuscator</PackageId>
+        <Authors>LelouBil</Authors>
+        <Company>AUMDeobfuscator</Company>
+        <Product>AUMDeobfuscator</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.CodeAnalysis" Version="3.7.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.7.0" />
+    </ItemGroup>
+
+</Project>

@@ -70,7 +70,7 @@ void PlayerControl_Die_Hook(PlayerControl* __this, Player_Die_Reason__Enum reaso
 
     if (__this->fields.LightPrefab != nullptr)
     {
-        logger.Log(LOG_CODE::MSG, "You died\n");
+        logger.Log(LOG_CODE::MSG, "You died");
         mumblePlayer.EnterGhostState();
     }
 }
@@ -79,7 +79,7 @@ void PlayerControl_Die_Hook(PlayerControl* __this, Player_Die_Reason__Enum reaso
 void MeetingHud_Close_Hook(MeetingHud* __this, MethodInfo* method)
 {
     MeetingHud_Close_Trampoline(__this, method);
-    logger.Log(LOG_CODE::MSG, "Meeting ended\n");
+    logger.Log(LOG_CODE::MSG, "Meeting ended");
     // Spectators aren't allowd to talk
     mumblePlayer.EndMeeting();
 }
@@ -88,7 +88,7 @@ void MeetingHud_Close_Hook(MeetingHud* __this, MethodInfo* method)
 void MeetingHud_Start_Hook(MeetingHud* __this, MethodInfo* method)
 {
     MeetingHud_Start_Trampoline(__this, method);
-    logger.Log(LOG_CODE::MSG, "Meeting started\n");
+    logger.Log(LOG_CODE::MSG, "Meeting started");
     // Mute ALL ghosts
     mumblePlayer.StartMeeting();
 }
@@ -319,6 +319,6 @@ void Run()
 		// Wait for thread exit and then clean up
 		WaitForSingleObject(hExit, INFINITE);
 		mumbleLink.Close();
-		logger.Log(LOG_CODE::MSG, "Unloading done\n");
+		logger.Log(LOG_CODE::MSG, "Unloading done");
 	}
 }

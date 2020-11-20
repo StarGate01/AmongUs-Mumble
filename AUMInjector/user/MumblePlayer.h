@@ -84,4 +84,9 @@ private:
 	// -- Other State Info --
 	bool isInMeeting = false;
 	bool isSabotaged = false;
+
+	// Reads private information to display it to the user
+	friend class PlayerInfoBlock;
 };
+
+extern MumblePlayer mumblePlayer;

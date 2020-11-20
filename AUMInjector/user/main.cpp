@@ -25,7 +25,6 @@ extern HANDLE hExit; // Thread exit event
 
 // Game state
 InnerNetClient_GameState__Enum lastGameState = InnerNetClient_GameState__Enum_Joined;
-MumblePlayer mumblePlayer = MumblePlayer();
 
 // Try to reconnect every 3s until program unloads or mumble connects
 void TryConnectMumble()

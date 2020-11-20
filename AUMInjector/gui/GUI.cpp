@@ -26,11 +26,15 @@
 #include <Windows.h>
 #include <d3d11.h>
 #include <detours.h>
-#include <imgui.h>
-#include <imgui_impl_win32.h>
-#include <imgui_impl_dx11.h>
+#include "imgui.h"
+#include "backends/imgui_impl_win32.h"
+#include "backends/imgui_impl_dx11.h"
 #include "D3D11Hooking.hpp"
 #include "GUI.h"
+#include <vector>
+#include "GUIWindow.h"
+#include "Blocks/PlayerInfoBlock.h"
+#include "Blocks/SettingsBlock.h"
 
 IDXGISwapChain* SwapChain;
 ID3D11Device* Device;
@@ -46,6 +50,8 @@ bool guiShowMenu = false;
 bool guiInitialized = false;
 HWND window;
 
+std::vector<GUIWindow*> GUIWindows;
+
 LRESULT CALLBACK WndProcHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     ImGuiIO& io = ImGui::GetIO();
@@ -53,8 +59,8 @@ LRESULT CALLBACK WndProcHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     GetCursorPos(&mPos);
     ScreenToClient(window, &mPos);
-    ImGui::GetIO().MousePos.x = mPos.x;
-    ImGui::GetIO().MousePos.y = mPos.y;
+    ImGui::GetIO().MousePos.x = (float)mPos.x;
+    ImGui::GetIO().MousePos.y = (float)mPos.y;
 
     if (uMsg == WM_KEYUP && wParam == VK_DELETE) guiShowMenu = !guiShowMenu;
     if (guiShowMenu)
@@ -79,15 +85,63 @@ HRESULT __stdcall D3D_FUNCTION_HOOK(IDXGISwapChain* pThis, UINT SyncInterval, UI
 
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO(); (void)io;
-        ImGui::StyleColorsDark();
+
+        ImVec4* colors = ImGui::GetStyle().Colors;
+        colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+        colors[ImGuiCol_Border] = ImVec4(0.43f, 0.43f, 0.50f, 0.50f);
+        colors[ImGuiCol_Button] = ImVec4(0.44f, 0.44f, 0.44f, 0.40f);
+        colors[ImGuiCol_Header] = ImVec4(0.70f, 0.70f, 0.70f, 0.31f);
+        colors[ImGuiCol_TitleBg] = ImVec4(0.04f, 0.04f, 0.04f, 1.00f);
+        colors[ImGuiCol_FrameBg] = ImVec4(0.20f, 0.21f, 0.22f, 0.54f);
+        colors[ImGuiCol_ChildBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.00f);
+        colors[ImGuiCol_PopupBg] = ImVec4(0.08f, 0.08f, 0.08f, 0.94f);
+        colors[ImGuiCol_WindowBg] = ImVec4(0.06f, 0.06f, 0.06f, 0.94f);
+        colors[ImGuiCol_PlotLines] = ImVec4(0.61f, 0.61f, 0.61f, 1.00f);
+        colors[ImGuiCol_Separator] = ImVec4(0.43f, 0.43f, 0.50f, 0.50f);
+        colors[ImGuiCol_CheckMark] = ImVec4(0.94f, 0.94f, 0.94f, 1.00f);
+        colors[ImGuiCol_MenuBarBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
+        colors[ImGuiCol_SliderGrab] = ImVec4(0.51f, 0.51f, 0.51f, 1.00f);
+        colors[ImGuiCol_ResizeGrip] = ImVec4(0.91f, 0.91f, 0.91f, 0.25f);
+        colors[ImGuiCol_ScrollbarBg] = ImVec4(0.02f, 0.02f, 0.02f, 0.53f);
+        colors[ImGuiCol_NavHighlight] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
+        colors[ImGuiCol_ButtonActive] = ImVec4(0.42f, 0.42f, 0.42f, 1.00f);
+        colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
+        colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+        colors[ImGuiCol_HeaderActive] = ImVec4(0.48f, 0.50f, 0.52f, 1.00f);
+        colors[ImGuiCol_ButtonHovered] = ImVec4(0.46f, 0.47f, 0.48f, 1.00f);
+        colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.31f, 0.31f, 0.31f, 1.00f);
+        colors[ImGuiCol_TitleBgActive] = ImVec4(0.29f, 0.29f, 0.29f, 1.00f);
+        colors[ImGuiCol_FrameBgActive] = ImVec4(0.18f, 0.18f, 0.18f, 0.67f);
+        colors[ImGuiCol_PlotHistogram] = ImVec4(0.73f, 0.60f, 0.15f, 1.00f);
+        colors[ImGuiCol_HeaderHovered] = ImVec4(0.70f, 0.70f, 0.70f, 0.80f);
+        colors[ImGuiCol_FrameBgHovered] = ImVec4(0.40f, 0.40f, 0.40f, 0.40f);
+        colors[ImGuiCol_TextSelectedBg] = ImVec4(0.87f, 0.87f, 0.87f, 0.35f);
+        colors[ImGuiCol_DragDropTarget] = ImVec4(1.00f, 1.00f, 0.00f, 0.90f);
+        colors[ImGuiCol_SeparatorActive] = ImVec4(0.51f, 0.51f, 0.51f, 1.00f);
+        colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
+        colors[ImGuiCol_SeparatorHovered] = ImVec4(0.72f, 0.72f, 0.72f, 0.78f);
+        colors[ImGuiCol_SliderGrabActive] = ImVec4(0.86f, 0.86f, 0.86f, 1.00f);
+        colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.00f, 0.00f, 0.00f, 0.51f);
+        colors[ImGuiCol_ResizeGripActive] = ImVec4(0.46f, 0.46f, 0.46f, 0.95f);
+        colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.81f, 0.81f, 0.81f, 0.67f);
+        colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.51f, 0.51f, 0.51f, 1.00f);
+        colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
+        colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
+        colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.41f, 0.41f, 0.41f, 1.00f);
+        colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
+
         window = desc.OutputWindow;
+
+        io.ConfigFlags |=
+            ImGuiConfigFlags_NavEnableKeyboard |
+            ImGuiConfigFlags_DockingEnable;
 
         ImGui_ImplWin32_Init(window);
         ImGui_ImplDX11_Init(Device, Ctx);
 
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+        //io.ConfigViewportsNoAutoMerge = true;
         OriginalWndProcFunction = (WNDPROC)SetWindowLongW(window, GWLP_WNDPROC, (LONG)WndProcHook);
-        ImGui::GetIO().ImeWindowHandle = window;
+        // ImGui::GetIO().ImeWindowHandle = window;
 
         ID3D11Texture2D* pBackBuffer;
         pThis->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
@@ -101,6 +155,14 @@ HRESULT __stdcall D3D_FUNCTION_HOOK(IDXGISwapChain* pThis, UINT SyncInterval, UI
         ImGui::GetStyle().PopupRounding = 0.0F;
         ImGui::GetStyle().ScrollbarRounding = 0.0F;
         guiInitialized = true;
+
+        // Add windows to the GUI
+        GUIWindow* window1 = new GUIWindow("Player Info");
+        window1->AddBlock(new PlayerInfoBlock());
+        GUIWindows.emplace_back(window1);
+        GUIWindow* window2 = new GUIWindow("Config Settings");
+        window2->AddBlock(new SettingsBlock());
+        GUIWindows.emplace_back(window2);
     }
 
     ImGui_ImplDX11_NewFrame();
@@ -108,10 +170,25 @@ HRESULT __stdcall D3D_FUNCTION_HOOK(IDXGISwapChain* pThis, UINT SyncInterval, UI
     ImGui::NewFrame();
     if (guiShowMenu)
     {
-        ImGui::ShowDemoWindow();
+        for (GUIWindow* window : GUIWindows)
+        {
+            window->Update();
+        }
+
+        //ImGui::ShowDemoWindow();
+        //ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar;
+        //bool trueB = true;
+
+        //ImGui::Begin("DockSpace Demo 2", &trueB, window_flags);
+        //ImGui::Text("Don't work... 2");
+        //ImGui::End();
+
+        //ImGui::Begin("DockSpace Demo 1", &trueB, window_flags);
+        //ImGui::Text("Don't work... 1");
+        //ImGui::End();
     }
-    ImGui::EndFrame();
     ImGui::Render();
+    ImGui::EndFrame(); 
 
     Ctx->OMSetRenderTargets(1, &RenderTargetView, NULL);
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -120,6 +197,8 @@ HRESULT __stdcall D3D_FUNCTION_HOOK(IDXGISwapChain* pThis, UINT SyncInterval, UI
 
 void GUIDetourAttach()
 {
+    // Don't need to free GUIWindows' blocks, the windows free them
+
     OriginalD3DFunction = GetD3D11PresentFunction();
     DetourAttach(&(PVOID&)OriginalD3DFunction, D3D_FUNCTION_HOOK);
 }

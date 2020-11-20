@@ -2,6 +2,8 @@
 #include "Settings.h"
 #include "MumbleLink.h"
 
+MumblePlayer mumblePlayer;
+
 // Will configure player to be a ghost, as per their config
 void MumblePlayer::EnterGhostState()
 {

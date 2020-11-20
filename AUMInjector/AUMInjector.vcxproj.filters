@@ -19,6 +19,12 @@
     <Filter Include="IL2CPP">
       <UniqueIdentifier>{01d93443-da1d-4e8b-b361-aa15f2d03103}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI\imgui">
+      <UniqueIdentifier>{fcc4f05b-75ab-47f6-a0b4-07667bb2669b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Blocks">
+      <UniqueIdentifier>{e54bbdb0-93fa-41ef-a5db-8518033be4c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="user\main.cpp">
@@ -39,27 +45,6 @@
     <ClCompile Include="user\MumbleLink.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="user\Settings.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\imgui\imgui.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\imgui\imgui_demo.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\imgui\imgui_draw.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\imgui\imgui_impl_dx11.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\imgui\imgui_impl_win32.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\imgui\imgui_widgets.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
     <ClCompile Include="gui\D3D11Hooking.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
@@ -73,6 +58,39 @@
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="user\MumblePlayer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui.cpp">
+      <Filter>GUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui_demo.cpp">
+      <Filter>GUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui_draw.cpp">
+      <Filter>GUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui_widgets.cpp">
+      <Filter>GUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GUIBlock.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GUIWindow.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Blocks\PlayerInfoBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\backends\imgui_impl_dx11.cpp">
+      <Filter>GUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\backends\imgui_impl_win32.cpp">
+      <Filter>GUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Blocks\SettingsBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="user\settings.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,26 +152,47 @@
     <ClInclude Include="user\OrderedLock.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="gui\imgui\imstb_truetype.h">
-      <Filter>GUI</Filter>
+    <ClInclude Include="gui\D3D11Hooking.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\GUI.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imconfig.h">
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\imgui.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\imgui\imgui_impl_dx11.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\imgui\imgui_impl_win32.h">
-      <Filter>GUI</Filter>
+      <Filter>GUI\imgui</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\imgui_internal.h">
-      <Filter>GUI</Filter>
+      <Filter>GUI\imgui</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\imstb_rectpack.h">
-      <Filter>GUI</Filter>
+      <Filter>GUI\imgui</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\imstb_textedit.h">
+      <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imstb_truetype.h">
+      <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\GUIBlock.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\GUIWindow.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\PlayerInfoBlock.h">
+      <Filter>GUI\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\backends\imgui_impl_dx11.h">
+      <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\backends\imgui_impl_win32.h">
+      <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\SettingsBlock.h">
+      <Filter>GUI\Blocks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

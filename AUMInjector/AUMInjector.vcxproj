@@ -13,19 +13,23 @@
   <ItemGroup>
     <ClCompile Include="framework\helpers.cpp" />
     <ClCompile Include="framework\il2cpp-init.cpp" />
+    <ClCompile Include="gui\Blocks\PlayerInfoBlock.cpp" />
+    <ClCompile Include="gui\Blocks\SettingsBlock.cpp" />
     <ClCompile Include="gui\D3D11Hooking.cpp" />
     <ClCompile Include="gui\GUI.cpp" />
+    <ClCompile Include="gui\GUIBlock.cpp" />
+    <ClCompile Include="gui\GUIWindow.cpp" />
+    <ClCompile Include="gui\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="gui\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="gui\imgui\imgui.cpp" />
     <ClCompile Include="gui\imgui\imgui_demo.cpp" />
     <ClCompile Include="gui\imgui\imgui_draw.cpp" />
-    <ClCompile Include="gui\imgui\imgui_impl_dx11.cpp" />
-    <ClCompile Include="gui\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="gui\imgui\imgui_widgets.cpp" />
     <ClCompile Include="user\LoggingSystem.cpp" />
     <ClCompile Include="user\MumbleLink.cpp" />
     <ClCompile Include="user\main.cpp" />
     <ClCompile Include="user\MumblePlayer.cpp" />
-    <ClCompile Include="user\Settings.cpp" />
+    <ClCompile Include="user\settings.cpp" />
     <ClCompile Include="user\winhttp.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -41,12 +45,16 @@
     <ClInclude Include="framework\helpers.h" />
     <ClInclude Include="framework\il2cpp-appdata.h" />
     <ClInclude Include="framework\il2cpp-init.h" />
+    <ClInclude Include="gui\Blocks\PlayerInfoBlock.h" />
+    <ClInclude Include="gui\Blocks\SettingsBlock.h" />
     <ClInclude Include="gui\D3D11Hooking.hpp" />
     <ClInclude Include="gui\GUI.h" />
+    <ClInclude Include="gui\GUIBlock.h" />
+    <ClInclude Include="gui\GUIWindow.h" />
+    <ClInclude Include="gui\imgui\backends\imgui_impl_dx11.h" />
+    <ClInclude Include="gui\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="gui\imgui\imconfig.h" />
     <ClInclude Include="gui\imgui\imgui.h" />
-    <ClInclude Include="gui\imgui\imgui_impl_dx11.h" />
-    <ClInclude Include="gui\imgui\imgui_impl_win32.h" />
     <ClInclude Include="gui\imgui\imgui_internal.h" />
     <ClInclude Include="gui\imgui\imstb_rectpack.h" />
     <ClInclude Include="gui\imgui\imstb_textedit.h" />

@@ -55,7 +55,6 @@ Please note that we are NOT associated with [Innersloth](http://www.innersloth.c
  - https://github.com/microsoft/Detours For hooking functions in memory
  - https://github.com/maluramichael/dll-proxy-generator For generating the proxy DLL prototypes
  - https://wiki.mumble.info/wiki/Link For the connection to Mumble
- - https://github.com/ReneNyffenegger/cpp-base64 For network data encoding
  - https://github.com/CLIUtils/CLI11 For command line and config file parsing
  - https://github.com/ocornut/imgui For the GUI
  - https://github.com/ExtraConcentratedJuice/ChristWareAmongUs For the IMGUI DirectX hook

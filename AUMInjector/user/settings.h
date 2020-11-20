@@ -20,7 +20,27 @@
 // This class holds the settings for the game
 class Settings
 {
+
 	public:
+
+		// Type of a config option
+		enum class OPTION_TYPE : int
+		{
+			STRING = 0,
+			INTEGER = 1,
+			FLAG = 2
+		};
+
+		// Stores metadata for a config option
+		struct ConfigOption
+		{
+			std::string name;
+			std::string description;
+			void* target;
+			OPTION_TYPE type;
+		};
+
+		// Choices for ghost modes
 		enum class GHOST_VOICE_MODE : int
 		{
 			PURGATORY = 0, // Only talk to other ghosts at full volume
@@ -29,6 +49,8 @@ class Settings
 		};
 
 		CLI::App app;
+
+		std::vector<ConfigOption> optionDetails;
 
 		// General options
 		std::string mumbleExe;
@@ -43,13 +65,15 @@ class Settings
 		// Sync options
 		bool directionalAudio;
 		GHOST_VOICE_MODE ghostVoiceMode;
-		
 
 		// Setup argument parser
 		Settings();
 
+		// Saves the current config to the config file
+		void Save();
+
 		// Read the command line arguments and config file
-		void Parse();
+		bool Parse();
 
 		// Generate audio coordinate map
 		void RecalculateAudioMap();

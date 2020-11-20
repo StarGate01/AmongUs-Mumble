@@ -128,7 +128,7 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
                 String* messageString = (String*)il2cpp_string_new(messageText.c_str());
                 MessageWriter* writer = InnerNetClient_StartRpc(__this, mumblePlayer.netID, 13, SendOption__Enum_Reliable, method);
                 MessageWriter_Write_String(writer, messageString, method);
-                MessageWriter_EndMessage(writer, NULL);
+                MessageWriter_EndMessage(writer, method);
             }
             else
             {
@@ -263,7 +263,8 @@ void Run()
     if (strcmp(filename, "Among Us") == 0)
     {
         // Load settings
-        appSettings.Parse();
+        bool parseOk = appSettings.Parse();
+
         // Setup the logger
         logger.SetVerbosity(appSettings.logVerbosity);
         if (!appSettings.disableLogConsole) logger.EnableConsoleLogging();
@@ -282,6 +283,11 @@ void Run()
         logger.Log(LOG_CODE::INF, "DLL hosting successful");
 
         // Print current config
+        if (!parseOk)
+        {
+            logger.Log(LOG_CODE::ERR, "Error parsing configuration or command line!");
+            logger.Log(LOG_CODE::ERR, "Falling back to default configuration");
+        }
         logger.Log(LOG_CODE::MSG, "Current configuration:\n");
         logger.Log(LOG_CODE::MSG, appSettings.app.config_to_str(true, false) + "\n", false);
 

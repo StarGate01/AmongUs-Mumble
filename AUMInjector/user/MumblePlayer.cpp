@@ -2,6 +2,8 @@
 #include "Settings.h"
 #include "MumbleLink.h"
 
+MumblePlayer mumblePlayer;
+
 // Will configure player to be a ghost, as per their config
 void MumblePlayer::EnterGhostState()
 {
@@ -109,6 +111,12 @@ void MumblePlayer::InvalidatePositionCache()
 // Returns if the player is a ghost or not
 bool MumblePlayer::IsGhost() { return isGhost; }
 
+bool MumblePlayer::IsSabotaged() { return isSabotaged; }
+
+bool MumblePlayer::IsInMeeting() { return isInMeeting; }
+
+bool MumblePlayer::IsInGame() { return isInGame; }
+
 // Returns the mumble-ready position of the player
 float MumblePlayer::GetMumblePos(int i) { return posCache[appSettings.audioCoordinateMap[i]]; }
 
@@ -174,5 +182,17 @@ void MumblePlayer::TryLogPosition(bool force)
                     posCache[0], posCache[1]);
         }
     }
+}
+
+// Player entered a game
+void MumblePlayer::EnterGame()
+{
+    isInGame = true;
+}
+
+// Player exited a game
+void MumblePlayer::ExitGame()
+{
+    isInGame = false;
 }
 

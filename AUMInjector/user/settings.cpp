@@ -10,6 +10,7 @@ Settings::Settings() :
 	mumbleExe("C:\\Program Files\\Mumble\\mumble.exe"),
 	disableLogConsole(false),
 	disableLogFile(false),
+	disableOverlay(false),
 	logVerbosity(LOG_CODE::MSG),
 	logFileName("ProximityLog.txt"),
 	directionalAudio(false), 
@@ -18,12 +19,13 @@ Settings::Settings() :
 	// Define config options
 	optionDetails = {
 		{ "mumble", "Mumble executable path", &mumbleExe, OPTION_TYPE::STRING },
+		{ "log-file-path", "Path to the log file", &logFileName, OPTION_TYPE::STRING },
 		{ "no-log-console", "Disable logging to the console", &disableLogConsole, OPTION_TYPE::FLAG },
 		{ "no-log-file", "Disable logging to a file", &disableLogFile, OPTION_TYPE::FLAG },
-		{ "log-file-path", "Path to the log file", &logFileName, OPTION_TYPE::STRING },
+		{ "no-overlay", "Disable the configuration button overlay", &disableOverlay, OPTION_TYPE::FLAG },
 		{ "log-verbosity", "Log verbosity", &logVerbosity, OPTION_TYPE::INTEGER },
-		{ "directional-audio", "Enable directional audio", &directionalAudio, OPTION_TYPE::FLAG },
-		{ "ghost-voice-mode", "Set ghost voice mode\n; 0 = Purgatory\n; 1 = Spectate\n; 2 = Haunt", &ghostVoiceMode, OPTION_TYPE::INTEGER }
+		{ "ghost-voice-mode", "Set ghost voice mode\n; 0 = Purgatory\n; 1 = Spectate\n; 2 = Haunt", &ghostVoiceMode, OPTION_TYPE::INTEGER },
+		{ "directional-audio", "Enable directional audio", &directionalAudio, OPTION_TYPE::FLAG }
 	};
 
 	// Setup argument parser
@@ -108,6 +110,7 @@ bool Settings::Parse()
 
 	// Rebuild computed options
 	RecalculateAudioMap();
+	logger.Log(LOG_CODE::INF, "Settings saved to file.");
 
 	return result;
 }

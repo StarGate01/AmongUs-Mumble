@@ -16,6 +16,7 @@
 #include "settings.h"
 #include "LoggingSystem.h"
 #include "MumblePlayer.h"
+#include "GUI.h"
 //#include "dynamic_analysis.h"
 
 using namespace app;
@@ -24,7 +25,6 @@ extern HANDLE hExit; // Thread exit event
 
 // Game state
 InnerNetClient_GameState__Enum lastGameState = InnerNetClient_GameState__Enum_Joined;
-MumblePlayer mumblePlayer = MumblePlayer();
 
 // Try to reconnect every 3s until program unloads or mumble connects
 void TryConnectMumble()
@@ -109,6 +109,7 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             // Reset options to local version
             appSettings.Parse();
             mumblePlayer.ResetState();
+            mumblePlayer.ExitGame();
 
             // For testing ghost voice modes (set user to "ghost" by default)
             //        Sleep(1000);
@@ -117,6 +118,8 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
         else if (__this->fields.GameState == InnerNetClient_GameState__Enum_Started)
         {
             logger.Log(LOG_CODE::MSG, "Round started");
+
+            mumblePlayer.EnterGame();
 
             // Check if client is hosting
             if (__this->fields.ClientId == __this->fields.HostId)
@@ -164,6 +167,7 @@ void InnerNetClient_Disconnect_Hook(InnerNetClient* __this, InnerNet_DisconnectR
     InnerNetClient_Disconnect_Trampoline(__this, reason, stringReason, method);
     logger.Log(LOG_CODE::MSG, "Disconnected from server");
     mumblePlayer.ResetState();
+    mumblePlayer.ExitGame();
 }
 
 // Comms sabotage helper
@@ -264,20 +268,13 @@ void Run()
     {
         // Load settings
         bool parseOk = appSettings.Parse();
-
         // Setup the logger
         logger.SetVerbosity(appSettings.logVerbosity);
         if (!appSettings.disableLogConsole) logger.EnableConsoleLogging();
         if (!appSettings.disableLogFile) logger.EnableFileLogging(appSettings.logFileName);
 
         // Credits & Info
-        logger.Log(LOG_CODE::ERR, "AmongUs-Mumble mod by:", false);
-        logger.Log(LOG_CODE::ERR, "  StarGate01 (chrz.de):\tProxy DLL, Framework, Setup, Features.", false);
-        logger.Log(LOG_CODE::ERR, "  Alisenai (Alien):\tFixes, More Features.", false);
-        logger.Log(LOG_CODE::ERR, "  BillyDaBongo (Billy):\tManagement, Testing.", false);
-        logger.Log(LOG_CODE::ERR, "  LelouBi:\t\tDeobfuscation.\n", false);
-        logger.Log(LOG_CODE::ERR, "Source code and download: https://github.com/StarGate01/AmongUs-Mumble", false);
-        logger.Log(LOG_CODE::ERR, "Freely available and licensed under the GNU GPLv3.\n\n", false);
+        logger.Log(LOG_CODE::ERR, CREDITS, false);
 
         logger.LogVariadic(LOG_CODE::INF, false, "Compiled for game version %s", version_text);
         logger.Log(LOG_CODE::INF, "DLL hosting successful");
@@ -303,6 +300,7 @@ void Run()
 		// Setup hooks
 		DetourTransactionBegin();
 		DetourUpdateThread(GetCurrentThread());
+        GUIDetourAttach();
 		DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
 		DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
 		DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);

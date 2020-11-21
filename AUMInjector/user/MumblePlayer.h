@@ -13,6 +13,12 @@ public:
 	// Returns if the player is a ghost or not
 	bool IsGhost();
 
+	bool IsSabotaged();
+
+	bool IsInMeeting();
+
+	bool IsInGame();
+
 	// --- Player Position --- 
 	// Returns the mumble-ready position of the player
 	float GetMumblePos(int i);
@@ -47,6 +53,12 @@ public:
 
 	// Regardless of current state, it sets the user up for a new game
 	void ResetState();
+
+	// Player entered a game
+	void EnterGame();
+
+	// Player exited a game
+	void ExitGame();
 
 	// Cached player network id
 	int netID = 0;
@@ -84,4 +96,10 @@ private:
 	// -- Other State Info --
 	bool isInMeeting = false;
 	bool isSabotaged = false;
+	bool isInGame = false;
+
+	// Reads private information to display it to the user
+	friend class PlayerInfoBlock;
 };
+
+extern MumblePlayer mumblePlayer;

@@ -17,6 +17,20 @@
 #define SYNC_ERROR_VERSION 2
 #define SYNC_ERROR_FORMAT 3
 
+// Credits info string
+static const std::string CREDITS = R"(AmongUs-Mumble mod by:
+  StarGate01 (chrz.de): Proxy DLL, Framework, Setup, Features.
+  Alisenai (Alien):     Fixes, More Features.
+  BillyDaBongo (Billy): Management, Testing.
+  LelouBi:              Deobfuscation.
+
+Source code and download: https://github.com/StarGate01/AmongUs-Mumble
+Freely available and licensed under the GNU GPLv3.
+
+Press DEL to open/close the GUI.
+)";
+
+
 // This class holds the settings for the game
 class Settings
 {
@@ -56,6 +70,7 @@ class Settings
 		std::string mumbleExe;
 		bool disableLogConsole;
 		bool disableLogFile;
+		bool disableOverlay;
 		LOG_CODE logVerbosity;
 		std::string logFileName;
 

@@ -59,7 +59,8 @@ class Settings
 		{
 			PURGATORY = 0, // Only talk to other ghosts at full volume
 			SPECTATE = 1,  // Can hear players, can't talk
-			HAUNT = 2      // Can hear and talk to players
+			HAUNT = 2,     // Can hear and talk to players
+			COUNT = 3      // Needed for UI
 		};
 
 		CLI::App app;

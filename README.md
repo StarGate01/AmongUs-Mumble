@@ -17,18 +17,20 @@ If you have any issues or find bugs, report them on our [issue tracker](https://
 
 ## Main Features
  - Real-time proximity voice chat based on ingame player position
- - Directional audio depending on relative position of players. (Optional)
+ - Directional audio depending on relative position of players (Optional)
  - Works with any official or unofficial Among Us server
  - Works with any Mumble server
+ - In-Game GUI for easy configuration
  - Automatic handling of round start, round end, emergency meetings and player deaths
  - Ghosts can always listen to emergency meetings
  - Three modes for ghosts:
-   - *Purgatory:* Ghosts can talk to each other regardless of their position, but cannot listen to remaining players. (Default)
-   - *Spectate:* Ghosts are muted, but can listen to remaining players if they are close enough. (Optional)
-   - *Haunt:* Ghosts can talk and listen to remaining players if they are close enough. (Optional)
- - Everyone gets muted during communication sabotage events.
- - Easy installation process, just copy one file.
- - Smart linking, no need to start the game and Mumble in any particular order.
+   - *Purgatory:* Ghosts can talk to each other regardless of their position, but cannot listen to remaining players (Default)
+   - *Spectate:* Ghosts are muted, but can listen to remaining players if they are close enough (Optional)
+   - *Haunt:* Ghosts can talk and listen to remaining players if they are close enough (Optional)
+ - Everyone gets muted during communication sabotage events
+ - Automatic settings synchronisation for all players in a lobby.
+ - Easy installation process, just copy one file
+ - Smart linking, no need to start the game and Mumble in any particular order
  - Easy configuration using a configuration file or command line options
 
 ## Documentation

@@ -30,13 +30,7 @@
     <ClCompile Include="user\main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="framework\il2cpp-init.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="user\winhttp.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\helpers.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="user\LoggingSystem.cpp">
@@ -93,6 +87,12 @@
     <ClCompile Include="user\settings.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="framework\il2cpp-init.cpp">
+      <Filter>IL2CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\helpers.cpp">
+      <Filter>IL2CPP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -102,27 +102,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="user\main.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\il2cpp-appdata.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\il2cpp-init.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="appdata\il2cpp-api-functions.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="appdata\il2cpp-api-functions-ptr.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="appdata\il2cpp-functions.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="appdata\il2cpp-types.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="appdata\il2cpp-types-ptr.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -150,15 +129,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="user\OrderedLock.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\D3D11Hooking.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\GUI.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\imgui\imconfig.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\imgui.h">
@@ -193,6 +163,36 @@
     </ClInclude>
     <ClInclude Include="gui\Blocks\SettingsBlock.h">
       <Filter>GUI\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="appdata\il2cpp-api-functions.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="appdata\il2cpp-api-functions-ptr.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\il2cpp-appdata.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="appdata\il2cpp-functions.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\il2cpp-init.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="appdata\il2cpp-types.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="appdata\il2cpp-types-ptr.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\D3D11Hooking.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\GUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imconfig.h">
+      <Filter>GUI\imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

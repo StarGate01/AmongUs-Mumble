@@ -13,8 +13,25 @@
   <ItemGroup>
     <ClCompile Include="framework\helpers.cpp" />
     <ClCompile Include="framework\il2cpp-init.cpp" />
+    <ClCompile Include="gui\Blocks\AboutBlock.cpp" />
+    <ClCompile Include="gui\Blocks\OverlayBlock.cpp" />
+    <ClCompile Include="gui\Blocks\PlayerInfoBlock.cpp" />
+    <ClCompile Include="gui\Blocks\SettingsBlock.cpp" />
+    <ClCompile Include="gui\D3D11Hooking.cpp" />
+    <ClCompile Include="gui\GUI.cpp" />
+    <ClCompile Include="gui\GUIBlock.cpp" />
+    <ClCompile Include="gui\GUIWindow.cpp" />
+    <ClCompile Include="gui\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="gui\imgui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="gui\imgui\imgui.cpp" />
+    <ClCompile Include="gui\imgui\imgui_demo.cpp" />
+    <ClCompile Include="gui\imgui\imgui_draw.cpp" />
+    <ClCompile Include="gui\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="user\LoggingSystem.cpp" />
+    <ClCompile Include="user\MumbleLink.cpp" />
     <ClCompile Include="user\main.cpp" />
-    <ClCompile Include="user\mumble-link.cpp" />
+    <ClCompile Include="user\MumblePlayer.cpp" />
+    <ClCompile Include="user\settings.cpp" />
     <ClCompile Include="user\winhttp.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -30,11 +47,31 @@
     <ClInclude Include="framework\helpers.h" />
     <ClInclude Include="framework\il2cpp-appdata.h" />
     <ClInclude Include="framework\il2cpp-init.h" />
+    <ClInclude Include="gui\Blocks\AboutBlock.h" />
+    <ClInclude Include="gui\Blocks\OverlayBlock.h" />
+    <ClInclude Include="gui\Blocks\PlayerInfoBlock.h" />
+    <ClInclude Include="gui\Blocks\SettingsBlock.h" />
+    <ClInclude Include="gui\D3D11Hooking.hpp" />
+    <ClInclude Include="gui\GUI.h" />
+    <ClInclude Include="gui\GUIBlock.h" />
+    <ClInclude Include="gui\GUIWindow.h" />
+    <ClInclude Include="gui\imgui\backends\imgui_impl_dx11.h" />
+    <ClInclude Include="gui\imgui\backends\imgui_impl_win32.h" />
+    <ClInclude Include="gui\imgui\imconfig.h" />
+    <ClInclude Include="gui\imgui\imgui.h" />
+    <ClInclude Include="gui\imgui\imgui_internal.h" />
+    <ClInclude Include="gui\imgui\imstb_rectpack.h" />
+    <ClInclude Include="gui\imgui\imstb_textedit.h" />
+    <ClInclude Include="gui\imgui\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="user\CLI11.hpp" />
+    <ClInclude Include="user\LoggingSystem.h" />
+    <ClInclude Include="user\MumbleLink.h" />
     <ClInclude Include="user\main.h" />
-    <ClInclude Include="user\mumble-link.h" />
     <ClInclude Include="user\deobfuscate.h" />
+    <ClInclude Include="user\MumblePlayer.h" />
+    <ClInclude Include="user\OrderedLock.h" />
+    <ClInclude Include="user\Settings.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AUMInjector.rc" />
@@ -45,6 +82,8 @@
     <ProjectGuid>{5a9df862-b3b4-4125-a7c0-7f1058ec33e6}</ProjectGuid>
     <RootNamespace>AUMInjector</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -90,7 +129,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)gui;$(ProjectDir)gui\imgui</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
       <DisableSpecificWarnings>4359</DisableSpecificWarnings>
     </ClCompile>
@@ -121,9 +160,10 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)gui;$(ProjectDir)gui\imgui</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
       <DisableSpecificWarnings>4359</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

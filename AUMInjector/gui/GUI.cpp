@@ -188,12 +188,12 @@ HRESULT __stdcall D3D_FUNCTION_HOOK(IDXGISwapChain* pThis, UINT SyncInterval, UI
         for (GUIWindow* window : GUIWindows)  window->Update();
     }
 
-    if (!appSettings.disableOverlay && !mumblePlayer.IsInGame())
+    if (!appSettings.disableOverlay)
     {
         // Render overlay
         ImGuiIO& io = ImGui::GetIO();
-        ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x - 15.0f, io.DisplaySize.y / 7.5f),
-            ImGuiCond_Always, ImVec2(1.0f, 0.0f));
+        ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x / 2.0f, 10.0f),
+            ImGuiCond_Always, ImVec2(0.5f, 0.0f));
         ImGui::SetNextWindowBgAlpha(0.5f);
         overlayWindow->Update();
     }

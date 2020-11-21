@@ -72,6 +72,7 @@
     <ClInclude Include="user\MumblePlayer.h" />
     <ClInclude Include="user\OrderedLock.h" />
     <ClInclude Include="user\Settings.h" />
+    <ClInclude Include="user\version.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AUMInjector.rc" />

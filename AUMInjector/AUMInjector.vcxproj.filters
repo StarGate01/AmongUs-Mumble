@@ -206,6 +206,9 @@
     <ClInclude Include="gui\Blocks\AboutBlock.h">
       <Filter>GUI\Blocks</Filter>
     </ClInclude>
+    <ClInclude Include="user\version.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AUMInjector.rc">

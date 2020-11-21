@@ -1,8 +1,7 @@
 #include <Windows.h>
-#include <comdef.h>
 #include <string>  
 #include <iostream> 
-#include <sstream>   
+#include <sstream>
 #include "settings.h"
 #include "helpers.h"
 
@@ -16,54 +15,104 @@ Settings::Settings() :
 	directionalAudio(false), 
 	ghostVoiceMode(GHOST_VOICE_MODE::PURGATORY)
 { 
+	// Define config options
+	optionDetails = {
+		{ "mumble", "Mumble executable path", &mumbleExe, OPTION_TYPE::STRING },
+		{ "log-file-path", "Path to the log file", &logFileName, OPTION_TYPE::STRING },
+		{ "no-log-console", "Disable logging to the console", &disableLogConsole, OPTION_TYPE::FLAG },
+		{ "no-log-file", "Disable logging to a file", &disableLogFile, OPTION_TYPE::FLAG },
+		{ "log-verbosity", "Log verbosity", &logVerbosity, OPTION_TYPE::INTEGER },
+		{ "ghost-voice-mode", "Set ghost voice mode\n; 0 = Purgatory\n; 1 = Spectate\n; 2 = Haunt", &ghostVoiceMode, OPTION_TYPE::INTEGER },
+		{ "directional-audio", "Enable directional audio", &directionalAudio, OPTION_TYPE::FLAG }
+	};
+
 	// Setup argument parser
 	app.allow_extras(true);
 	app.allow_config_extras(true);
 	app.set_config("-c,--config", "ProximityConfig.ini", "Read an INI configuration file", false);
-	app.add_option("-m,--mumble", mumbleExe, "Mumble executable path", true);
-	app.add_flag("--no-log-console", disableLogConsole, "Disable logging to the console");
-	app.add_flag("--no-log-file", disableLogFile, "Disable logging to a file");
-	app.add_option("--log-file-path", logFileName, "Path to the log file", true);
-	app.add_option("--log-verbosity", logVerbosity, "Log verbosity", true);
-	app.add_flag("--directional-audio", directionalAudio, "Enable directional audio");
-	app.add_option("--ghost-voice-mode", ghostVoiceMode, "Set ghost voice mode\n0 = Purgatory\n1 = Spectate\n2 = Haunt", true);
+	for (auto const& op : optionDetails)
+	{
+		switch (op.type)
+		{
+		case OPTION_TYPE::FLAG:
+			app.add_flag("--" + op.name, *(bool*)op.target, op.description);
+			break;
+		case OPTION_TYPE::INTEGER:
+			app.add_option("--" + op.name, *(int*)op.target, op.description, true);
+			break;
+		case OPTION_TYPE::STRING:
+			app.add_option("--" + op.name, *(std::string*)op.target, op.description, true);
+			break;
+		}
+	}
 }
 
-// Read the command line arguments and config file
-void Settings::Parse()
+// Saves the current config to the config file
+void Settings::Save()
 {
-	// Get arguments from OS
-	int argc;
-	LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
-	// Convert arguments from unicode to narrow
-	// Todo use c++11 codeconv instead of winapi
-	_bstr_t** argv_bstr = (_bstr_t**)malloc(argc * sizeof(_bstr_t*));
-	char** argv_narrow = (char**)malloc(argc * sizeof(char*));
-	for (int i = 0; i < argc; i++)
+	// Create ini string
+	std::stringstream res;
+	res << "; " << app.get_description() << std::endl << std::endl;
+	for (auto const& op : optionDetails)
 	{
-		argv_bstr[i] = (_bstr_t*)new _bstr_t(argv[i]);
-		argv_narrow[i] = (_bstr_t)*argv_bstr[i];
+		switch (op.type)
+		{
+		case OPTION_TYPE::FLAG:
+			res << "; " << op.description << std::endl << op.name << "=" << 
+				((*(bool*)op.target) ? "true" : "false") << std::endl << std::endl;
+			break;
+		case OPTION_TYPE::INTEGER:
+			res << "; " << op.description << std::endl << op.name << "=" <<
+				*(int*)op.target << std::endl << std::endl;
+			break;
+		case OPTION_TYPE::STRING:
+			res << "; " << op.description << std::endl << op.name << "=\"" <<
+				*(std::string*)op.target << "\"" << std::endl << std::endl;
+			break;
+		}
 	}
-	// Parse arguments
-	app.parse(argc, argv_narrow);
-	// Free temp buffers
-	LocalFree(argv);
-	for (int i = 0; i < argc; i++)
-	{
-		argv_bstr[i]->~_bstr_t();
-		free(argv_bstr[i]);
-	}
-	free(argv_bstr);
-	free(argv_narrow);
 
 	// Write out config file
 	std::ofstream configFileOut;
 	configFileOut.open(app.get_config_ptr()->as<std::string>(), std::ios::out | std::ios::trunc);
-	// Serialize settings with annotations
-	configFileOut << app.config_to_str(true, true);
+	configFileOut << res.str();
 	configFileOut.close();
 
+	// Settings have changed, update the audio map
 	RecalculateAudioMap();
+}
+
+// Read the command line arguments and config file
+bool Settings::Parse()
+{
+	// Get arguments
+	std::string cmdLine = GetCommandLine();
+
+	// Parse arguments
+	bool result = true;
+	try { app.parse(cmdLine, true); }
+	catch (...) 
+	{ 
+		// Ensure the user gets to see the error message
+		result = false;
+		disableLogConsole = false;
+		disableLogFile = false;
+		logVerbosity = LOG_CODE::MSG;
+	}
+
+	// Ensure valid config file exists
+	Save();
+	if (!result)
+	{
+		// If previous parse failes, try to read cleaned config file
+		try { app.parse(cmdLine, true); }
+		catch (...) {} // :(
+	}
+
+	// Rebuild computed options
+	RecalculateAudioMap();
+
+	return result;
 }
 
 // Generate audio coordinate map

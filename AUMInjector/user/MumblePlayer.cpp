@@ -178,3 +178,15 @@ void MumblePlayer::TryLogPosition(bool force)
     }
 }
 
+// Player entered a game
+void MumblePlayer::EnterGame()
+{
+    isInGame = true;
+}
+
+// Player exited a game
+void MumblePlayer::ExitGame()
+{
+    isInGame = false;
+}
+

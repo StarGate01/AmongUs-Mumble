@@ -20,48 +20,73 @@
 // This class holds the settings for the game
 class Settings
 {
-	public:
-		enum class GHOST_VOICE_MODE : int
-		{
-			PURGATORY = 0, // Only talk to other ghosts at full volume
-			SPECTATE = 1,  // Can hear players, can't talk
-			HAUNT = 2      // Can hear and talk to players
-		};
 
-		CLI::App app;
+public:
 
-		// General options
-		std::string mumbleExe;
-		bool disableLogConsole;
-		bool disableLogFile;
-		LOG_CODE logVerbosity;
-		std::string logFileName;
+	// Type of a config option
+	enum class OPTION_TYPE : int
+	{
+		STRING = 0,
+		INTEGER = 1,
+		FLAG = 2
+	};
 
-		// Computed options
-		int audioCoordinateMap[3];
+	// Stores metadata for a config option
+	struct ConfigOption
+	{
+		std::string name;
+		std::string description;
+		void* target;
+		OPTION_TYPE type;
+	};
 
-		// Sync options
-		bool directionalAudio;
-		GHOST_VOICE_MODE ghostVoiceMode;
-		
+	// Choices for ghost modes
+	enum class GHOST_VOICE_MODE : int
+	{
+		PURGATORY, // Only talk to other ghosts at full volume
+		SPECTATE,  // Can hear players, can't talk
+		HAUNT,     // Can hear and talk to players
+		COUNT
+	};
 
-		// Setup argument parser
-		Settings();
+	CLI::App app;
 
-		// Read the command line arguments and config file
-		void Parse();
+	std::vector<ConfigOption> optionDetails;
 
-		// Generate audio coordinate map
-		void RecalculateAudioMap();
+	// General options
+	std::string mumbleExe;
+	bool disableLogConsole;
+	bool disableLogFile;
+	LOG_CODE logVerbosity;
+	std::string logFileName;
 
-		// Serialize the sync settings to a string
-		std::string SerializeSync();
+	// Computed options
+	int audioCoordinateMap[3];
 
-		// Deserialize the sync settings from a string
-		int DeserializeSync(std::string& input);
+	// Sync options
+	bool directionalAudio;
+	GHOST_VOICE_MODE ghostVoiceMode;
 
-		// Prints the sync settings to a human readable string
-		std::string HumanReadableSync();
+	// Setup argument parser
+	Settings();
+
+	// Saves the current config to the config file
+	void Save();
+
+	// Read the command line arguments and config file
+	bool Parse();
+
+	// Generate audio coordinate map
+	void RecalculateAudioMap();
+
+	// Serialize the sync settings to a string
+	std::string SerializeSync();
+
+	// Deserialize the sync settings from a string
+	int DeserializeSync(std::string& input);
+
+	// Prints the sync settings to a human readable string
+	std::string HumanReadableSync();
 
 };
 

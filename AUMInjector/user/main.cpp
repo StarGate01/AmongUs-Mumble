@@ -109,6 +109,7 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             // Reset options to local version
             appSettings.Parse();
             mumblePlayer.ResetState();
+            mumblePlayer.EnterGame();
 
             // For testing ghost voice modes (set user to "ghost" by default)
             //        Sleep(1000);
@@ -164,6 +165,7 @@ void InnerNetClient_Disconnect_Hook(InnerNetClient* __this, InnerNet_DisconnectR
     InnerNetClient_Disconnect_Trampoline(__this, reason, stringReason, method);
     logger.Log(LOG_CODE::MSG, "Disconnected from server");
     mumblePlayer.ResetState();
+    mumblePlayer.ExitGame();
 }
 
 // Comms sabotage helper

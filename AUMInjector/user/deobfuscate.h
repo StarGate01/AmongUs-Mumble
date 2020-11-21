@@ -2,19 +2,12 @@
 
 #pragma once
 #include "il2cpp-appdata.h"
-
-#define GAME_VERSION_2020_9_22s 20209220
-#define GAME_VERSION_2020_10_22s 202010220
-#define GAME_VERSION_2020_11_4s 202011040
-#ifndef GAME_VERSION
-	#define GAME_VERSION GAME_VERSION_2020_10_22s
-#endif
+#include "version.h"
 
 using namespace app;
 
 // Deobfuscate game bindings, depending on version
 #if GAME_VERSION == GAME_VERSION_2020_9_22s
-	#define version_text "2020.9.22s"
 	using InnerNetClient_GameState__Enum = InnerNetClient_IFLBIJFJPMK__Enum;
 	using Player_Die_Reason__Enum = NPLMBOLMMLB__Enum;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = InnerNetClient_IFLBIJFJPMK__Enum_Joined;
@@ -26,7 +19,6 @@ using namespace app;
 	#define MeetingHud_Start_Trampoline MeetingHud_Start
 	#define InnerNetClient_FixedUpdate_Trampoline InnerNetClient_FixedUpdate
 #elif GAME_VERSION == GAME_VERSION_2020_10_22s
-	#define version_text "2020.10.22s"
 	using InnerNetClient_GameState__Enum = DNAFMCDBMCI_JPCEFDHGHAK__Enum;
 	using PlayerControl = GLHCHLEDNBA;
 	using Player_Die_Reason__Enum = CCCHKEBONBN__Enum;
@@ -75,7 +67,6 @@ using namespace app;
 	//#define HudOverrideSystemType_RepairDamage_Trampoline HHIJNMBJCAE_RepairDamage
 #elif GAME_VERSION == GAME_VERSION_2020_11_4s
 	//TODO add new functions
-	#define version_text "2020.11.4s"
 	using InnerNetClient_GameState__Enum = DBDDAJAICFN_DKEKFCCGGEO__Enum;
 	using PlayerControl = APNNOJFGDGP;
 	using Player_Die_Reason__Enum = LKBAAGPFMCB__Enum;
@@ -92,5 +83,3 @@ using namespace app;
 #else
 	#error Unknown game version!
 #endif
-
-#pragma message("Compiling for game version " version_text)

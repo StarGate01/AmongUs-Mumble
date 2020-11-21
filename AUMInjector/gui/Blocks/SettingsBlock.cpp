@@ -66,74 +66,20 @@ void EnumComboHelper(const char* label, const char* str, const char** arr, ENUM_
 
 void SettingsBlock::Update()
 {
-    ImGui::Text("Make sure to use the save button if you want to save these settings.");
-
-    ImGui::Separator();
-
-    // Config settings that only change after a restart
-    ImGui::Text("-- Config Constants --");
-    ImGui::Text("These settings will only update after a restart.");
-
-    // Mumble EXE Path
-    ImGui::Text("Mumble EXE Path:");
-    ImGui::InputText("##mumbleEXE", &appSettings.mumbleExe);
-
-    // Log File
-    ImGui::Text("Log File Path:");
-    ImGui::InputText("##logFileName", &appSettings.logFileName);
-
-    ImGui::Separator();
-
-    // Config settings that can be changed each game
-    ImGui::Text("-- Config Settings --");
+    // Config settings that can be changed each round
+    ImGui::Text("[ Game Settings ]");
+    ImGui::Text("These settings will be applied to the next round you host.");
 
     // If the user is in a game, don't let them change the settings and only display them
-    if (mumblePlayer.isInGame)
+    if (mumblePlayer.IsInGame())
     {
         // Print current settings only, as they can't be changed.
-        ImGui::Text("You cannot change these settings while in a game.");
-        ImGui::Text("Disable Console Log: %s", appSettings.disableLogConsole ? "True" : "False");
-        ImGui::Text("Disable Log File: %s", appSettings.disableLogFile ? "True" : "False");
-        ImGui::Text("Log Verbosity: %s", verbosityText[(int)logger.verbosity]);
+        ImGui::Text("You cannot change game settings while in a round.");
         ImGui::Text("Ghost voice mode: %s", voiceText[(int)appSettings.ghostVoiceMode]);
         ImGui::Text("Directional Audio: %s", appSettings.directionalAudio ? "True" : "False");
     }
     else
     {
-        ImGui::Text("These settings will only apply to your next game.");
-        // Disable console log setting
-        if (ImGui::TreeNode("Disable Console Log:"))
-        {
-            ImGui::Text("Disables and does not create the console window.");
-            ImGui::TreePop();
-        }
-        BoolComboHelper(appSettings.disableLogConsole, "logToConsole");
-        
-        // Disable log file setting
-        if (ImGui::TreeNode("Disable File Log:"))
-        {
-            ImGui::Text("Disables and does not create the log file.");
-            ImGui::Text("It is recommended you do not disable this as it will help if you have and problems.");
-            ImGui::TreePop();
-        }
-        BoolComboHelper(appSettings.disableLogFile, "logToFile");
-
-        // Log file verbosity setting
-        if (ImGui::TreeNode("Log Verbosity:"))
-        {
-            ImGui::Text("Sets how verbose the log file will be.");
-            ImGui::Text("Debug is the highest.");
-            ImGui::Text("Error is the lowest.");
-            ImGui::TreePop();
-        }
-        EnumComboHelper<LOG_CODE>(
-            "##comboVerbosity", 
-            verbosityText[(int)logger.verbosity],
-            verbosityText, 
-            appSettings.logVerbosity
-        );
-        logger.verbosity = appSettings.logVerbosity; // Sync verbosity levels
-
         // Ghost voice mode verbosity setting
         if (ImGui::TreeNode("Ghost Voice Mode:"))
         {
@@ -143,12 +89,11 @@ void SettingsBlock::Update()
             ImGui::TreePop();
         }
         EnumComboHelper<Settings::GHOST_VOICE_MODE>(
-            "##comboGhostVoiceMode", 
-            voiceText[(int)appSettings.ghostVoiceMode], 
-            voiceText, 
+            "##comboGhostVoiceMode",
+            voiceText[(int)appSettings.ghostVoiceMode],
+            voiceText,
             appSettings.ghostVoiceMode
-        );
-
+            );
 
         // Proximity audio mode
         if (ImGui::TreeNode("Directional Audio:"))
@@ -162,7 +107,70 @@ void SettingsBlock::Update()
 
     ImGui::Separator();
 
+    // Config settings that only change after a restart
+    ImGui::Text("[ General Settings ]");
+    ImGui::Text("These settings will be applied after a restart.");
+
+    // Mumble EXE Path
+    if (ImGui::TreeNode("Mumble Executable Path:"))
+    {
+        ImGui::Text("Specifies the path of the mumble EXE file.");
+        ImGui::TreePop();
+    }
+    ImGui::InputText("##mumbleEXE", &appSettings.mumbleExe);
+
+    // Disable button overlay
+    if (ImGui::TreeNode("Disable Overlay Button:"))
+    {
+        ImGui::Text("Disables the configuration button overlay.");
+        ImGui::TreePop();
+    }
+    BoolComboHelper(appSettings.disableOverlay, "overlay");
+
+    // Log File
+    if (ImGui::TreeNode("Logfile path:"))
+    {
+        ImGui::Text("Specifies the name of the log file.");
+        ImGui::TreePop();
+    }
+    ImGui::InputText("##logFileName", &appSettings.logFileName);
+
+    // Disable console log setting
+    if (ImGui::TreeNode("Disable Console Log:"))
+    {
+        ImGui::Text("Disables and does not create the console window.");
+        ImGui::TreePop();
+    }
+    BoolComboHelper(appSettings.disableLogConsole, "logToConsole");
+
+    // Disable log file setting
+    if (ImGui::TreeNode("Disable File Log:"))
+    {
+        ImGui::Text("Disables and does not create the log file.");
+        ImGui::Text("It is recommended you do not disable this as it will help if you have and problems.");
+        ImGui::TreePop();
+    }
+    BoolComboHelper(appSettings.disableLogFile, "logToFile");
+
+    // Log file verbosity setting
+    if (ImGui::TreeNode("Log Verbosity:"))
+    {
+        ImGui::Text("Sets how verbose the log file will be.");
+        ImGui::Text("Debug is the highest.");
+        ImGui::Text("Error is the lowest.");
+        ImGui::TreePop();
+    }
+    EnumComboHelper<LOG_CODE>(
+        "##comboVerbosity",
+        verbosityText[(int)logger.verbosity],
+        verbosityText,
+        appSettings.logVerbosity
+        );
+    logger.verbosity = appSettings.logVerbosity; // Sync verbosity levels
+
+    ImGui::Separator();
+
     // Write the settings to the config, if requested
-    if (ImGui::Button("Save Config"))
+    if (ImGui::Button("Save to config file"))
         appSettings.Save();
 }

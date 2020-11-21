@@ -93,6 +93,12 @@
     <ClCompile Include="framework\helpers.cpp">
       <Filter>IL2CPP</Filter>
     </ClCompile>
+    <ClCompile Include="gui\Blocks\OverlayBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Blocks\AboutBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -193,6 +199,12 @@
     </ClInclude>
     <ClInclude Include="gui\imgui\imconfig.h">
       <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\OverlayBlock.h">
+      <Filter>GUI\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\AboutBlock.h">
+      <Filter>GUI\Blocks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

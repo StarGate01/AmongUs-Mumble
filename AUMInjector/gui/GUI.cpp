@@ -26,15 +26,19 @@
 #include <Windows.h>
 #include <d3d11.h>
 #include <detours.h>
+#include <vector>
 #include "imgui.h"
 #include "backends/imgui_impl_win32.h"
 #include "backends/imgui_impl_dx11.h"
 #include "D3D11Hooking.hpp"
+#include "MumblePlayer.h"
+#include "settings.h"
 #include "GUI.h"
-#include <vector>
 #include "GUIWindow.h"
 #include "Blocks/PlayerInfoBlock.h"
 #include "Blocks/SettingsBlock.h"
+#include "Blocks/OverlayBlock.h"
+#include "Blocks/AboutBlock.h"
 
 IDXGISwapChain* SwapChain;
 ID3D11Device* Device;
@@ -51,6 +55,7 @@ bool guiInitialized = false;
 HWND window;
 
 std::vector<GUIWindow*> GUIWindows;
+GUIWindow* overlayWindow;
 
 LRESULT CALLBACK WndProcHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -63,11 +68,10 @@ LRESULT CALLBACK WndProcHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     ImGui::GetIO().MousePos.y = (float)mPos.y;
 
     if (uMsg == WM_KEYUP && wParam == VK_DELETE) guiShowMenu = !guiShowMenu;
-    if (guiShowMenu)
-    {
-        ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
-        if (io.WantCaptureMouse || io.WantCaptureKeyboard) return TRUE;
-    }
+
+    ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
+    if (io.WantCaptureMouse && 
+        (uMsg == WM_LBUTTONDOWN || uMsg == WM_LBUTTONUP || uMsg == WM_MOUSEMOVE)) return TRUE;
 
     return CallWindowProcW(OriginalWndProcFunction, hWnd, uMsg, wParam, lParam);
 }
@@ -156,37 +160,44 @@ HRESULT __stdcall D3D_FUNCTION_HOOK(IDXGISwapChain* pThis, UINT SyncInterval, UI
         ImGui::GetStyle().ScrollbarRounding = 0.0F;
         guiInitialized = true;
 
-        // Add windows to the GUI
-        GUIWindow* window1 = new GUIWindow("Player Info");
-        window1->AddBlock(new PlayerInfoBlock());
+        // Add windows
+        GUIWindow* window1 = new GUIWindow("About", 0);
+        window1->AddBlock(new AboutBlock());
         GUIWindows.emplace_back(window1);
-        GUIWindow* window2 = new GUIWindow("Config Settings");
+
+        GUIWindow* window0 = new GUIWindow("Player Info", 0);
+        window0->AddBlock(new PlayerInfoBlock());
+        GUIWindows.emplace_back(window0);
+
+        GUIWindow* window2 = new GUIWindow("Proximity Configuration", 0);
         window2->AddBlock(new SettingsBlock());
         GUIWindows.emplace_back(window2);
+
+        overlayWindow = new GUIWindow("Overlay", ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize |
+            ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove);
+        overlayWindow->AddBlock(new OverlayBlock(&guiShowMenu));
     }
 
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
+
+    // Render menu
     if (guiShowMenu)
     {
-        for (GUIWindow* window : GUIWindows)
-        {
-            window->Update();
-        }
-
-        //ImGui::ShowDemoWindow();
-        //ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar;
-        //bool trueB = true;
-
-        //ImGui::Begin("DockSpace Demo 2", &trueB, window_flags);
-        //ImGui::Text("Don't work... 2");
-        //ImGui::End();
-
-        //ImGui::Begin("DockSpace Demo 1", &trueB, window_flags);
-        //ImGui::Text("Don't work... 1");
-        //ImGui::End();
+        for (GUIWindow* window : GUIWindows)  window->Update();
     }
+
+    if (!appSettings.disableOverlay && !mumblePlayer.IsInGame())
+    {
+        // Render overlay
+        ImGuiIO& io = ImGui::GetIO();
+        ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x - 15.0f, io.DisplaySize.y / 7.5f),
+            ImGuiCond_Always, ImVec2(1.0f, 0.0f));
+        ImGui::SetNextWindowBgAlpha(0.5f);
+        overlayWindow->Update();
+    }
+
     ImGui::Render();
     ImGui::EndFrame(); 
 

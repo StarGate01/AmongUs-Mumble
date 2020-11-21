@@ -10,6 +10,7 @@ Settings::Settings() :
 	mumbleExe("C:\\Program Files\\Mumble\\mumble.exe"),
 	disableLogConsole(false),
 	disableLogFile(false),
+	disableOverlay(false),
 	logVerbosity(LOG_CODE::MSG),
 	logFileName("ProximityLog.txt"),
 	directionalAudio(false), 
@@ -21,6 +22,7 @@ Settings::Settings() :
 		{ "log-file-path", "Path to the log file", &logFileName, OPTION_TYPE::STRING },
 		{ "no-log-console", "Disable logging to the console", &disableLogConsole, OPTION_TYPE::FLAG },
 		{ "no-log-file", "Disable logging to a file", &disableLogFile, OPTION_TYPE::FLAG },
+		{ "no-overlay", "Disable the configuration button overlay", &disableOverlay, OPTION_TYPE::FLAG },
 		{ "log-verbosity", "Log verbosity", &logVerbosity, OPTION_TYPE::INTEGER },
 		{ "ghost-voice-mode", "Set ghost voice mode\n; 0 = Purgatory\n; 1 = Spectate\n; 2 = Haunt", &ghostVoiceMode, OPTION_TYPE::INTEGER },
 		{ "directional-audio", "Enable directional audio", &directionalAudio, OPTION_TYPE::FLAG }
@@ -80,6 +82,7 @@ void Settings::Save()
 
 	// Settings have changed, update the audio map
 	RecalculateAudioMap();
+	logger.Log(LOG_CODE::INF, "Settings saved to file.");
 }
 
 // Read the command line arguments and config file

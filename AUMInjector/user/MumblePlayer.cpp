@@ -111,6 +111,12 @@ void MumblePlayer::InvalidatePositionCache()
 // Returns if the player is a ghost or not
 bool MumblePlayer::IsGhost() { return isGhost; }
 
+bool MumblePlayer::IsSabotaged() { return isSabotaged; }
+
+bool MumblePlayer::IsInMeeting() { return isInMeeting; }
+
+bool MumblePlayer::IsInGame() { return isInGame; }
+
 // Returns the mumble-ready position of the player
 float MumblePlayer::GetMumblePos(int i) { return posCache[appSettings.audioCoordinateMap[i]]; }
 

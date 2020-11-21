@@ -13,6 +13,12 @@ public:
 	// Returns if the player is a ghost or not
 	bool IsGhost();
 
+	bool IsSabotaged();
+
+	bool IsInMeeting();
+
+	bool IsInGame();
+
 	// --- Player Position --- 
 	// Returns the mumble-ready position of the player
 	float GetMumblePos(int i);
@@ -94,7 +100,6 @@ private:
 
 	// Reads private information to display it to the user
 	friend class PlayerInfoBlock;
-	friend class SettingsBlock;
 };
 
 extern MumblePlayer mumblePlayer;

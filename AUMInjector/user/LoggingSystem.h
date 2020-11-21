@@ -76,6 +76,7 @@ class LoggingSystem
 		// Verbosity level, anything above will not be logged
 		LOG_CODE verbosity = LOG_CODE::DBG;
 
+		friend class SettingsBlock;
 };
 
 // Global extern logging system

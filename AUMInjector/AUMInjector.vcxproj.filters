@@ -13,18 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{b5a3830b-3a31-40ff-a58e-389055c64f63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IL2CPP">
+      <UniqueIdentifier>{01d93443-da1d-4e8b-b361-aa15f2d03103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\imgui">
+      <UniqueIdentifier>{fcc4f05b-75ab-47f6-a0b4-07667bb2669b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Blocks">
+      <UniqueIdentifier>{e54bbdb0-93fa-41ef-a5db-8518033be4c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="user\main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="framework\il2cpp-init.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="user\winhttp.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\helpers.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="user\LoggingSystem.cpp">
@@ -33,8 +39,65 @@
     <ClCompile Include="user\MumbleLink.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="user\Settings.cpp">
+    <ClCompile Include="gui\D3D11Hooking.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\il2cpp-init.cpp">
+      <Filter>IL2CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\helpers.cpp">
+      <Filter>IL2CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GUI.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="user\MumblePlayer.cpp">
       <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui.cpp">
+      <Filter>GUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui_demo.cpp">
+      <Filter>GUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui_draw.cpp">
+      <Filter>GUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\imgui_widgets.cpp">
+      <Filter>GUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GUIBlock.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GUIWindow.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Blocks\PlayerInfoBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\backends\imgui_impl_dx11.cpp">
+      <Filter>GUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\imgui\backends\imgui_impl_win32.cpp">
+      <Filter>GUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Blocks\SettingsBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="user\settings.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\il2cpp-init.cpp">
+      <Filter>IL2CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\helpers.cpp">
+      <Filter>IL2CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Blocks\OverlayBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Blocks\AboutBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -45,27 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="user\main.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\il2cpp-appdata.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\il2cpp-init.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="appdata\il2cpp-api-functions.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="appdata\il2cpp-api-functions-ptr.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="appdata\il2cpp-functions.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="appdata\il2cpp-types.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="appdata\il2cpp-types-ptr.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -88,6 +130,81 @@
     </ClInclude>
     <ClInclude Include="user\Settings.h">
       <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="user\MumblePlayer.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="user\OrderedLock.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imgui.h">
+      <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imgui_internal.h">
+      <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imstb_rectpack.h">
+      <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imstb_textedit.h">
+      <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imstb_truetype.h">
+      <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\GUIBlock.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\GUIWindow.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\PlayerInfoBlock.h">
+      <Filter>GUI\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\backends\imgui_impl_dx11.h">
+      <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\backends\imgui_impl_win32.h">
+      <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\SettingsBlock.h">
+      <Filter>GUI\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="appdata\il2cpp-api-functions.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="appdata\il2cpp-api-functions-ptr.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\il2cpp-appdata.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="appdata\il2cpp-functions.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\il2cpp-init.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="appdata\il2cpp-types.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="appdata\il2cpp-types-ptr.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\D3D11Hooking.hpp">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\GUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imconfig.h">
+      <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\OverlayBlock.h">
+      <Filter>GUI\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\AboutBlock.h">
+      <Filter>GUI\Blocks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

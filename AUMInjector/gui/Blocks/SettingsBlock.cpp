@@ -21,7 +21,10 @@ void BoolComboHelper(bool &comboBoolean, const char* label)
         for (int n = 0; n < IM_ARRAYSIZE(booleanOptions); n++)
         {
             if (ImGui::Selectable(booleanOptions[n], booleanOptions[comboBoolean] == booleanOptions[n]))
+            {
                 comboBoolean = n;
+                appSettings.RecalculateAudioMap();
+            }
         }
         ImGui::EndCombo();
     }
@@ -59,11 +62,7 @@ void EnumComboHelper(const char* label, const char* str, const char** arr, ENUM_
     {
         for (int n = 0; n < (int)ENUM_TYPE::COUNT; n++)
             if (ImGui::Selectable(arr[n], (int)value == n))
-            {
                 value = (ENUM_TYPE)n;
-                appSettings.RecalculateAudioMap();
-            }
-               
         ImGui::EndCombo();
     }
 }

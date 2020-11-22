@@ -136,10 +136,10 @@ void MumblePlayer::SetFullVolume()
 // Sets the position cache, class may choose to override this value
 void MumblePlayer::SetPos(int i, float pos)
 {
-	if (!IsGhost())
-		posCache[i] = pos;
-	else if (isInMeeting)
+	if (isInMeeting) // Everyone in a meeting should be at 0,0
 		posCache[i] = 0.0f;
+	else if (!IsGhost())
+		posCache[i] = pos;
     else
     {
         // Override position based on ghost voice mode

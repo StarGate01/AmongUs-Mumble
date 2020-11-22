@@ -59,7 +59,11 @@ void EnumComboHelper(const char* label, const char* str, const char** arr, ENUM_
     {
         for (int n = 0; n < (int)ENUM_TYPE::COUNT; n++)
             if (ImGui::Selectable(arr[n], (int)value == n))
+            {
                 value = (ENUM_TYPE)n;
+                appSettings.RecalculateAudioMap();
+            }
+               
         ImGui::EndCombo();
     }
 }

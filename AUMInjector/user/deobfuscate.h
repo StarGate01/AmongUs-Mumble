@@ -37,7 +37,7 @@ using namespace app;
 	#define MeetingHud_Close_Trampoline GPOHFPAIEMA_Close
 	#define MeetingHud_Start_Trampoline GPOHFPAIEMA_Start
 	#define InnerNetClient_FixedUpdate_Trampoline DNAFMCDBMCI_FixedUpdate
-	#define InnerNetClient_Disconnect_Trampoline DNAFMCDBMCI_GPKBCOKMFHK //DNAFMCDBMCI_HandleDisconnect ? 
+	#define InnerNetClient_Disconnect_Trampoline DNAFMCDBMCI_GPKBCOKMFHK
 	#define HqHudOverrideTask_Initialize_Trampoline MMPIJGKLMDC_Initialize
 	#define HqHudOverrideTask_Complete_Trampoline MMPIJGKLMDC_Complete
 	#define HudOverrideTask_Initialize_Trampoline GFBKIHICFNI_Initialize

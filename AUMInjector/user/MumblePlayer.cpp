@@ -126,6 +126,10 @@ void MumblePlayer::SetPosX(float posX) { SetPos(0, posX); }
 // Set the y position cache, class may choose to override this value
 void MumblePlayer::SetPosY(float posY) { SetPos(1, posY); }
 
+int MumblePlayer::GetNetID() { return netID; }
+
+void MumblePlayer::SetNetID(int id) { netID = id; }
+
 // In mumble (0.0f, 0.0f) lets users hear each other better
 void MumblePlayer::SetFullVolume()
 {

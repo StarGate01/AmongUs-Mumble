@@ -60,8 +60,9 @@ public:
 	// Player exited a game
 	void ExitGame();
 
-	// Cached player network id
-	int netID = 0;
+	int GetNetID();
+
+	void SetNetID(int id);
 
 private:
 	// --- Ghost State --- 
@@ -97,6 +98,9 @@ private:
 	bool isInMeeting = false;
 	bool isSabotaged = false;
 	bool isInGame = false;
+
+	// Cached player network id
+	int netID = 0;
 
 	// Reads private information to display it to the user
 	friend class PlayerInfoBlock;

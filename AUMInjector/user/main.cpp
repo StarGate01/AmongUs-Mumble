@@ -59,7 +59,7 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
         mumblePlayer.SetPosX(pos.x);
         mumblePlayer.SetPosY(pos.y);
         // Cache network ID
-        mumblePlayer.netID = __this->fields._.NetId;
+        mumblePlayer.SetNetID(__this->fields._.NetId);
     }
 }
 
@@ -129,7 +129,7 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
                 // Broadcast config via chat
                 std::string messageText = SYNC_HEADER + appSettings.SerializeSync();
                 String* messageString = (String*)il2cpp_string_new(messageText.c_str());
-                MessageWriter* writer = InnerNetClient_StartRpc(__this, mumblePlayer.netID, 13, SendOption__Enum_Reliable, method);
+                MessageWriter* writer = InnerNetClient_StartRpc(__this, mumblePlayer.GetNetID(), 13, SendOption__Enum_Reliable, method);
                 MessageWriter_Write_String(writer, messageString, method);
                 MessageWriter_EndMessage(writer, method);
             }

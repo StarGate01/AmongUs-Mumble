@@ -24,6 +24,7 @@ void BoolComboHelper(bool &comboBoolean, const char* label)
             {
                 comboBoolean = n;
                 appSettings.RecalculateAudioMap();
+                appSettings.mustBroadcast = true;
             }
         }
         ImGui::EndCombo();
@@ -62,7 +63,10 @@ void EnumComboHelper(const char* label, const char* str, const char** arr, ENUM_
     {
         for (int n = 0; n < (int)ENUM_TYPE::COUNT; n++)
             if (ImGui::Selectable(arr[n], (int)value == n))
+            {
                 value = (ENUM_TYPE)n;
+                appSettings.mustBroadcast = true;
+            }
         ImGui::EndCombo();
     }
 }
@@ -71,18 +75,27 @@ void SettingsBlock::Update()
 {
     // Config settings that can be changed each round
     ImGui::Text("[ Game Settings ]");
-    ImGui::Text("These settings will be applied to the next round you host.");
 
     // If the user is in a game, don't let them change the settings and only display them
-    if (mumblePlayer.IsInGame())
+    if (mumblePlayer.IsInGame() || (mumblePlayer.IsInLobby() && !mumblePlayer.IsHost()))
     {
         // Print current settings only, as they can't be changed.
-        ImGui::Text("You cannot change game settings while in a round.");
+        if (mumblePlayer.IsInGame())
+        {
+            ImGui::Text("You cannot change game settings while in a round.");
+        }
+        else
+        {
+            ImGui::Text("You cannot change game settings.");
+            ImGui::Text("Only the lobby host can do that.");
+        }
         ImGui::Text("Ghost voice mode: %s", voiceText[(int)appSettings.ghostVoiceMode]);
         ImGui::Text("Directional Audio: %s", appSettings.directionalAudio ? "True" : "False");
     }
     else
     {
+        ImGui::Text("These settings will be applied to next round.");
+
         // Ghost voice mode verbosity setting
         if (ImGui::TreeNode("Ghost Voice Mode:"))
         {

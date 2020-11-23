@@ -111,6 +111,12 @@ bool MumblePlayer::IsInMeeting() { return isInMeeting; }
 
 bool MumblePlayer::IsInGame() { return isInGame; }
 
+bool MumblePlayer::IsInLobby() { return isInLobby; }
+
+bool MumblePlayer::IsHost() { return isHost; }
+
+void MumblePlayer::SetHost(bool host) { isHost = host; }
+
 // Returns the mumble-ready position of the player
 float MumblePlayer::GetMumblePos(int i) { return posCache[appSettings.audioCoordinateMap[i]]; }
 
@@ -186,11 +192,20 @@ void MumblePlayer::TryLogPosition(bool force)
 void MumblePlayer::EnterGame()
 {
     isInGame = true;
+    isInLobby = false;
+}
+
+// Player entered a lobby
+void MumblePlayer::EnterLobby()
+{
+    isInLobby = true;
+    isInGame = false;
 }
 
 // Player exited a game
 void MumblePlayer::ExitGame()
 {
     isInGame = false;
+    isInLobby = false;
 }
 

@@ -19,6 +19,12 @@ public:
 
 	bool IsInGame();
 
+	bool IsInLobby();
+
+	bool IsHost();
+
+	void SetHost(bool host);
+
 	// --- Player Position --- 
 	// Returns the mumble-ready position of the player
 	float GetMumblePos(int i);
@@ -60,6 +66,9 @@ public:
 	// Player exited a game
 	void ExitGame();
 
+	// Player entered a lobby
+	void EnterLobby();
+
 	int GetNetID();
 
 	void SetNetID(int id);
@@ -96,11 +105,14 @@ private:
 	
 	// -- Other State Info --
 	bool isInMeeting = false;
+	bool isInLobby = false;
 	bool isSabotaged = false;
 	bool isInGame = false;
 
 	// Cached player network id
 	int netID = 0;
+
+	bool isHost = false;
 
 	// Reads private information to display it to the user
 	friend class PlayerInfoBlock;

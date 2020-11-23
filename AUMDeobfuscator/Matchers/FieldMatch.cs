@@ -1,11 +1,12 @@
 ﻿using System;
+using AUMDeobfuscator.Matchers.Bases;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace AUMDeobfuscator.Matchers
 {
-    public class FieldMatch : MemberMatchBase<FieldDeclarationSyntax>
+    public class FieldMatch : ClassMemberMatchBase<FieldDeclarationSyntax>
     {
-        public FieldMatch(ClassMatchChain thisClass) : base(thisClass)
+        public FieldMatch(ClassMatch parent) : base(parent)
         {
         }
 

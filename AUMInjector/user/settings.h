@@ -84,6 +84,8 @@ class Settings
 
 		// Should the sync settings be broadcasted ont he next tick
 		bool mustBroadcast = false;
+		long long lastBroadcastMs = 0;
+
 
 		// Setup argument parser
 		Settings();

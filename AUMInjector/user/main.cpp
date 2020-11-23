@@ -6,6 +6,7 @@
 #include <iostream>
 #include <limits>
 #include <thread>
+#include <chrono>
 #include <codecvt>
 #include "il2cpp-init.h"
 #include "il2cpp-appdata.h"
@@ -117,8 +118,15 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
     // Check if the host should broadcast the settings due to GUI change
     if (appSettings.mustBroadcast && mumblePlayer.IsHost())
     {
-        BroadcastSettings(__this);
-        appSettings.mustBroadcast = false;
+        // Only broadcast at most every three seconds to prevent spam detection
+        long long timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch()).count();
+        if ((timestamp - appSettings.lastBroadcastMs) >= 3000)
+        {
+            BroadcastSettings(__this);
+            appSettings.mustBroadcast = false;
+            appSettings.lastBroadcastMs = timestamp;
+        }
     }
 
     // Check if game state changed to lobby
@@ -222,9 +230,11 @@ void AmongUsClient_OnPlayerJoined_Hook(AmongUsClient* __this, ClientData* data, 
     logger.Log(LOG_CODE::MSG, "Player joined lobby");
 
     // New player joins -> Re-broadcast settings from host
-    if (__this->fields._.ClientId == __this->fields._.HostId)
+    // Only if joining player is not host
+    if ((__this->fields._.ClientId == __this->fields._.HostId) &&  
+        (data->fields.Id != __this->fields._.HostId))
     {
-        BroadcastSettings((InnerNetClient*)__this);
+        appSettings.mustBroadcast = true;
     }
 }
 

@@ -93,10 +93,33 @@ void MeetingHud_Start_Hook(MeetingHud* __this, MethodInfo* method)
     mumblePlayer.StartMeeting();
 }
 
+// Broadcast the current settings
+void BroadcastSettings(InnerNetClient* client)
+{
+    logger.Log(LOG_CODE::MSG, "Sending configuration: " + appSettings.HumanReadableSync());
+
+    // Broadcast config via chat
+    std::string messageText = SYNC_HEADER + appSettings.SerializeSync();
+    String* messageString = (String*)il2cpp_string_new(messageText.c_str());
+    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, mumblePlayer.GetNetID(), 13, SendOption__Enum_Reliable, NULL);
+    MessageWriter_Write_String_Trampoline(writer, messageString, NULL);
+    MessageWriter_EndMessage(writer, NULL);
+}
+
 // Fixed loop for the game client
 void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
 {
     InnerNetClient_FixedUpdate_Trampoline(__this, method);
+
+    // Set if player is host
+    mumblePlayer.SetHost(__this->fields.ClientId == __this->fields.HostId);
+
+    // Check if the host should broadcast the settings due to GUI change
+    if (appSettings.mustBroadcast && mumblePlayer.IsHost())
+    {
+        BroadcastSettings(__this);
+        appSettings.mustBroadcast = false;
+    }
 
     // Check if game state changed to lobby
     if (__this->fields.GameState != lastGameState)
@@ -109,34 +132,13 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             // Reset options to local version
             appSettings.Parse();
             mumblePlayer.ResetState();
-            mumblePlayer.ExitGame();
-
-            // For testing ghost voice modes (set user to "ghost" by default)
-            //        Sleep(1000);
-            //        mumblePlayer.EnterGhostState();
+            mumblePlayer.EnterLobby();
         }
         else if (__this->fields.GameState == InnerNetClient_GameState__Enum_Started)
         {
             logger.Log(LOG_CODE::MSG, "Round started");
 
             mumblePlayer.EnterGame();
-
-            // Check if client is hosting
-            if (__this->fields.ClientId == __this->fields.HostId)
-            {
-                logger.Log(LOG_CODE::MSG, "Sending configuration: " + appSettings.HumanReadableSync());
-
-                // Broadcast config via chat
-                std::string messageText = SYNC_HEADER + appSettings.SerializeSync();
-                String* messageString = (String*)il2cpp_string_new(messageText.c_str());
-                MessageWriter* writer = InnerNetClient_StartRpc(__this, mumblePlayer.GetNetID(), 13, SendOption__Enum_Reliable, method);
-                MessageWriter_Write_String(writer, messageString, method);
-                MessageWriter_EndMessage(writer, method);
-            }
-            else
-            {
-                logger.Log(LOG_CODE::MSG, "Will not broadcast configuration, waiting for host");
-            }
         }
     }
     lastGameState = __this->fields.GameState;
@@ -213,6 +215,19 @@ void HudOverrideTask_Complete_Hook(HudOverrideTask* __this, MethodInfo* method)
     UpdateComms(false);
 }
 
+// Gets called when a player joins
+void AmongUsClient_OnPlayerJoined_Hook(AmongUsClient* __this, ClientData* data, MethodInfo* method)
+{
+    AmongUsClient_OnPlayerJoined_Trampoline(__this, data, method);
+    logger.Log(LOG_CODE::MSG, "Player joined lobby");
+
+    // New player joins -> Re-broadcast settings from host
+    if (__this->fields._.ClientId == __this->fields._.HostId)
+    {
+        BroadcastSettings((InnerNetClient*)__this);
+    }
+}
+
 //// This sets the keypad on mirahq to 10% speed for testing
 //void IGHKMHLJFLI_Detoriorate_Hook(IGHKMHLJFLI* __this, float PCHPGLOMPLD, MethodInfo* method)
 //{
@@ -235,7 +250,7 @@ void ChatController_AddChat_Hook(ChatController* __this, PlayerControl* sourcePl
         switch (result)
         {
         case SYNC_SUCCESS:
-            logger.Log(LOG_CODE::INF, "Got configuration: " + appSettings.HumanReadableSync());
+            logger.Log(LOG_CODE::MSG, "Got configuration: " + appSettings.HumanReadableSync());
             break;
         case SYNC_ERROR_NUM_ARGS:
             logger.Log(LOG_CODE::ERR, "Got bad configuration (invalid number of arguments), ignoring");
@@ -312,6 +327,7 @@ void Run()
         DetourAttach(&(PVOID&)HudOverrideTask_Initialize_Trampoline, HudOverrideTask_Initialize_Hook);
         DetourAttach(&(PVOID&)HudOverrideTask_Complete_Trampoline, HudOverrideTask_Complete_Hook);
         DetourAttach(&(PVOID&)ChatController_AddChat_Trampoline, ChatController_AddChat_Hook);
+        DetourAttach(&(PVOID&)AmongUsClient_OnPlayerJoined_Trampoline, AmongUsClient_OnPlayerJoined_Hook);
         //DetourAttach(&(PVOID&)IGHKMHLJFLI_Detoriorate, IGHKMHLJFLI_Detoriorate_Hook);
 
         //dynamic_analysis_attach();

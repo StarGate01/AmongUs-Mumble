@@ -82,6 +82,9 @@ class Settings
 		bool directionalAudio;
 		GHOST_VOICE_MODE ghostVoiceMode;
 
+		// Should the sync settings be broadcasted ont he next tick
+		bool mustBroadcast = false;
+
 		// Setup argument parser
 		Settings();
 

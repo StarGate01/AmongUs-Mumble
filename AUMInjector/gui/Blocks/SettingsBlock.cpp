@@ -14,7 +14,7 @@ const char* verbosityText[] = { "Error", "Warning", "Info", "Message", "Debug" }
 SettingsBlock::SettingsBlock() { }
 
 // Creates a combo for booleans
-void BoolComboHelper(bool &comboBoolean, const char* label)
+void BoolComboHelper(bool &comboBoolean, const char* label, bool shouldRecalculateAudio = false)
 {
     if (ImGui::BeginCombo((std::string("##") + label).c_str(), booleanOptions[comboBoolean]))
     {
@@ -23,10 +23,15 @@ void BoolComboHelper(bool &comboBoolean, const char* label)
             if (ImGui::Selectable(booleanOptions[n], booleanOptions[comboBoolean] == booleanOptions[n]))
             {
                 comboBoolean = n;
-                appSettings.RecalculateAudioMap();
-                appSettings.mustBroadcast = true;
-            }
-        }
+
+                // In the case that audio settings are being changed
+                if(shouldRecalculateAudio)
+                {
+					appSettings.RecalculateAudioMap();
+					appSettings.mustBroadcast = true;
+				}
+			}
+		}
         ImGui::EndCombo();
     }
 }
@@ -118,7 +123,7 @@ void SettingsBlock::Update()
             ImGui::Text("It changes how positional audio sounds.");
             ImGui::TreePop();
         }
-        BoolComboHelper(appSettings.directionalAudio, "directionalAudio");
+        BoolComboHelper(appSettings.directionalAudio, "directionalAudio", true);
     }
 
     ImGui::Separator();

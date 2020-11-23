@@ -9,14 +9,24 @@ namespace AUMDeobfuscator.Search
 {
     public static class Parser
     {
-        private static IEnumerable<ClassDeclarationSyntax> ParseFile(string path)
+        private static IEnumerable<BaseTypeDeclarationSyntax> ParseFile(string path)
         {
             var content = File.ReadAllText(path);
             
             var s = CSharpSyntaxTree.ParseText(content).GetRoot();
-            var classDeclarationSyntaxes = s.ChildNodes().OfType<ClassDeclarationSyntax>();
-            var declarationSyntaxes = classDeclarationSyntaxes.ToList();
+            var classDeclarationSyntaxes = s.ChildNodes().OfType<BaseTypeDeclarationSyntax>();
+            var declarationSyntaxes = classDeclarationSyntaxes.SelectMany(DoParseFile).ToList();
             return declarationSyntaxes;
+        }
+
+        public static List<BaseTypeDeclarationSyntax> DoParseFile(BaseTypeDeclarationSyntax stx)
+        {
+            List<BaseTypeDeclarationSyntax> declarations = new(){stx};
+            foreach (var baseTypeDeclarationSyntax in stx.ChildNodes().OfType<BaseTypeDeclarationSyntax>())
+            {
+                declarations.AddRange(DoParseFile(baseTypeDeclarationSyntax));
+            }
+            return declarations;
         }
 
         public static void AddAllClassesIn(string dir, string searchFolder, string? basedir = null)

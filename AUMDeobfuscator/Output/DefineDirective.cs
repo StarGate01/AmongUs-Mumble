@@ -9,6 +9,9 @@ namespace AUMDeobfuscator.Output
     {
         private MethodMatch _name;
         private MethodDeclarationSyntax _realname;
+        
+        public bool Multiple = false;
+        public bool Separator = false;
 
         public DefineDirective(MethodMatch name, MethodDeclarationSyntax realname)
         {

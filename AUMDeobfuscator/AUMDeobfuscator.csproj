@@ -11,7 +11,14 @@
         <Authors>LelouBil</Authors>
         <Company>AUMDeobfuscator</Company>
         <Product>AUMDeobfuscator</Product>
-        <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <PlatformTarget>AnyCPU</PlatformTarget>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <PlatformTarget>AnyCPU</PlatformTarget>
     </PropertyGroup>
 
     <ItemGroup>

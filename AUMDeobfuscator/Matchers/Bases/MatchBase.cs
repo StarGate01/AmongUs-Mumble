@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using AUMDeobfuscator.Output;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace AUMDeobfuscator.Matchers.Bases
 {
     public abstract class MatchBase<T> where T : CSharpSyntaxNode
     {
+        public bool not = false;
         
         protected object? Parent { get; set; }
 
@@ -17,7 +19,7 @@ namespace AUMDeobfuscator.Matchers.Bases
         }
 
         
-        public string Tag { get; private set; }
+        public string Tag { get; set; }
         
         protected MatchBase(): this(null)
         {
@@ -39,6 +41,8 @@ namespace AUMDeobfuscator.Matchers.Bases
             _predStrings.Add(s);
         }
 
+
+
         public bool Matches(T? f)
         {
             var verbose = Program.Debug;
@@ -54,8 +58,12 @@ namespace AUMDeobfuscator.Matchers.Bases
                     Program.IndentLevel++;
                 }
                 var p = Predicates[i];
-                if (f != null && !p.Invoke(f))
+                if (f == null || !p.Invoke(f))
                 {
+                    if (f == null)
+                    {
+                        //Program.WriteLine("[WARNING] Null value");
+                    }
                     if (verbose)
                     {
                         Program.WriteLine(ConsoleColor.Red,"Failed, stopping chain");
@@ -64,10 +72,7 @@ namespace AUMDeobfuscator.Matchers.Bases
                     return false;
                 }
 
-                if (f == null)
-                {
-                    Program.WriteLine("[WARNING] Null value");
-                }
+               
 
                 if (verbose)
                 {

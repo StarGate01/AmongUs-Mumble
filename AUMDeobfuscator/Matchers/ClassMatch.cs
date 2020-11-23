@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using AUMDeobfuscator.Matchers.Bases;
 using AUMDeobfuscator.Output;
@@ -19,7 +20,10 @@ namespace AUMDeobfuscator.Matchers
         {
              AddPred("has fields",delegate(ClassDeclarationSyntax cls)
             {
-                
+                if (cls.Identifier.ToString() == "MHKPCHGHHOK")
+                {
+                    Debugger.Break();
+                }
                 var fl = new List<FieldDeclarationSyntax?>(cls.Members.OfType<FieldDeclarationSyntax>());
                 foreach (var fieldMatch in _fieldMatches)
                 {
@@ -50,6 +54,8 @@ namespace AUMDeobfuscator.Matchers
                             continue;
                         }
 
+                       
+
                         Registry.AddMatchedMember(fieldMatch, f);
 
 
@@ -67,7 +73,7 @@ namespace AUMDeobfuscator.Matchers
                        
                         Program.IndentLevel--;
                     }
-                    if (!matched) return false;
+                    if (!matched && !fieldMatch.not) return false;
                 }
 
                 return true;
@@ -134,7 +140,17 @@ namespace AUMDeobfuscator.Matchers
             AddPred("subtype matches",delegate(ClassDeclarationSyntax c)
             {
                 return c.BaseList?.Types.Any(
-                    bc => superClass.Matches(Registry.GetClass(bc.ToString()) as ClassDeclarationSyntax)) ?? false;
+                    bc => superClass.Matches(Registry.GetClass<BaseTypeDeclarationSyntax>(bc.ToString()) as ClassDeclarationSyntax)) ?? false;
+            });
+            return this;
+        }
+        
+        public ClassMatch OfNamedSuperClass(string superClass)
+        {
+            AddPred("subtype named",delegate(ClassDeclarationSyntax c)
+            {
+                return c.BaseList?.Types.Any(
+                    bc => bc.ToString() == superClass)?? false;
             });
             return this;
         }
@@ -153,6 +169,14 @@ namespace AUMDeobfuscator.Matchers
         public FieldMatch WithField()
         {
             FieldMatch f = new(this);
+            _fieldMatches.Add(f);
+            return f;
+        }
+        
+        public FieldMatch WithOutField()
+        {
+            FieldMatch f = new(this);
+            f.not = true;
             _fieldMatches.Add(f);
             return f;
         }
@@ -176,6 +200,28 @@ namespace AUMDeobfuscator.Matchers
             m.Class = this;
             _methodMatches.Add(m);
             return m;
+        }
+
+        public ClassMatch OfSuperClassCount(int count)
+        {
+            AddPred($"Has {count} superclasses",c => c.BaseList == null && count == 0 || c.BaseList?.Types.Count == count);
+            return this;
+        }
+        public ClassMatch OfSuperAtLeastClassCount(int count)
+        {
+            AddPred($"Has at least {count} superclasses",c => c.BaseList == null && count >= 0 || c.BaseList?.Types.Count >= count);
+            return this;
+        }
+        public ClassMatch OfAtMostSuperClassCount(int count)
+        {
+            AddPred($"Has at most {count} superclasses",c => c.BaseList == null && count == 0 || c.BaseList?.Types.Count <= count);
+            return this;
+        }
+
+        public ClassMatch Not()
+        {
+            not = true;
+            return this;
         }
     }
 }

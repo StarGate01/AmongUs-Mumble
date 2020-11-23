@@ -28,17 +28,57 @@ namespace AUMDeobfuscator.Output
             
             foreach (var usingDirective in UsingDirectives)
             {
+                if (usingDirective.Separator)
+                {
+                  
+
+                    builder.AppendLine("// -------------------");
+                }
+
+                if (usingDirective.Multiple)
+                {
+                    builder.Append('!');
+                }
                 builder.AppendLine(usingDirective.ToString());
+
             }
-            
+
+
             foreach (var enumValueDirective in EnumValueDirectives)
             {
+                if (enumValueDirective.Separator)
+                {
+                  
+
+                    builder.AppendLine("// -------------------");
+                }
+
+                if (enumValueDirective.Multiple)
+                {
+                    builder.Append('!');
+                }
                 builder.AppendLine(enumValueDirective.ToString());
+
+
             }
+
             
             foreach (var defineDirectives in DefineDirectives)
             {
+                if (defineDirectives.Separator)
+                {
+                  
+
+                    builder.AppendLine("// -------------------");
+                }
+
+                if (defineDirectives.Multiple)
+                {
+                    builder.Append('!');
+                }
+                
                 builder.AppendLine(defineDirectives.ToString());
+
             }
 
             return builder.ToString();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using AUMDeobfuscator.Matchers;
 using AUMDeobfuscator.Matchers.Bases;
@@ -98,17 +99,24 @@ namespace AUMDeobfuscator.Commands
                 .GetNestedTypes().SelectMany(nt => nt.GetFields(BindingFlags.Public | BindingFlags.Static)
                     .Select(s => s.GetValue(null)).OrderBy(v => v is EnumMatch or ClassMatch ? 0 : 1)).ToList();
 
+            
+            
             foreach (var value in properties)
             {
                 //console.Output.WriteLine(value);
+                bool multiple;
+                bool separator;
                 switch (value)
                 {
                     case ClassMatch m:
                         List<ClassDeclarationSyntax> classes = Searching.SearchForClass(m);
                         Searching.DisplayMatches(m, classes);
+                        multiple = classes.Count > 1;
+                        separator = multiple;
                         foreach (var classDeclarationSyntax in classes)
                         {
-                            template.UsingDirectives.Add(new UsingDirective(m, classDeclarationSyntax));
+                            template.UsingDirectives.Add(new UsingDirective(m, classDeclarationSyntax){Multiple = multiple, Separator = separator});
+                            if(separator) separator = false;
                         }
 
                         break;
@@ -118,9 +126,27 @@ namespace AUMDeobfuscator.Commands
                         List<MethodDeclarationSyntax> s = classDeclarationSyntaxes.SelectMany(cls => cls.SearchForMethod(m))
                             .ToList();
                         Searching.DisplayMatches(m, s);
+                        multiple = s.Count > 1;
+                        separator = multiple;
                         foreach (var methodDeclarationSyntax in s)
                         {
-                            template.DefineDirectives.Add(new DefineDirective(m, methodDeclarationSyntax));
+                            template.DefineDirectives.Add(new DefineDirective(m, methodDeclarationSyntax){Multiple = multiple, Separator = separator});
+                            if(separator) separator = false;
+                        }
+
+                        break;
+                    
+                    case FieldMatch fm:
+                        var cds = Registry.GetMatchedType(fm.Class);
+                        List<FieldDeclarationSyntax> fs = cds.SelectMany(cls => cls.SearchForField(fm))
+                            .ToList();
+                        Searching.DisplayMatches(fm, fs);
+                        multiple = fs.Count > 1;
+                        separator = multiple;
+                        foreach (var fieldDeclarationSyntax in fs)
+                        {
+                            template.UsingDirectives.Add(new UsingDirective(fm, fieldDeclarationSyntax){Multiple = multiple, Separator = separator});
+                            if(separator) separator = false;
                         }
 
                         break;
@@ -128,9 +154,12 @@ namespace AUMDeobfuscator.Commands
                     case EnumMatch m:
                         var enums = Searching.SearchForEnum(m);
                         Searching.DisplayMatches(m, enums);
+                        multiple = enums.Count > 1;
+                        separator = multiple;
                         foreach (var enumDeclarationSyntax in enums)
                         {
-                            template.UsingDirectives.Add(new UsingDirective(m, enumDeclarationSyntax));
+                            template.UsingDirectives.Add(new UsingDirective(m, enumDeclarationSyntax){Multiple = multiple, Separator = separator});
+                            if(separator) separator = false;
                         }
 
                         break;
@@ -140,9 +169,17 @@ namespace AUMDeobfuscator.Commands
                         List<EnumMemberDeclarationSyntax> enumMemberDeclarationSyntaxes =
                             enumDeclarationSyntaxes.SelectMany(eds => eds.SearchForEnumValue(em)).ToList();
                         Searching.DisplayMatches(em, enumMemberDeclarationSyntaxes);
-                        foreach (var enumDeclarationSyntax in enumDeclarationSyntaxes)
+                        multiple = enumMemberDeclarationSyntaxes.Count > 1;
+                        separator = multiple;
+                        foreach (var enumDeclarationSyntax in enumMemberDeclarationSyntaxes)
                         {
-                            template.UsingDirectives.Add(new UsingDirective(em, enumDeclarationSyntax));
+                            var enumValueDirective = new EnumValueDirective(em, enumDeclarationSyntax)
+                            {
+                                Multiple = multiple, Separator = separator
+                            };
+                            template.EnumValueDirectives.Add(enumValueDirective);
+                            
+                            if(separator) separator = false;
                         }
 
                         break;

@@ -8,6 +8,9 @@ namespace AUMDeobfuscator.Output
     {
         private EnumValueMatch _enumMatch;
         private EnumMemberDeclarationSyntax _member;
+        
+        public bool Multiple = false;
+        public bool Separator = false;
 
         public EnumValueDirective(EnumValueMatch enumMatch, EnumMemberDeclarationSyntax member)
         {

@@ -68,11 +68,24 @@ namespace AUMDeobfuscator.Matchers
             });
         }
         
+        public EnumMatch WithTag(string tag)
+        {
+             SetTag(tag);
+             return this;
+        }
+        
         public EnumValueMatch WithMember()
         {
             var enumValueMatch = new EnumValueMatch(this);
             EnumValueMatches.Add(enumValueMatch);
             return enumValueMatch;
+        }
+        
+        public EnumMatch WithMember(EnumValueMatch match)
+        {
+            match.Enum = this;
+            EnumValueMatches.Add(match);
+            return this;
         }
         
         

@@ -12,9 +12,12 @@ namespace AUMDeobfuscator.Output
     public class UsingDirective
     {
         private object _type; //i can't c# here, idk how to use generics properly for this use case
-        private BaseTypeDeclarationSyntax  _value;
+        private CSharpSyntaxNode  _value;
+        
+        public bool Multiple = false;
+        public bool Separator = false;
 
-        public UsingDirective(object type, BaseTypeDeclarationSyntax value) 
+        public UsingDirective(object type, CSharpSyntaxNode value) 
         {
             _type = type;
             _value = value;
@@ -37,7 +40,16 @@ namespace AUMDeobfuscator.Output
             }
             
             builder.Append(" = ");
-            builder.Append(BuildFullTypeName(_value));
+            switch (_value)
+            {
+                case BaseTypeDeclarationSyntax b:
+                    builder.Append(BuildFullTypeName(b));
+                    break;
+                case MemberDeclarationSyntax m:
+                    builder.Append(BuildFullMemberName(m));
+                    break;
+            }
+            
             builder.Append(';');
 
             return builder.ToString();
@@ -118,6 +130,7 @@ namespace AUMDeobfuscator.Output
             {
                 ClassMatch or EnumMatch => BuildFullTypeTag((dynamic) matchBase),
                 EnumValueMatch or FieldMatch or MethodMatch => BuildFullMemberTag((dynamic) matchBase),
+                ParameterMatch => "Parameter",
                 _ => throw new ArgumentOutOfRangeException(nameof(matchBase))
             };
         }
@@ -128,6 +141,7 @@ namespace AUMDeobfuscator.Output
             {
                 BaseTypeDeclarationSyntax b => BuildFullTypeName(b),
                 MemberDeclarationSyntax m => BuildFullMemberName(m),
+                ParameterSyntax p => "Parameter",
                 _ => throw new ArgumentOutOfRangeException(nameof(cSharpSyntaxNode), cSharpSyntaxNode, null)
             };
         }

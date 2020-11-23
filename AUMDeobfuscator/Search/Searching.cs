@@ -23,14 +23,35 @@ namespace AUMDeobfuscator.Search
 
             List<ClassDeclarationSyntax> ls = Registry.GetMatchedType(classMatch);
 
-            if (ls.Count == 0 || Program.SkipOne)
+            if (!Program.SkipOne)
                 ls = Registry.AssemblyCs.Values.Where(c => c is ClassDeclarationSyntax cl && classMatch.Matches(cl))
                     .Cast<ClassDeclarationSyntax>().ToList();
 
+            List<ClassDeclarationSyntax> toRemove = new();
+            
             foreach (var classDeclarationSyntax in ls)
             {
-                Registry.AddMatchedType(classMatch, classDeclarationSyntax);
+                if (Registry.Fullmatches.Contains(classDeclarationSyntax))
+                {
+                    toRemove.Add(classDeclarationSyntax);
+                }
+                else
+                {
+                    Registry.AddMatchedType(classMatch, classDeclarationSyntax);
+                }
             }
+            
+            foreach (var torm in toRemove)
+            {
+                ls.Remove(torm);
+            }
+
+            if (ls.Count == 1)
+            {
+                Registry.Fullmatches.Add(ls[0]);
+            }
+
+            
 
             if (Program.Debug)
             {
@@ -50,7 +71,7 @@ namespace AUMDeobfuscator.Search
 
             List<EnumDeclarationSyntax> ls = Registry.GetMatchedType(enumMatch);
 
-            if (ls.Count == 0 || Program.SkipOne)
+            if (!Program.SkipOne)
                 ls = Registry.AssemblyCs.Values.Where(c => c is EnumDeclarationSyntax e && enumMatch.Matches(e))
                     .Cast<EnumDeclarationSyntax>().ToList();
 
@@ -66,6 +87,28 @@ namespace AUMDeobfuscator.Search
 
             return ls;
         }
+        
+        public static List<FieldDeclarationSyntax> SearchForField(this ClassDeclarationSyntax type,FieldMatch fieldMatch)
+        {
+            if (Program.Debug)
+            {
+                Program.WriteLine(ConsoleColor.Yellow,$"Trying to find {{{UsingDirective.BuildFullMemberTag(fieldMatch)}}}");
+                Program.IndentLevel++;
+            }
+
+            List<FieldDeclarationSyntax> s = Registry.GetMatchedMember(fieldMatch);
+            if (!Program.SkipOne)
+                s = type.Members.OfType<FieldDeclarationSyntax>().Where(fieldMatch.Matches)
+                    .ToList();
+
+
+            if (Program.Debug)
+            {
+                Program.IndentLevel--;
+            }
+
+            return s;
+        }
 
         public static List<MethodDeclarationSyntax> SearchForMethod(this ClassDeclarationSyntax classDeclaration,
             MethodMatch methodMatch)
@@ -77,9 +120,13 @@ namespace AUMDeobfuscator.Search
             }
 
             List<MethodDeclarationSyntax> s = Registry.GetMatchedMember(methodMatch);
-            if (s.Count == 0 || Program.SkipOne)
-                s = classDeclaration.Members.OfType<MethodDeclarationSyntax>().Where(m => methodMatch.Matches(m))
+
+            if(!Program.SkipOne)
+            {
+                Program.WriteLine(ConsoleColor.Red, "Skipping for speed");
+                s = classDeclaration.Members.OfType<MethodDeclarationSyntax>().Where(methodMatch.Matches)
                     .ToList();
+            }
 
             if (Program.Debug)
             {
@@ -100,7 +147,7 @@ namespace AUMDeobfuscator.Search
             }
 
             List<EnumMemberDeclarationSyntax> s = Registry.GetMatchedMember(valueMatch);
-            if (s.Count == 0 || Program.SkipOne)
+            if (!Program.SkipOne)
                 s = enumDeclaration.Members.Where(m => valueMatch.Matches(m))
                     .ToList();
 

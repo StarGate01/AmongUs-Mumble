@@ -11,6 +11,8 @@ namespace AUMDeobfuscator.Search
     {
         private static readonly Dictionary<string,BaseTypeDeclarationSyntax> ContextClasses = new();
         public static readonly Dictionary<string,BaseTypeDeclarationSyntax> AssemblyCs = new();
+
+        public static readonly List<ClassDeclarationSyntax> Fullmatches = new();
         
         
         private static readonly Dictionary<ClassMatch, List<BaseTypeDeclarationSyntax>?> Classes = new();
@@ -21,9 +23,11 @@ namespace AUMDeobfuscator.Search
         private static readonly Dictionary<MethodMatch, List<MemberDeclarationSyntax>?> Methods = new();
         private static readonly Dictionary<EnumValueMatch, List<MemberDeclarationSyntax>?> EnumMember = new();
         
-        public static BaseTypeDeclarationSyntax? GetClass(string name)
+
+        
+        public static T? GetClass<T>(string? name) where T : BaseTypeDeclarationSyntax
         {
-            return ContextClasses.GetValueOrDefault(name);
+            return name == null ? null : ContextClasses.GetValueOrDefault(name) as T;
         }
 
         public static void AddMatchedType<T>(TypeMatchBase<T> m, BaseTypeDeclarationSyntax bl) where T : BaseTypeDeclarationSyntax
@@ -80,15 +84,22 @@ namespace AUMDeobfuscator.Search
 
         public static List<T> GetMatchedMember<T,TU>(MemberMatchBase<T,TU> m) where T : MemberDeclarationSyntax where TU : BaseTypeDeclarationSyntax
         {
-            return (m switch
+            try
             {
-                FieldMatch cm => Fields[cm],
-                EnumValueMatch em => EnumMember[em],
-                MethodMatch em => Methods[em],
-                _ => throw new ArgumentOutOfRangeException(nameof(m))
-            } ?? new List<MemberDeclarationSyntax>()).Cast<T>().ToList();
+                return (m switch
+                {
+                    FieldMatch cm => Fields[cm],
+                    EnumValueMatch em => EnumMember[em],
+                    MethodMatch em => Methods[em],
+                    _ => throw new ArgumentOutOfRangeException(nameof(m))
+                } ?? new List<MemberDeclarationSyntax>()).Cast<T>().ToList();
+            }
+            catch (KeyNotFoundException e)
+            {
+                return new List<T>();
+            }
         }
-        
+
         public static List<T> GetMatchedType<T>(TypeMatchBase<T> m) where T : BaseTypeDeclarationSyntax
         {
             try

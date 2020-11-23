@@ -1,5 +1,6 @@
 ﻿using System;
 using AUMDeobfuscator.Matchers.Bases;
+using AUMDeobfuscator.Search;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace AUMDeobfuscator.Matchers
@@ -10,9 +11,15 @@ namespace AUMDeobfuscator.Matchers
         {
         }
 
-        public FieldMatch OfType(string type)
+        public FieldMatch WithNamedType(string type)
         {
-            AddPred($"type : {type}",f => f.Declaration.Type.ToString() == type);
+            AddPred($"named type : {type}",f => f.Declaration.Type.ToString() == type);
+            return this;
+        }
+        
+        public FieldMatch WithType<T>(TypeMatchBase<T> typeMatchBase) where T : BaseTypeDeclarationSyntax
+        {
+            AddPred("type matches", p => typeMatchBase.Matches(Registry.GetClass<T>(p.Declaration.Type.ToString())));
             return this;
         }
 

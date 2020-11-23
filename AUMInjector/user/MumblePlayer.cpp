@@ -117,6 +117,12 @@ bool MumblePlayer::IsInMeeting() { return isInMeeting; }
 
 bool MumblePlayer::IsInGame() { return isInGame; }
 
+bool MumblePlayer::IsInLobby() { return isInLobby; }
+
+bool MumblePlayer::IsHost() { return isHost; }
+
+void MumblePlayer::SetHost(bool host) { isHost = host; }
+
 // Returns the mumble-ready position of the player
 float MumblePlayer::GetMumblePos(int i) { return posCache[appSettings.audioCoordinateMap[i]]; }
 
@@ -125,6 +131,10 @@ void MumblePlayer::SetPosX(float posX) { SetPos(0, posX); }
 
 // Set the y position cache, class may choose to override this value
 void MumblePlayer::SetPosY(float posY) { SetPos(1, posY); }
+
+int MumblePlayer::GetNetID() { return netID; }
+
+void MumblePlayer::SetNetID(int id) { netID = id; }
 
 // In mumble (0.0f, 0.0f) lets users hear each other better
 void MumblePlayer::SetFullVolume()
@@ -136,10 +146,10 @@ void MumblePlayer::SetFullVolume()
 // Sets the position cache, class may choose to override this value
 void MumblePlayer::SetPos(int i, float pos)
 {
-	if (!IsGhost())
-		posCache[i] = pos;
-	else if (isInMeeting)
+	if (isInMeeting) // Everyone in a meeting should be at 0,0
 		posCache[i] = 0.0f;
+	else if (!IsGhost())
+		posCache[i] = pos;
     else
     {
         // Override position based on ghost voice mode
@@ -188,11 +198,20 @@ void MumblePlayer::TryLogPosition(bool force)
 void MumblePlayer::EnterGame()
 {
     isInGame = true;
+    isInLobby = false;
+}
+
+// Player entered a lobby
+void MumblePlayer::EnterLobby()
+{
+    isInLobby = true;
+    isInGame = false;
 }
 
 // Player exited a game
 void MumblePlayer::ExitGame()
 {
     isInGame = false;
+    isInLobby = false;
 }
 

@@ -28,6 +28,7 @@ using namespace app;
 	using HqHudOverrideTask = MMPIJGKLMDC;
 	using HudOverrideTask = GFBKIHICFNI;
 	using ChatController = MLINJDBIIEC;
+	using AmongUsClient = JNFEHNLGIFF;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = DNAFMCDBMCI_JPCEFDHGHAK__Enum_Joined;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = DNAFMCDBMCI_JPCEFDHGHAK__Enum_Ended;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Started = DNAFMCDBMCI_JPCEFDHGHAK__Enum_Started;
@@ -43,8 +44,9 @@ using namespace app;
 	#define HudOverrideTask_Initialize_Trampoline GFBKIHICFNI_Initialize
 	#define HudOverrideTask_Complete_Trampoline GFBKIHICFNI_Complete
 	#define ChatController_AddChat_Trampoline MLINJDBIIEC_AddChat
-	#define InnerNetClient_StartRpc DNAFMCDBMCI_StartRpc
-	#define MessageWriter_Write_String MessageWriter_Write_6
+	#define InnerNetClient_StartRpc_Trampoline DNAFMCDBMCI_StartRpc
+	#define MessageWriter_Write_String_Trampoline MessageWriter_Write_6
+	#define AmongUsClient_OnPlayerJoined_Trampoline JNFEHNLGIFF_IKDNNJNBKBO
 
 	// Stuff I researched at one point but thats not required atm
 	//SystemTypes__Enum SystemTypes__Enum_Comms = JBPEMAACAEP__Enum_Comms;
@@ -75,6 +77,7 @@ using namespace app;
 	using HqHudOverrideTask = OFCAMODPCOA;
 	using HudOverrideTask = MHKPCHGHHOK;
 	using ChatController = LOGKEMANPPL;
+	using AmongUsClient = HJNEPPHDLBA;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = DBDDAJAICFN_DKEKFCCGGEO__Enum_Joined;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = DBDDAJAICFN_DKEKFCCGGEO__Enum_Ended;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Started = DBDDAJAICFN_DKEKFCCGGEO__Enum_Started;
@@ -90,8 +93,9 @@ using namespace app;
 	#define HudOverrideTask_Initialize_Trampoline MHKPCHGHHOK_Initialize
 	#define HudOverrideTask_Complete_Trampoline MHKPCHGHHOK_Complete
 	#define ChatController_AddChat_Trampoline LOGKEMANPPL_AddChat
-	#define InnerNetClient_StartRpc DBDDAJAICFN_StartRpc
-	#define MessageWriter_Write_String MessageWriter_Write_6
+	#define InnerNetClient_StartRpc_Trampoline DBDDAJAICFN_StartRpc
+	#define MessageWriter_Write_String_Trampoline MessageWriter_Write_6
+	#define AmongUsClient_OnPlayerJoined_Trampoline HJNEPPHDLBA_LKMONKFOADB
 #else
 	#error Unknown game version!
 #endif

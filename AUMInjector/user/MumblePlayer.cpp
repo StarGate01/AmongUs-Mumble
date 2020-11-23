@@ -27,7 +27,7 @@ void MumblePlayer::ExitGhostState()
 void MumblePlayer::StartMeeting()
 {
     isInMeeting = true;
-    // ALL ghosts are muted durring meetings
+    // ALL ghosts are muted during meetings
     mumbleLink.Mute(isGhost);
     // Make sure everyone can hear each other well
     SetFullVolume();
@@ -37,11 +37,11 @@ void MumblePlayer::StartMeeting()
 void MumblePlayer::EndMeeting()
 {
 	isInMeeting = false;
-    // Normal players get unmuted after meetings
-    // Unless comms are sabotaged
+    // Normal players get un-muted after meetings
+    // Unless communications are sabotaged
     if (isGhost)
         HandleGhostUnmute();
-    else // Handle ghost unmuting
+    else // Handle ghost un-muting
         mumbleLink.Mute(isSabotaged);
 }
 
@@ -57,10 +57,10 @@ void MumblePlayer::StartCommunicationsSabotaged()
 void MumblePlayer::EndCommunicationsSabotaged()
 {
     isSabotaged = false;
-    // Handle player unmuting
+    // Handle player un-muting
     if(!isGhost)
         mumbleLink.Mute(false);
-    // Handle ghost unmuting
+    // Handle ghost un-muting
     else
         HandleGhostUnmute();
 }
@@ -79,7 +79,7 @@ void MumblePlayer::ResetState()
     mumbleLink.Mute(false);
 }
 
-// Deals with unmuting a ghost based on the three voice settings
+// Deals with un-muting a ghost based on the three voice settings
 void MumblePlayer::HandleGhostUnmute()
 {
     // Unmute based on ghost states
@@ -126,8 +126,10 @@ void MumblePlayer::SetPosX(float posX) { SetPos(0, posX); }
 // Set the y position cache, class may choose to override this value
 void MumblePlayer::SetPosY(float posY) { SetPos(1, posY); }
 
+// Returns the player's net ID
 int MumblePlayer::GetNetID() { return netID; }
 
+// Sets the player's net ID
 void MumblePlayer::SetNetID(int id) { netID = id; }
 
 // In mumble (0.0f, 0.0f) lets users hear each other better

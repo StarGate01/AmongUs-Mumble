@@ -28,10 +28,7 @@ void MumblePlayer::StartMeeting()
 {
     isInMeeting = true;
     // ALL ghosts are muted durring meetings
-    if (isGhost)
-        mumbleLink.Mute(true);
-    else
-        mumbleLink.Mute(isSabotaged);
+    mumbleLink.Mute(isGhost);
     // Make sure everyone can hear each other well
     SetFullVolume();
 }
@@ -40,15 +37,12 @@ void MumblePlayer::StartMeeting()
 void MumblePlayer::EndMeeting()
 {
 	isInMeeting = false;
-	// Mute players and ghosts if comms sabotaged
-	if (isSabotaged)
-		mumbleLink.Mute(true);
-	// Normal players get unmuted after meetings
-	else if (!isGhost)
-		mumbleLink.Mute(false);
-	// Handle ghost unmuting
-    else
-		HandleGhostUnmute();
+    // Normal players get unmuted after meetings
+    // Unless comms are sabotaged
+    if (isGhost)
+        HandleGhostUnmute();
+    else // Handle ghost unmuting
+        mumbleLink.Mute(isSabotaged);
 }
 
 // On start communications sabotaged
@@ -93,7 +87,7 @@ void MumblePlayer::HandleGhostUnmute()
     {
     case Settings::GHOST_VOICE_MODE::PURGATORY:
     case Settings::GHOST_VOICE_MODE::HAUNT:
-        mumbleLink.Mute(false);
+        mumbleLink.Mute(isSabotaged);
         break;
     case Settings::GHOST_VOICE_MODE::SPECTATE:
     default:

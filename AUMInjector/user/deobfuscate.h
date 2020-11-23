@@ -77,6 +77,7 @@ using namespace app;
 	using HqHudOverrideTask = OFCAMODPCOA;
 	using HudOverrideTask = MHKPCHGHHOK;
 	using ChatController = LOGKEMANPPL;
+	using AmongUsClient = HJNEPPHDLBA;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = DBDDAJAICFN_DKEKFCCGGEO__Enum_Joined;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = DBDDAJAICFN_DKEKFCCGGEO__Enum_Ended;
 	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Started = DBDDAJAICFN_DKEKFCCGGEO__Enum_Started;
@@ -94,6 +95,7 @@ using namespace app;
 	#define ChatController_AddChat_Trampoline LOGKEMANPPL_AddChat
 	#define InnerNetClient_StartRpc_Trampoline DBDDAJAICFN_StartRpc
 	#define MessageWriter_Write_String_Trampoline MessageWriter_Write_6
+	#define AmongUsClient_OnPlayerJoined_Trampoline HJNEPPHDLBA_LKMONKFOADB
 #else
 	#error Unknown game version!
 #endif

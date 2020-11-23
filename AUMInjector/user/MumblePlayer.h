@@ -69,8 +69,10 @@ public:
 	// Player entered a lobby
 	void EnterLobby();
 
+	// Returns the player's net ID
 	int GetNetID();
 
+	// Sets the player's net ID
 	void SetNetID(int id);
 
 private:
@@ -78,7 +80,7 @@ private:
 	// Is the player currently a ghost
 	bool isGhost = false;
 	
-	// Deals with unmuting a ghost based on the three voice settings
+	// Deals with un-muting a ghost based on the three voice settings
 	void HandleGhostUnmute();
 
 	// --- Player Position --- 
@@ -91,13 +93,13 @@ private:
 	// Start old cache as an impossible limit, for first-frame printing
 	float prevPosCache[2] = { std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest() };
 
-	// Position difference treshold for printing
+	// Position difference threshold for printing
 	const float cachePosEpsilon = 0.001f;
 
 	// Position
 	float posCache[3] = { 0.0f, 0.0f, 0.0f };
 
-	// Couters for tracking when to print the position
+	// Counters for tracking when to print the position
 	unsigned int frameCounter = 0;
 
 	// Const for how often to print the position

@@ -1,4 +1,4 @@
-[![Discord](https://img.shields.io/discord/767166243303587882?color=cornflowerblue&label=Discord&logo=Discord&logoColor=white)](https://discord.gg/4UkHEJ5sqg)  [![GitHub all releases](https://img.shields.io/github/downloads/StarGate01/AmongUs-Mumble/total?label=Downloads)](https://github.com/StarGate01/AmongUs-Mumble/releases)
+[![Discord](https://img.shields.io/discord/767166243303587882?color=cornflowerblue&label=Discord&logo=Discord&logoColor=white)](https://discord.gg/4UkHEJ5sqg)  [![GitHub all releases](https://img.shields.io/github/downloads/StarGate01/AmongUs-Mumble/total?label=Downloads)](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.6)
 
 # AmongUs-Mumble
 [Mumble VoIP](https://www.mumble.info/) Plugin and mod for the popular game "[Among Us](https://store.steampowered.com/app/945360/Among_Us/)" by [Innersloth](http://www.innersloth.com/) to enable **Proximity and Directional Voice Chat**.

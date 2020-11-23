@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using AUMDeobfuscator.Matchers.Bases;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace AUMDeobfuscator.Matchers
 {
-    public class MethodMatch : MemberMatchBase<MethodDeclarationSyntax>
+    public class MethodMatch : ClassMemberMatchBase<MethodDeclarationSyntax>
     {
         public MethodMatch OfName(string name)
         {
@@ -31,11 +33,11 @@ namespace AUMDeobfuscator.Matchers
         
         public MethodMatch WithTag(string tag)
         {
-            return SetTag(tag) as MethodMatch;
+            return SetTag(tag) as MethodMatch ?? throw new InvalidOperationException();
         }
 
 
-        public MethodMatch(ClassMatchChain thisClass) : base(thisClass)
+        public MethodMatch(ClassMatch parent) : base(parent)
         {
         }
     }

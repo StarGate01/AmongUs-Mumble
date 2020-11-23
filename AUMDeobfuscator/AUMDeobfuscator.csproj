@@ -11,9 +11,11 @@
         <Authors>LelouBil</Authors>
         <Company>AUMDeobfuscator</Company>
         <Product>AUMDeobfuscator</Product>
+        <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="CliFx" Version="1.5.0" />
       <PackageReference Include="Microsoft.CodeAnalysis" Version="3.7.0" />
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.7.0" />
     </ItemGroup>

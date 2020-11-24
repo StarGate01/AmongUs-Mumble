@@ -47,7 +47,6 @@ If you have any issues or find bugs, report them on our [issue tracker](https://
 ## Project State
  - [Issues and Planned Features](https://github.com/StarGate01/AmongUs-Mumble/projects/1)
  - [Release branch](https://github.com/StarGate01/AmongUs-Mumble/tree/master)
- - [Beta branch](https://github.com/StarGate01/AmongUs-Mumble/tree/beta)
  - [Development branch](https://github.com/StarGate01/AmongUs-Mumble/tree/dev)
 
 ## Support
@@ -64,6 +63,7 @@ Please note that we are NOT associated with [Innersloth](http://www.innersloth.c
  - https://github.com/CLIUtils/CLI11 For command line and config file parsing
  - https://github.com/ocornut/imgui For the GUI
  - https://github.com/ExtraConcentratedJuice/ChristWareAmongUs For the IMGUI DirectX hook
+ - https://github.com/glmcdona/Process-Dump For dumping unpacked modules
 
 ### Thanks to
 

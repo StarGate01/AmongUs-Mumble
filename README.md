@@ -7,6 +7,8 @@ Currently only for Windows PCs and the Steam version. On Linux and OSX a small M
 
 Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0.1.X`. See the table for compatibility. Please ensure that you use the correct version for your game installation. Please note *BETA BUILDS MIGHT BE UNSTABLE*.
 
+Patch versions refer to unmarked Steam updates where the game version did not change.
+
 | Game version         | Game channel | DLL release                                                                   | GAME_VERSION |
 | -------------------- | ------------ | ----------------------------------------------------------------------------- | ------------ |
 | 2020.11.17s Patch 1  | Release      | [1.0.0.9](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.9) | `202011171`  |

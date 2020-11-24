@@ -63,6 +63,7 @@ Please note that we are NOT associated with [Innersloth](http://www.innersloth.c
  - https://github.com/CLIUtils/CLI11 For command line and config file parsing
  - https://github.com/ocornut/imgui For the GUI
  - https://github.com/ExtraConcentratedJuice/ChristWareAmongUs For the IMGUI DirectX hook
+ - https://github.com/glmcdona/Process-Dump For dumping unpacked modules
 
 ### Thanks to
 

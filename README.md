@@ -46,7 +46,6 @@ If you have any issues or find bugs, report them on our [issue tracker](https://
 ## Project State
  - [Issues and Planned Features](https://github.com/StarGate01/AmongUs-Mumble/projects/1)
  - [Release branch](https://github.com/StarGate01/AmongUs-Mumble/tree/master)
- - [Beta branch](https://github.com/StarGate01/AmongUs-Mumble/tree/beta)
  - [Development branch](https://github.com/StarGate01/AmongUs-Mumble/tree/dev)
 
 ## Support

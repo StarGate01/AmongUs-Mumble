@@ -1,3 +1,5 @@
+[![Discord](https://img.shields.io/discord/767166243303587882?color=cornflowerblue&label=Discord&logo=Discord&logoColor=white)](https://discord.gg/4UkHEJ5sqg)  [![GitHub all releases](https://img.shields.io/github/downloads/StarGate01/AmongUs-Mumble/total?label=Downloads)](https://github.com/StarGate01/AmongUs-Mumble/releases/)
+
 # AmongUs-Mumble
 [Mumble VoIP](https://www.mumble.info/) Plugin and mod for the popular game "[Among Us](https://store.steampowered.com/app/945360/Among_Us/)" by [Innersloth](http://www.innersloth.com/) to enable **Proximity and Directional Voice Chat**.
 
@@ -5,11 +7,15 @@ Currently only for Windows PCs and the Steam version. On Linux and OSX a small M
 
 Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0.1.X`. See the table for compatibility. Please ensure that you use the correct version for your game installation. Please note *BETA BUILDS MIGHT BE UNSTABLE*.
 
-| Game version | Game channel | DLL release                                                                   | GAME_VERSION |
-| ------------ | ------------ | ----------------------------------------------------------------------------- | ------------ |
-| 2020.11.4s   | Beta         | [1.0.1.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.1.1) | `202011040`  |
-| 2020.10.22s  | Release      | [1.0.0.5](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.5) | `202010220`  |
-| 2020.9.22s   | Release      | [1.0.0.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.1) | `20209220`   |
+Patch versions refer to unmarked Steam updates where the game version did not change.
+
+| Game version         | Game channel | DLL release                                                                   | GAME_VERSION |
+| -------------------- | ------------ | ----------------------------------------------------------------------------- | ------------ |
+| 2020.11.17s Patch 1  | Release      | [1.0.0.9](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.9) | `202011171`  |
+| 2020.11.17s          | Release      | [1.0.0.8](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.8) | `202011170`  |
+| 2020.11.4s           | Beta         | [1.0.1.7](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.1.7) | `202011040`  |
+| 2020.10.22s          | Release      | [1.0.0.7](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.7) | `202010220`  |
+| 2020.9.22s           | Release      | [1.0.0.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.1) | `20209220`   |
 
 If you are looking for a community that uses this mod, join the [Discord server](https://discord.gg/4UkHEJ5sqg)!
 
@@ -43,7 +49,6 @@ If you have any issues or find bugs, report them on our [issue tracker](https://
 ## Project State
  - [Issues and Planned Features](https://github.com/StarGate01/AmongUs-Mumble/projects/1)
  - [Release branch](https://github.com/StarGate01/AmongUs-Mumble/tree/master)
- - [Beta branch](https://github.com/StarGate01/AmongUs-Mumble/tree/beta)
  - [Development branch](https://github.com/StarGate01/AmongUs-Mumble/tree/dev)
 
 ## Support
@@ -60,6 +65,7 @@ Please note that we are NOT associated with [Innersloth](http://www.innersloth.c
  - https://github.com/CLIUtils/CLI11 For command line and config file parsing
  - https://github.com/ocornut/imgui For the GUI
  - https://github.com/ExtraConcentratedJuice/ChristWareAmongUs For the IMGUI DirectX hook
+ - https://github.com/glmcdona/Process-Dump For dumping unpacked modules
 
 ### Thanks to
 

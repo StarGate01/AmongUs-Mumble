@@ -47,26 +47,6 @@ using namespace app;
 	#define InnerNetClient_StartRpc_Trampoline DNAFMCDBMCI_StartRpc
 	#define MessageWriter_Write_String_Trampoline MessageWriter_Write_6
 	#define AmongUsClient_OnPlayerJoined_Trampoline JNFEHNLGIFF_IKDNNJNBKBO
-
-	// Stuff I researched at one point but thats not required atm
-	//SystemTypes__Enum SystemTypes__Enum_Comms = JBPEMAACAEP__Enum_Comms;
-	//using SystemTypes__Enum = JBPEMAACAEP__Enum;
-	//using ShipStatus = DAFPFFMKPJJ;
-	//#define ShipStatus_RepairSystem_Trampoline DAFPFFMKPJJ_RepairSystem
-	//#define ShipStatus_RpcRepairSystem_Trampoline DAFPFFMKPJJ_RpcRepairSystem
-	//auto HudOverrideSystemType_IsActive__BackingField = &HHIJNMBJCAE__Fields::_IPANONPMHHE_k__BackingField;
-	//using Dictionary_2_SystemType_ISystemType = Dictionary_2_JBPEMAACAEP_IOKAAHHLALE_;
-	//#define ShipStatus_FixedUpdate_Trampoline DAFPFFMKPJJ_FixedUpdate
-	//using ISystemType = IOKAAHHLALE;
-	//using HudOverrideSystemType = HHIJNMBJCAE;
-	//#define HudOverrideSystemType__ctor_Trampoline HHIJNMBJCAE__ctor
-	//#define HudOverrideSystemType__TypeInfo HHIJNMBJCAE__TypeInfo
-	//#define Dictionary_2_SystemType_ISystemType__TryGetValue_Trampoline Dictionary_2_JBPEMAACAEP_IOKAAHHLALE__TryGetValue
-	//#define ShipStatus_OnDestroy_Trampoline DAFPFFMKPJJ_OnDestroy
-	//#define ShipStatus_OnEnable_Trampoline DAFPFFMKPJJ_OnEnable
-	//#define ShipStatus_Deserialize_Trampoline DAFPFFMKPJJ_Deserialize
-	//#define HudOverrideSystemType_Deserialize_Trampoline HHIJNMBJCAE_Deserialize
-	//#define HudOverrideSystemType_RepairDamage_Trampoline HHIJNMBJCAE_RepairDamage
 #elif GAME_VERSION == GAME_VERSION_2020_11_4s
 	using InnerNetClient_GameState__Enum = DBDDAJAICFN_DKEKFCCGGEO__Enum;
 	using PlayerControl = APNNOJFGDGP;
@@ -96,6 +76,64 @@ using namespace app;
 	#define InnerNetClient_StartRpc_Trampoline DBDDAJAICFN_StartRpc
 	#define MessageWriter_Write_String_Trampoline MessageWriter_Write_6
 	#define AmongUsClient_OnPlayerJoined_Trampoline HJNEPPHDLBA_LKMONKFOADB
+#elif GAME_VERSION == GAME_VERSION_2020_11_17s
+	using Player_Die_Reason__Enum = EGEEFBOLHLP__Enum;
+	using PlayerControl = PPHGCHMFMLI;
+	using InnerNetClient = FIMOOCIGOAO;
+	using InnerNetClient_GameState__Enum = FIMOOCIGOAO_KBCHFKCGJKG__Enum;
+	using InnerNet_DisconnectReasons__Enum = GIDBHAMOKEA__Enum;
+	using MeetingHud = ILMBELNBDMA;
+	using HqHudOverrideTask = NPILPHBNAIC;
+	using HudOverrideTask = OGOEIBLEPKK;
+	using ChatController = KLDOCKJFNJL;
+	using AmongUsClient = NJGFKJNAEMN;
+	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = FIMOOCIGOAO_KBCHFKCGJKG__Enum_Joined;
+	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Started = FIMOOCIGOAO_KBCHFKCGJKG__Enum_Started;
+	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = FIMOOCIGOAO_KBCHFKCGJKG__Enum_Ended;
+	#define PlayerControl_GetTruePosition_Trampoline PPHGCHMFMLI_GetTruePosition
+	#define PlayerControl_Die_Trampoline PPHGCHMFMLI_Die
+	#define PlayerControl_FixedUpdate_Trampoline PPHGCHMFMLI_FixedUpdate
+	#define InnerNetClient_FixedUpdate_Trampoline FIMOOCIGOAO_FixedUpdate
+	#define InnerNetClient_Disconnect_Trampoline FIMOOCIGOAO_OEIIMGAFPOO
+	#define InnerNetClient_StartRpc_Trampoline FIMOOCIGOAO_StartRpc
+	#define MeetingHud_Close_Trampoline ILMBELNBDMA_Close
+	#define MeetingHud_Start_Trampoline ILMBELNBDMA_Start
+	#define HqHudOverrideTask_Initialize_Trampoline NPILPHBNAIC_Initialize
+	#define HqHudOverrideTask_Complete_Trampoline NPILPHBNAIC_Complete
+	#define HudOverrideTask_Initialize_Trampoline OGOEIBLEPKK_Initialize
+	#define HudOverrideTask_Complete_Trampoline OGOEIBLEPKK_Complete
+	#define ChatController_AddChat_Trampoline KLDOCKJFNJL_AddChat
+	#define AmongUsClient_OnPlayerJoined_Trampoline NJGFKJNAEMN_LOFILOLGOGD
+	#define MessageWriter_Write_String_Trampoline MessageWriter_Write_6
+#elif GAME_VERSION == GAME_VERSION_2020_11_17s_1
+	using Player_Die_Reason__Enum = OOBDLHLDDAF__Enum;
+	using PlayerControl = JENJGDMOEOC;
+	using InnerNetClient = FMJPJKCNIKM;
+	using InnerNetClient_GameState__Enum = FMJPJKCNIKM_ONHEJJJIKDI__Enum;
+	using InnerNet_DisconnectReasons__Enum = CLFGKJHHBOK__Enum;
+	using MeetingHud = NEOCOBOAGFJ;
+	using HqHudOverrideTask = AFFPOFMFHEF;
+	using HudOverrideTask = KALDPINPHCD;
+	using ChatController = BPPJFAOEOMH;
+	using AmongUsClient = MMMGPAPEEBJ;
+	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = FMJPJKCNIKM_ONHEJJJIKDI__Enum_Joined;
+	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Started = FMJPJKCNIKM_ONHEJJJIKDI__Enum_Started;
+	InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = FMJPJKCNIKM_ONHEJJJIKDI__Enum_Ended;
+	#define PlayerControl_GetTruePosition_Trampoline JENJGDMOEOC_GetTruePosition
+	#define PlayerControl_Die_Trampoline JENJGDMOEOC_Die
+	#define PlayerControl_FixedUpdate_Trampoline JENJGDMOEOC_FixedUpdate
+	#define InnerNetClient_FixedUpdate_Trampoline FMJPJKCNIKM_FixedUpdate
+	#define InnerNetClient_Disconnect_Trampoline FMJPJKCNIKM_AAKFLNMJNBJ
+	#define InnerNetClient_StartRpc_Trampoline FMJPJKCNIKM_StartRpc
+	#define MeetingHud_Close_Trampoline NEOCOBOAGFJ_Close
+	#define MeetingHud_Start_Trampoline NEOCOBOAGFJ_Start
+	#define HqHudOverrideTask_Initialize_Trampoline AFFPOFMFHEF_Initialize
+	#define HqHudOverrideTask_Complete_Trampoline AFFPOFMFHEF_Complete
+	#define HudOverrideTask_Initialize_Trampoline KALDPINPHCD_Initialize
+	#define HudOverrideTask_Complete_Trampoline KALDPINPHCD_Complete
+	#define ChatController_AddChat_Trampoline BPPJFAOEOMH_AddChat
+	#define AmongUsClient_OnPlayerJoined_Trampoline MMMGPAPEEBJ_NDONNDIFBON
+	#define MessageWriter_Write_String_Trampoline MessageWriter_Write_6
 #else
 	#error Unknown game version!
 #endif

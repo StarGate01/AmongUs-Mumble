@@ -3,8 +3,9 @@
 REM set the path to your game folder
 SET "AMONGUS=C:\Steam\steamapps\common\Among Us"
 
-REM set the path of IL2CPPInspector
+REM set the path of tools
 SET "IL2CPPINSPECTOR=Il2CppInspector-cli.exe"
+SET "PD32=pd32.exe"
 
 REM setup virtual machines for deployment
 REM uncomment the following line to enable vm upload or remote upload

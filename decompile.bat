@@ -6,7 +6,13 @@ CALL setup.bat
 MKDIR tmp
 CD tmp
 
-"%IL2CPPINSPECTOR%" -i "%AMONGUS%\GameAssembly.dll" -m "%AMONGUS%\Among Us_Data\il2cpp_data\Metadata\global-metadata.dat" -h "cpp" --cpp-compiler MSVC
+REM Dump process memory and store loaded modules
+MKDIR dump
+"%PD32%" -p "Among Us.exe" -o "dump"
+XCOPY "dump\*GameAssembly.dll*x86.dll" ".\GameAssembly.dll*" /Y
+
+REM Decompile dumped module
+"%IL2CPPINSPECTOR%" -i ".\GameAssembly.dll" -m "%AMONGUS%\Among Us_Data\il2cpp_data\Metadata\global-metadata.dat" -h "cpp" --cpp-compiler MSVC
 XCOPY "cpp\appdata\*.*" "..\AUMInjector\appdata\" /K /D /H /Y
 
 CD ..

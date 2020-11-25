@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using AUMDeobfuscator.Matchers;
-using AUMDeobfuscator.Matchers.Bases;
 using AUMDeobfuscator.Output;
 using AUMDeobfuscator.Search;
 using CliFx;
 using CliFx.Attributes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace AUMDeobfuscator.Commands
+namespace AUMDeobfuscator
 {
     [Command]
     public class BaseCommand : ICommand

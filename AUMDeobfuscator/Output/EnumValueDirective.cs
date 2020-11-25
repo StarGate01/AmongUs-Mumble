@@ -29,11 +29,12 @@ namespace AUMDeobfuscator.Output
             builder.Append('_');
             builder.Append(_enumMatch.Tag);
 
-            builder.Append(' ');
+            builder.Append(" = ");
 
             builder.Append(UsingDirective.BuildFullTypeName((_member.Parent as EnumDeclarationSyntax)!));
             builder.Append('_');
             builder.Append(_member.Identifier);
+            builder.Append(';');
 
             return builder.ToString();
         }

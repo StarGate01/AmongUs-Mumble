@@ -69,6 +69,8 @@ LRESULT CALLBACK WndProcHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     if (uMsg == WM_KEYUP && wParam == VK_DELETE) guiShowMenu = !guiShowMenu;
 
+    if (uMsg == WM_KEYUP && wParam == VK_F2) appSettings.mustDebug = true;
+
     ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
     if (io.WantCaptureMouse && 
         (uMsg == WM_LBUTTONDOWN || uMsg == WM_LBUTTONUP || uMsg == WM_MOUSEMOVE)) return TRUE;

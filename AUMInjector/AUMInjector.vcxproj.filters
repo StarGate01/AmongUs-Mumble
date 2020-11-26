@@ -99,6 +99,9 @@
     <ClCompile Include="gui\Blocks\AboutBlock.cpp">
       <Filter>GUI\Blocks</Filter>
     </ClCompile>
+    <ClCompile Include="user\Map.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -114,9 +117,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="user\CLI11.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\helpers.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="user\deobfuscate.h">
@@ -207,6 +207,12 @@
       <Filter>GUI\Blocks</Filter>
     </ClInclude>
     <ClInclude Include="user\version.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\helpers.h">
+      <Filter>IL2CPP</Filter>
+    </ClInclude>
+    <ClInclude Include="user\Map.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

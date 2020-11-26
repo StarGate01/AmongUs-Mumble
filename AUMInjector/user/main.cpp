@@ -18,9 +18,12 @@
 #include "LoggingSystem.h"
 #include "MumblePlayer.h"
 #include "GUI.h"
+#include "Map.h"
 //#include "dynamic_analysis.h"
 
 using namespace app;
+
+std::wstring_convert<std::codecvt_utf8<wchar_t>> wideToNarrow;
 
 extern HANDLE hExit; // Thread exit event
 
@@ -111,6 +114,15 @@ void BroadcastSettings(InnerNetClient* client)
 void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
 {
     InnerNetClient_FixedUpdate_Trampoline(__this, method);
+
+    if (appSettings.mustDebug)
+    {
+        printf("\n");
+        map.Rebuild();
+        map.Print();
+        map.SaveSVG("map.svg");
+        appSettings.mustDebug = false;
+    }
 
     // Set if player is host
     mumblePlayer.SetHost(__this->fields.ClientId == __this->fields.HostId);
@@ -245,7 +257,6 @@ void AmongUsClient_OnPlayerJoined_Hook(AmongUsClient* __this, ClientData* data, 
 //}
 
 // gets called when a chat message is received
-std::wstring_convert<std::codecvt_utf8<wchar_t>> wideToNarrow;
 void ChatController_AddChat_Hook(ChatController* __this, PlayerControl* sourcePlayer, String* chatText, MethodInfo* method)
 {
     // Convert chat message to string
@@ -337,6 +348,7 @@ void Run()
         DetourAttach(&(PVOID&)HudOverrideTask_Initialize_Trampoline, HudOverrideTask_Initialize_Hook);
         DetourAttach(&(PVOID&)HudOverrideTask_Complete_Trampoline, HudOverrideTask_Complete_Hook);
         DetourAttach(&(PVOID&)ChatController_AddChat_Trampoline, ChatController_AddChat_Hook);
+        DetourAttach(&(PVOID&)AmongUsClient_OnPlayerJoined_Trampoline, AmongUsClient_OnPlayerJoined_Hook);
         DetourAttach(&(PVOID&)AmongUsClient_OnPlayerJoined_Trampoline, AmongUsClient_OnPlayerJoined_Hook);
         //DetourAttach(&(PVOID&)IGHKMHLJFLI_Detoriorate, IGHKMHLJFLI_Detoriorate_Hook);
 

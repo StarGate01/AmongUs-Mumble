@@ -86,6 +86,7 @@ class Settings
 		bool mustBroadcast = false;
 		long long lastBroadcastMs = 0;
 
+		bool mustDebug = false;
 
 		// Setup argument parser
 		Settings();

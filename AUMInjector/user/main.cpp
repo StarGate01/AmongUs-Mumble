@@ -99,11 +99,12 @@ void BroadcastSettings(InnerNetClient* client)
 {
     logger.Log(LOG_CODE::MSG, "Sending configuration: " + appSettings.HumanReadableSync());
 
-    // Broadcast config via chat
-    std::string messageText = SYNC_HEADER + appSettings.SerializeSync();
-    String* messageString = (String*)il2cpp_string_new(messageText.c_str());
-    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, mumblePlayer.GetNetID(), 13, SendOption__Enum_Reliable, NULL);
-    MessageWriter_Write_String_Trampoline(writer, messageString, NULL);
+    // Broadcast config via RPC
+    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, mumblePlayer.GetNetID(), SYNC_RPC_ID, SendOption__Enum_Reliable, NULL);
+    MessageWriter_Write_Byte_Trampoline(writer, SYNC_VERSION, NULL);
+    // Serialize settings
+    MessageWriter_Write_Byte_Trampoline(writer, (int8_t)appSettings.ghostVoiceMode, NULL);
+    MessageWriter_Write_Byte_Trampoline(writer, appSettings.directionalAudio? 1:0, NULL);
     MessageWriter_EndMessage(writer, NULL);
 }
 
@@ -118,10 +119,10 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
     // Check if the host should broadcast the settings due to GUI change
     if (appSettings.mustBroadcast && mumblePlayer.IsHost())
     {
-        // Only broadcast at most every three seconds to prevent spam detection
+        // Only broadcast at most every second to prevent network overload
         long long timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch()).count();
-        if ((timestamp - appSettings.lastBroadcastMs) >= 3000)
+        if ((timestamp - appSettings.lastBroadcastMs) >= 1000)
         {
             BroadcastSettings(__this);
             appSettings.mustBroadcast = false;
@@ -146,6 +147,8 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
         {
             logger.Log(LOG_CODE::MSG, "Round started");
 
+            // Just to be sure in case some join events were missed
+            if(mumblePlayer.IsHost()) appSettings.mustBroadcast = true;
             mumblePlayer.EnterGame();
         }
     }
@@ -244,40 +247,57 @@ void AmongUsClient_OnPlayerJoined_Hook(AmongUsClient* __this, ClientData* data, 
 //    IGHKMHLJFLI_Detoriorate(__this, PCHPGLOMPLD * 0.1f, method);
 //}
 
-// gets called when a chat message is received
-std::wstring_convert<std::codecvt_utf8<wchar_t>> wideToNarrow;
-void ChatController_AddChat_Hook(ChatController* __this, PlayerControl* sourcePlayer, String* chatText, MethodInfo* method)
+// Gets called when a game data packet is received
+void InnerNetClient_HandleGameDataInner_Hook(FMJPJKCNIKM* __this, MessageReader* reader, int32_t count, MethodInfo* method)
 {
-    // Convert chat message to string
-    std::string messageText = wideToNarrow.to_bytes(std::wstring((const wchar_t*)(&((Il2CppString*)chatText)->chars), ((Il2CppString*)chatText)->length));
-    if (messageText.at(0) == SYNC_HEADER)
+    // Tag 2 = RPC call
+    if (reader->fields.Tag == 2)
     {
-        // Strip header character
-        std::string config = messageText.substr(1, std::string::npos);
+        // Read packet header
+        int32_t pos = MessageReader_get_Position(reader, NULL);
+        uint32_t targetObject = MessageReader_ReadPackedUInt32(reader, NULL); // Ignored
+        uint8_t rpcId = MessageReader_ReadByte(reader, NULL);
 
-        // Parse config string
-        int result = appSettings.DeserializeSync(config);
-        switch (result)
+        // Check if this is a mod config packet
+        if (rpcId == SYNC_RPC_ID)
         {
-        case SYNC_SUCCESS:
-            logger.Log(LOG_CODE::MSG, "Got configuration: " + appSettings.HumanReadableSync());
-            break;
-        case SYNC_ERROR_NUM_ARGS:
-            logger.Log(LOG_CODE::ERR, "Got bad configuration (invalid number of arguments), ignoring");
-            break;
-        case SYNC_ERROR_VERSION:
-            logger.Log(LOG_CODE::ERR, "Got bad configuration (incompatible version), ignoring");
-            break;
-        case SYNC_ERROR_FORMAT:
-            logger.Log(LOG_CODE::ERR, "Got bad configuration (invalid format), ignoring");
-            break;
-        }
+            // Validate packet
+            int32_t packetSize = MessageReader_get_BytesRemaining(reader, NULL);
+            if (packetSize == 0)
+            {
+                logger.Log(LOG_CODE::ERR, "Got bad configuration (empty packet), ignoring");
+                return;
+            }
+            uint8_t version = MessageReader_ReadByte(reader, NULL);
+            if (version != SYNC_VERSION)
+            {
+                logger.Log(LOG_CODE::ERR, "Got bad configuration (incompatible version), ignoring");
+                return;
+            }
+            packetSize = MessageReader_get_BytesRemaining(reader, NULL);
+            if (packetSize != SYNC_SIZE)
+            {
+                logger.Log(LOG_CODE::ERR, "Got bad configuration (invalid packet size), ignoring");
+                return;
+            }
 
-        // Swallow message if it was a config
-        return;
+            // Read configuration
+            appSettings.ghostVoiceMode = (Settings::GHOST_VOICE_MODE)MessageReader_ReadByte(reader, NULL);
+            appSettings.directionalAudio = (MessageReader_ReadByte(reader, NULL) == 1);
+            appSettings.RecalculateAudioMap();
+            logger.Log(LOG_CODE::MSG, "Got configuration: " + appSettings.HumanReadableSync());
+
+            // Swallow this packet
+            return;
+        }
+        else
+        {
+            // Rewind reader to allow reparsing packet in trampoline
+            MessageReader_set_Position(reader, pos, NULL);
+        }
     }
 
-    ChatController_AddChat_Trampoline(__this, sourcePlayer, chatText, method);
+    InnerNetClient_HandleGameDataInner_Trampoline(__this, reader, count, method);
 }
 
 // Entrypoint of the injected thread
@@ -336,8 +356,8 @@ void Run()
         DetourAttach(&(PVOID&)HqHudOverrideTask_Complete_Trampoline, HqHudOverrideTask_Complete_Hook);
         DetourAttach(&(PVOID&)HudOverrideTask_Initialize_Trampoline, HudOverrideTask_Initialize_Hook);
         DetourAttach(&(PVOID&)HudOverrideTask_Complete_Trampoline, HudOverrideTask_Complete_Hook);
-        DetourAttach(&(PVOID&)ChatController_AddChat_Trampoline, ChatController_AddChat_Hook);
         DetourAttach(&(PVOID&)AmongUsClient_OnPlayerJoined_Trampoline, AmongUsClient_OnPlayerJoined_Hook);
+        DetourAttach(&(PVOID&)InnerNetClient_HandleGameDataInner_Trampoline, InnerNetClient_HandleGameDataInner_Hook);
         //DetourAttach(&(PVOID&)IGHKMHLJFLI_Detoriorate, IGHKMHLJFLI_Detoriorate_Hook);
 
         //dynamic_analysis_attach();

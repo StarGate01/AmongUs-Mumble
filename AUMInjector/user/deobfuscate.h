@@ -131,9 +131,9 @@ using namespace app;
 	#define HqHudOverrideTask_Complete_Trampoline AFFPOFMFHEF_Complete
 	#define HudOverrideTask_Initialize_Trampoline KALDPINPHCD_Initialize
 	#define HudOverrideTask_Complete_Trampoline KALDPINPHCD_Complete
-	#define ChatController_AddChat_Trampoline BPPJFAOEOMH_AddChat
 	#define AmongUsClient_OnPlayerJoined_Trampoline MMMGPAPEEBJ_NDONNDIFBON
-	#define MessageWriter_Write_String_Trampoline MessageWriter_Write_6
+	#define MessageWriter_Write_Byte_Trampoline MessageWriter_Write_1
+	#define InnerNetClient_HandleGameDataInner_Trampoline FMJPJKCNIKM_AOAKDFPIOOA
 #else
 	#error Unknown game version!
 #endif

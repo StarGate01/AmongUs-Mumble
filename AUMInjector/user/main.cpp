@@ -339,6 +339,13 @@ void Run()
 		init_il2cpp();
 		logger.Log(LOG_CODE::INF, "Type and function memory mapping successful");
 
+        // Print game version
+        String* gameVersionRaw = Application_get_version(NULL);
+        std::wstring_convert<std::codecvt_utf8<wchar_t>> wideToNarrow;
+        std::string gameVersion = wideToNarrow.to_bytes(std::wstring((const wchar_t*)
+            (&((Il2CppString*)gameVersionRaw)->chars), ((Il2CppString*)gameVersionRaw)->length));
+        logger.Log(LOG_CODE::INF, "Running in game version " + gameVersion);
+
         // Start mumble connection thread
         std::thread mumbleReconnectionThread(TryConnectMumble);
 

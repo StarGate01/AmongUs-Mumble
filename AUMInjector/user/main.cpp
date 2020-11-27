@@ -265,19 +265,19 @@ void InnerNetClient_HandleGameDataInner_Hook(FMJPJKCNIKM* __this, MessageReader*
             int32_t packetSize = MessageReader_get_BytesRemaining(reader, NULL);
             if (packetSize == 0)
             {
-                logger.Log(LOG_CODE::ERR, "Got bad configuration (empty packet), ignoring");
+                logger.Log(LOG_CODE::ERR, "Got bad configuration (empty payload), ignoring");
                 return;
             }
             uint8_t version = MessageReader_ReadByte(reader, NULL);
             if (version != SYNC_VERSION)
             {
-                logger.Log(LOG_CODE::ERR, "Got bad configuration (incompatible version), ignoring");
+                logger.Log(LOG_CODE::ERR, "Got bad configuration (wrong version), ignoring");
                 return;
             }
             packetSize = MessageReader_get_BytesRemaining(reader, NULL);
             if (packetSize != SYNC_SIZE)
             {
-                logger.Log(LOG_CODE::ERR, "Got bad configuration (invalid packet size), ignoring");
+                logger.Log(LOG_CODE::ERR, "Got bad configuration (invalid payload size), ignoring");
                 return;
             }
 

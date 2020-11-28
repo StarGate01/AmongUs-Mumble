@@ -103,7 +103,7 @@
       <Filter>GUI\Blocks</Filter>
     </ClCompile>
     <ClCompile Include="user\Map.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -231,7 +231,7 @@
       <Filter>IL2CPP</Filter>
     </ClInclude>
     <ClInclude Include="user\Map.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

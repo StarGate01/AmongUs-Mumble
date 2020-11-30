@@ -52,7 +52,11 @@ If you have any issues or find bugs, report them on our [issue tracker](https://
  - [Development branch](https://github.com/StarGate01/AmongUs-Mumble/tree/dev)
 
 ## Support
-If you would like to donate to the project, You can do so on [Bountysource SALT](https://salt.bountysource.com/teams/team-esdg) .
+If you would like to donate to the project, You can do so on [Bountysource SALT](https://salt.bountysource.com/teams/team-esdg), or via crypto:
+```
+BTC: 37GkUAQmhoRUKrmCVdYijS4AghP1cYCGh6
+ETH: 0x0F3fBC431D062C86C6dB15651A137d709F1305D2
+```
 
 Please note that we are NOT associated with [Innersloth](http://www.innersloth.com/), the original developer of "Among Us". Please support them as well by buying their games and merch.
 

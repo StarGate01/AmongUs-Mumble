@@ -248,7 +248,7 @@ void AmongUsClient_OnPlayerJoined_Hook(AmongUsClient* __this, ClientData* data, 
 //}
 
 // Gets called when a game data packet is received
-void InnerNetClient_HandleGameDataInner_Hook(FMJPJKCNIKM* __this, MessageReader* reader, int32_t count, MethodInfo* method)
+void InnerNetClient_HandleGameDataInner_Hook(InnerNetClient* __this, MessageReader* reader, int32_t count, MethodInfo* method)
 {
     // Tag 2 = RPC call
     if (reader->fields.Tag == 2)

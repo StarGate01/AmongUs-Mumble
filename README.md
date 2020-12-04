@@ -9,9 +9,10 @@ Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0
 
 Patch versions refer to unmarked Steam updates where the game version did not change.
 
-| Game version         | Game channel | Mod Status                    | DLL version                                                                     | GAME_VERSION |
+| Game version         | Game channel | Status                        | DLL version                                                                     | GAME_VERSION |
 | -------------------- | ------------ | ----------------------------- | ------------------------------------------------------------------------------- | ------------ |
-| 2020.11.17s Patch 1  | Release      | :heavy_check_mark: Maintained | [1.0.0.10](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.10) | `202011171`  |
+| 2020.12.3s           | Release      | :heavy_check_mark: Maintained | [1.0.0.11](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.11) | `202012031`  |
+| 2020.11.17s Patch 1  | Release      | :warning: Outdated            | [1.0.0.10](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.10) | `202011171`  |
 | 2020.11.17s          | Release      | :warning: Outdated            | [1.0.0.8](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.8)   | `202011170`  |
 | 2020.11.4s           | Beta         | :warning: Outdated            | [1.0.1.7](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.1.7)   | `202011040`  |
 | 2020.10.22s          | Release      | :warning: Outdated            | [1.0.0.7](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.7)   | `202010220`  |

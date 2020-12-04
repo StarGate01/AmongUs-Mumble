@@ -3,7 +3,7 @@ import os, pathlib, sys, re
 
 basepath = os.path.join(pathlib.Path(__file__).parent.absolute(), "AUMInjector")
 functions_file = os.path.join(basepath, "appdata", "il2cpp-functions.h")
-output_file = os.path.join(basepath, "user", "dynamic_analysis.h")
+output_file = os.path.join(basepath, "deobfuscate", "dynamic_analysis.h")
 if(len(sys.argv) < 2):
     print("Specify search token as first CLI argument, excluding tokens as following arguments")
     exit(1)

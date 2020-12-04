@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Quelldateien">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Headerdateien">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Ressourcendateien">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="GUI">
       <UniqueIdentifier>{b5a3830b-3a31-40ff-a58e-389055c64f63}</UniqueIdentifier>
     </Filter>
@@ -25,19 +13,34 @@
     <Filter Include="GUI\Blocks">
       <UniqueIdentifier>{e54bbdb0-93fa-41ef-a5db-8518033be4c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Deobfuscate">
+      <UniqueIdentifier>{59530ac7-9942-4f37-a815-80f2ba7b9668}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="user\main.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="user\winhttp.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="user\LoggingSystem.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="user\MumbleLink.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="gui\D3D11Hooking.cpp">
       <Filter>GUI</Filter>
@@ -52,7 +55,7 @@
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="user\MumblePlayer.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="gui\imgui\imgui.cpp">
       <Filter>GUI\imgui</Filter>
@@ -85,7 +88,7 @@
       <Filter>GUI\Blocks</Filter>
     </ClCompile>
     <ClCompile Include="user\settings.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="framework\il2cpp-init.cpp">
       <Filter>IL2CPP</Filter>
@@ -103,39 +106,36 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="user\winhttp.def">
-      <Filter>Quelldateien</Filter>
+      <Filter>Source</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="user\main.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="user\CLI11.hpp">
-      <Filter>Headerdateien</Filter>
+      <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="framework\helpers.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="user\deobfuscate.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="user\LoggingSystem.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="user\MumbleLink.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="user\Settings.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="user\MumblePlayer.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="user\OrderedLock.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="gui\imgui\imgui.h">
       <Filter>GUI\imgui</Filter>
@@ -206,13 +206,31 @@
     <ClInclude Include="gui\Blocks\AboutBlock.h">
       <Filter>GUI\Blocks</Filter>
     </ClInclude>
-    <ClInclude Include="user\version.h">
-      <Filter>Headerdateien</Filter>
+    <ClInclude Include="deobfuscate\2020_9_22s.h">
+      <Filter>Deobfuscate</Filter>
+    </ClInclude>
+    <ClInclude Include="deobfuscate\2020_10_22s.h">
+      <Filter>Deobfuscate</Filter>
+    </ClInclude>
+    <ClInclude Include="deobfuscate\2020_11_17s.h">
+      <Filter>Deobfuscate</Filter>
+    </ClInclude>
+    <ClInclude Include="deobfuscate\2020_11_17s_1.h">
+      <Filter>Deobfuscate</Filter>
+    </ClInclude>
+    <ClInclude Include="deobfuscate\deobfuscate.h">
+      <Filter>Deobfuscate</Filter>
+    </ClInclude>
+    <ClInclude Include="deobfuscate\version.h">
+      <Filter>Deobfuscate</Filter>
+    </ClInclude>
+    <ClInclude Include="deobfuscate\2020_12_3s.h">
+      <Filter>Deobfuscate</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AUMInjector.rc">
-      <Filter>Ressourcendateien</Filter>
+      <Filter>Resources</Filter>
     </ResourceCompile>
   </ItemGroup>
 </Project>

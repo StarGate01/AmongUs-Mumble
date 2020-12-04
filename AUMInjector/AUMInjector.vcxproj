@@ -44,6 +44,13 @@
     <ClInclude Include="appdata\il2cpp-functions.h" />
     <ClInclude Include="appdata\il2cpp-types-ptr.h" />
     <ClInclude Include="appdata\il2cpp-types.h" />
+    <ClInclude Include="deobfuscate\2020_10_22s.h" />
+    <ClInclude Include="deobfuscate\2020_11_17s.h" />
+    <ClInclude Include="deobfuscate\2020_11_17s_1.h" />
+    <ClInclude Include="deobfuscate\2020_12_3s.h" />
+    <ClInclude Include="deobfuscate\2020_9_22s.h" />
+    <ClInclude Include="deobfuscate\deobfuscate.h" />
+    <ClInclude Include="deobfuscate\version.h" />
     <ClInclude Include="framework\helpers.h" />
     <ClInclude Include="framework\il2cpp-appdata.h" />
     <ClInclude Include="framework\il2cpp-init.h" />
@@ -68,11 +75,9 @@
     <ClInclude Include="user\LoggingSystem.h" />
     <ClInclude Include="user\MumbleLink.h" />
     <ClInclude Include="user\main.h" />
-    <ClInclude Include="user\deobfuscate.h" />
     <ClInclude Include="user\MumblePlayer.h" />
     <ClInclude Include="user\OrderedLock.h" />
     <ClInclude Include="user\Settings.h" />
-    <ClInclude Include="user\version.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AUMInjector.rc" />
@@ -130,7 +135,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)gui;$(ProjectDir)gui\imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)gui;$(ProjectDir)gui\imgui;;$(ProjectDir)deobfuscate</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
       <DisableSpecificWarnings>4359</DisableSpecificWarnings>
     </ClCompile>
@@ -161,7 +166,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)gui;$(ProjectDir)gui\imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)gui;$(ProjectDir)gui\imgui;;$(ProjectDir)deobfuscate</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
       <DisableSpecificWarnings>4359</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>

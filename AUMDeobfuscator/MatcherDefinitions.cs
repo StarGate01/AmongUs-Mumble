@@ -97,6 +97,17 @@ namespace AUMDeobfuscator
                     .WithType(new EnumMatch().WithMember().OfName("Kicked").And())
                     .And();
 
+            public static readonly MethodMatch HandleGameDataInner =
+                new MethodMatch(null!)
+                    .WithTag("HandleGameDataInner")
+                    .WithParameter()
+                    .WithNamedType("MessageReader")
+                    .And()
+                    .WithParameter()
+                    .WithNamedType("int")
+                    .And()
+                    .WithNumberOfParameters(2);
+
             public static readonly MethodMatch StartRPC =
                 new MethodMatch(null!)
                     .WithTag("StartRpc")
@@ -119,6 +130,8 @@ namespace AUMDeobfuscator
                     .WithMethod(Disconnect)
                     .And()
                     .WithMethod(FixedUpdate)
+                    .And()
+                    .WithMethod(HandleGameDataInner)
                     .And()
                     .WithMethod(StartRPC)
                     .And();

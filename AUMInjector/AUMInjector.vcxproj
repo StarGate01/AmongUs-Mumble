@@ -48,6 +48,8 @@
     <ClInclude Include="deobfuscate\2020_10_22s.h" />
     <ClInclude Include="deobfuscate\2020_11_17s.h" />
     <ClInclude Include="deobfuscate\2020_11_17s_1.h" />
+    <ClInclude Include="deobfuscate\2020_12_3s.h" />
+    <ClInclude Include="deobfuscate\2020_12_5s.h" />
     <ClInclude Include="deobfuscate\2020_9_22s.h" />
     <ClInclude Include="deobfuscate\deobfuscate.h" />
     <ClInclude Include="deobfuscate\version.h" />

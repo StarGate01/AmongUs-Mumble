@@ -9,9 +9,11 @@ Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0
 
 Patch versions refer to unmarked Steam updates where the game version did not change.
 
-| Game version         | Game channel | Mod Status                    | DLL version                                                                     | GAME_VERSION |
+| Game version         | Game channel | Status                        | DLL version                                                                     | GAME_VERSION |
 | -------------------- | ------------ | ----------------------------- | ------------------------------------------------------------------------------- | ------------ |
-| 2020.11.17s Patch 1  | Release      | :heavy_check_mark: Maintained | [1.0.0.10](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.10) | `202011171`  |
+| 2020.12.5s           | Release      | :heavy_check_mark: Maintained | [1.0.0.12](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.12) | `202012050`  |
+| 2020.12.3s           | Release      | :warning: Outdated            | [1.0.0.11](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.11) | `202012030`  |
+| 2020.11.17s Patch 1  | Release      | :warning: Outdated            | [1.0.0.10](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.10) | `202011171`  |
 | 2020.11.17s          | Release      | :warning: Outdated            | [1.0.0.8](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.8)   | `202011170`  |
 | 2020.11.4s           | Beta         | :warning: Outdated            | [1.0.1.7](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.1.7)   | `202011040`  |
 | 2020.10.22s          | Release      | :warning: Outdated            | [1.0.0.7](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.7)   | `202010220`  |
@@ -52,7 +54,11 @@ If you have any issues or find bugs, report them on our [issue tracker](https://
  - [Development branch](https://github.com/StarGate01/AmongUs-Mumble/tree/dev)
 
 ## Support
-If you would like to donate to the project, You can do so on [Bountysource SALT](https://salt.bountysource.com/teams/team-esdg) .
+If you would like to donate to the project, You can do so on [Bountysource SALT](https://salt.bountysource.com/teams/team-esdg), or via crypto:
+```
+BTC: 37GkUAQmhoRUKrmCVdYijS4AghP1cYCGh6
+ETH: 0x0F3fBC431D062C86C6dB15651A137d709F1305D2
+```
 
 Please note that we are NOT associated with [Innersloth](http://www.innersloth.com/), the original developer of "Among Us". Please support them as well by buying their games and merch.
 

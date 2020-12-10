@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AUMDeobfuscator": {
+      "commandName": "Project",
+      "commandLineArgs": "..\\..\\..\\..\\tmp\\cs --gameversion 2020_12_5s -o ..\\..\\..\\..\\AUMInjector\\deobfuscate\\generated_2020_12_5s.h"
+    }
+  }
+}

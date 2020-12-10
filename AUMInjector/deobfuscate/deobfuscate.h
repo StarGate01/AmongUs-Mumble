@@ -17,6 +17,10 @@ using namespace app;
 	#include "2020_11_17s.h"
 #elif GAME_VERSION == GAME_VERSION_2020_11_17s_1
 	#include "2020_11_17s_1.h"
+#elif GAME_VERSION == GAME_VERSION_2020_12_3s
+	#include "2020_12_3s.h"
+#elif GAME_VERSION == GAME_VERSION_2020_12_5s
+	#include "2020_12_5s.h"
 #else
 	#error Unknown game version!
 #endif

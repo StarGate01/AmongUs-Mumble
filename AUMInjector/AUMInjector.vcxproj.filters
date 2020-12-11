@@ -230,6 +230,9 @@
     <ClInclude Include="deobfuscate\2020_12_5s.h">
       <Filter>Deobfuscate</Filter>
     </ClInclude>
+    <ClInclude Include="deobfuscate\2020_12_9s.h">
+      <Filter>Deobfuscate</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AUMInjector.rc">

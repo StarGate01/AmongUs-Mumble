@@ -12,46 +12,34 @@
 
 using namespace app;
 
+#pragma pack(push, 1)
+struct BmpHeader {
+    char bitmapSignatureBytes[2] = { 'B', 'M' };
+    uint32_t sizeOfBitmapFile = 54 + (1024 * 1024 * 3);
+    uint32_t reservedBytes = 0;
+    uint32_t pixelDataOffset = 54;
+} bmpHeader;
 
-// Converts a map point to a string representation
-std::string MapPoint::ToString()
-{
-    std::stringstream s;
-    s << "(" << x << ", " << y << ")";
-    return s.str();
-}
+struct BmpInfoHeader {
+    uint32_t sizeOfThisHeader = 40;
+    int32_t width = 1024; // in pixels
+    int32_t height = 1024; // in pixels
+    uint16_t numberOfColorPlanes = 1; // must be 1
+    uint16_t colorDepth = 24;
+    uint32_t compressionMethod = 0;
+    uint32_t rawBitmapDataSize = 0; // generally ignored
+    int32_t horizontalResolution = 3780; // in pixel per meter
+    int32_t verticalResolution = 3780; // in pixel per meter
+    uint32_t colorTableEntries = 0;
+    uint32_t importantColors = 0;
+} bmpInfoHeader;
 
-// Converts a map point to a svg string representation
-std::string MapPoint::ToSVGString()
-{
-    std::stringstream s;
-    s << (x * 100.0f) << "," << (y * -100.0f);
-    return s.str();
-}
-
-// Converts a map object to a string representation
-std::string MapObject::ToString()
-{
-    std::stringstream s;
-    s << "  " << name << " (Type ";
-    s << (int)type << "):" << std::endl;
-    s << "    Position: " << position.ToString() << ", Center: " << center.ToString() << 
-        ", Extents: " << extents.ToString() << std::endl;
-    s << "    Vertices: ";
-    for (auto& vertex : vertices) s << vertex.ToString() << ", ";
-    s << std::endl;
-    return s.str();
-}
-
-// Converts a map object to a svg string representation
-std::string MapObject::ToSVGString()
-{
-    std::stringstream s;
-    s << "<polyline name=\"" << name << "\" points=\"";
-    for (auto& vertex : vertices) s << vertex.ToSVGString() << " ";
-    s << "\" />" << std::endl;
-    return s.str();
-}
+struct Pixel {
+    uint8_t blue = 0;
+    uint8_t green = 0;
+    uint8_t red = 0;
+};
+#pragma pack(pop)
 
 Map map;
 
@@ -61,45 +49,6 @@ Map::Map():
     })
 {}
 
-// Gets vertices of box collider
-void Map::GetColliderVertices(BoxCollider2D* collider, std::vector<MapPoint>& vertices, MAP_OBJECT_TYPE& type)
-{
-    Vector2 size = BoxCollider2D_get_size(collider, NULL);
-    vertices = { { 0.0f, 0.0f }, { size.x, 0.0f }, { size.x, size.y }, { 0.0f, size.y }, { 0.0f, 0.0f } };
-    type = MAP_OBJECT_TYPE::BOX;
-}
-
-// Gets vertices of polygon collider
-void Map::GetColliderVertices(PolygonCollider2D* collider, std::vector<MapPoint>& vertices, MAP_OBJECT_TYPE& type)
-{
-    ArrayToVector(PolygonCollider2D_get_points(collider, NULL), vertices);
-    type = MAP_OBJECT_TYPE::POLYGON;
-}
-
-// Gets vertices of edge (line) collider
-void Map::GetColliderVertices(EdgeCollider2D* collider, std::vector<MapPoint>& vertices, MAP_OBJECT_TYPE& type)
-{
-    ArrayToVector(EdgeCollider2D_get_points(collider, NULL), vertices);
-    type = MAP_OBJECT_TYPE::EDGE;
-}
-
-// Adds points in array to vector
-void Map::ArrayToVector(Vector2__Array* source, std::vector<MapPoint>& vertices)
-{
-    int32_t len = Array_get_Length((Array*)source, NULL);
-    for (int i = 0; i < len; i++)
-    {
-        // Use pointer access because array stores values
-        Vector2* p = source->vector + (i * sizeof(Vector2));
-        vertices.push_back({ p->x, p->y });
-    }
-}
-
-float magnitude(float m1, float m2, float m3, float m4)
-{
-    return sqrt(m1 * m1 + m2 * m2 + m3 * m3 + m4 * m4);
-}
-
 // Finds all colliders and converts them
 template<typename T> void Map::AddAddColliders(std::string netname)
 {
@@ -107,7 +56,7 @@ template<typename T> void Map::AddAddColliders(std::string netname)
     std::string tname = "UnityEngine." + netname + 
         ", UnityEngine.Physics2DModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
     Object_1__Array* colliders = Object_1_FindObjectsOfType(
-        Type_GetType_2((String*)il2cpp_string_new(tname.c_str()), NULL), NULL);
+        Type_GetType_4((String*)il2cpp_string_new(tname.c_str()), NULL), NULL);
 
     // Iterate colliders
     int32_t len = Array_get_Length((Array*)colliders, NULL);
@@ -124,42 +73,41 @@ template<typename T> void Map::AddAddColliders(std::string netname)
         // Exclude blacklisted names (buttons etc.)
         if (std::find(nameBlacklist.begin(), nameBlacklist.end(), name) == nameBlacklist.end())
         {
-            // Get collider vertices and type
-            std::vector<MapPoint> vertices;
-            MAP_OBJECT_TYPE type = MAP_OBJECT_TYPE::INVALID;
-            GetColliderVertices((T*)collider, vertices, type);
+            // BMP
+            std::stringstream ofname;
+            ofname << "maps\\" << name << "_" << i << ".bmp";
+            std::ofstream fout(ofname.str(), std::ios::binary | std::ios::trunc);
+            fout.write((char*)&bmpHeader, 14);
+            fout.write((char*)&bmpInfoHeader, 40);
 
-            // Transform vertices according to translation
-            Vector2 offset = Collider2D_get_offset(collider, NULL);
-            Transform* trans = Component_get_transform((Component*)collider, NULL);
-            Matrix4x4 localToWorld = Transform_get_localToWorldMatrix(trans, NULL);
-            for (auto& vertex : vertices)
+            Vector2__Boxed* v = (Vector2__Boxed*)il2cpp_object_new((Il2CppClass*)Vector2__TypeInfo);
+            Vector2__ctor(v, 0.0f, 0.0f, NULL);
+            Vector2 ve = *(Vector2*)v;
+            for (int x = 0; x < 1024; x++)
             {
-                vertex.x += offset.x;
-                vertex.y += offset.y;
+                for (int y = 0; y < 1024; y++)
+                {
+                    ve.x = (((float)x / 1024.0f) - 0.5f) * 80.0f;
+                    ve.y = (((float)y / 1024.0f) - 0.5f) * 80.0f;
 
-                vertex.x *= magnitude(localToWorld.m00, localToWorld.m10, localToWorld.m20, localToWorld.m30);
-                vertex.y *= magnitude(localToWorld.m01, localToWorld.m11, localToWorld.m21, localToWorld.m31);
-
-                vertex.x += localToWorld.m03;
-                vertex.y += localToWorld.m13;
-
-                /*vertex.x += localToWorld.m03;
-                vertex.y += localToWorld.m13;*/
-
-               /* vertex.x = vertex.x * localToWorld.m00 + vertex.y * localToWorld.m01 + localToWorld.m03;
-                vertex.y = vertex.x * localToWorld.m10 + vertex.y * localToWorld.m11 + localToWorld.m13;*/
+                    Pixel pixel;
+                    if (Collider2D_OverlapPoint(collider, ve, NULL))
+                    {
+                        pixel.red = 255;
+                        pixel.green = 0;
+                        pixel.blue = 0;
+                    }
+                    else
+                    {
+                        pixel.red = 0;
+                        pixel.green = 255;
+                        pixel.blue = 0;
+                    }
+                    fout.write((char*)&pixel, 3);
+                }
             }
 
-            // Add to map objects, include bounds (already in world space)
-            Bounds bounds = Collider2D_get_bounds(collider, NULL);
-            content.push_back({
-                name,
-                { offset.x + localToWorld.m03, offset.y + localToWorld.m13 },
-                { bounds.m_Center.x, bounds.m_Center.y },
-                { bounds.m_Extents.x, bounds.m_Extents.y },
-                vertices, type
-            });
+            fout.close();
         }
     }
 }
@@ -169,48 +117,8 @@ template<typename T> void Map::AddAddColliders(std::string netname)
 // Rebuilds the cached state from the game state
 void Map::Rebuild()
 {
-    content.clear();
-
     // These colliders are the ones known to be used
     AddAddColliders<BoxCollider2D>("BoxCollider2D");
     AddAddColliders<PolygonCollider2D>("PolygonCollider2D");
     AddAddColliders<EdgeCollider2D>("EdgeCollider2D");
-}
-
-// Prints the cached state
-void Map::Print()
-{
-    std::cout << "Map contains " << content.size() << " colliders: " << std::endl;
-    for (auto & obj : content) std::cout << obj.ToString();
-}
-
-// Saves the cache as svg file
-void Map::SaveSVG(const std::string& fileName)
-{
-    // Assemble content string
-    float xmin = std::numeric_limits<float>::infinity();
-    float ymin = std::numeric_limits<float>::infinity();
-    float xmax = -std::numeric_limits<float>::infinity();
-    float ymax = -std::numeric_limits<float>::infinity();
-    std::stringstream s;
-    for (auto& obj : content)
-    {
-        for (auto& vertex : obj.vertices)
-        {
-            xmin = std::min(xmin, vertex.x * 100.f);
-            ymin = std::min(ymin, vertex.y * -100.f);
-            xmax = std::max(xmax, vertex.x * 100.f);
-            ymax = std::max(ymax, vertex.y * -100.f);
-        }
-        s << obj.ToSVGString();
-    }
-
-    // Write file
-    std::ofstream file;
-    file.open(fileName, std::ios::out | std::ios::trunc);
-    file << "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ";
-    file << "viewBox=\"" << (int)xmin << " " << (int)ymin << " " << (int)(xmax - xmin) << " " << (int)(ymax - ymin) << "\" ";
-    file << "width=\"100%\" height=\"auto\" style=\"fill:none;stroke:black;stroke-width:3\">" << std::endl;
-    file << s.str() << "</svg>" << std::endl;
-    file.close();
 }

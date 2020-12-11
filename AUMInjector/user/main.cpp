@@ -120,8 +120,6 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
     {
         printf("\n");
         map.Rebuild();
-        map.Print();
-        map.SaveSVG("map.svg");
         appSettings.mustDebug = false;
     }
 

@@ -1,61 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="GUI">
-      <UniqueIdentifier>{b5a3830b-3a31-40ff-a58e-389055c64f63}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="IL2CPP">
-      <UniqueIdentifier>{01d93443-da1d-4e8b-b361-aa15f2d03103}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GUI\imgui">
-      <UniqueIdentifier>{fcc4f05b-75ab-47f6-a0b4-07667bb2669b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GUI\Blocks">
-      <UniqueIdentifier>{e54bbdb0-93fa-41ef-a5db-8518033be4c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Deobfuscate">
-      <UniqueIdentifier>{59530ac7-9942-4f37-a815-80f2ba7b9668}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Include">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="user\main.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="user\winhttp.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="user\LoggingSystem.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="user\MumbleLink.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="gui\Blocks\AboutBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
     </ClCompile>
     <ClCompile Include="gui\D3D11Hooking.cpp">
       <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GUI.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GUIBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\GUIWindow.cpp">
+      <Filter>GUI\Blocks</Filter>
     </ClCompile>
     <ClCompile Include="framework\il2cpp-init.cpp">
       <Filter>IL2CPP</Filter>
     </ClCompile>
     <ClCompile Include="framework\helpers.cpp">
       <Filter>IL2CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\GUI.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="user\MumblePlayer.cpp">
-      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="gui\imgui\imgui.cpp">
       <Filter>GUI\imgui</Filter>
@@ -66,112 +31,82 @@
     <ClCompile Include="gui\imgui\imgui_draw.cpp">
       <Filter>GUI\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="gui\imgui\imgui_widgets.cpp">
-      <Filter>GUI\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\GUIBlock.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\GUIWindow.cpp">
-      <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\Blocks\PlayerInfoBlock.cpp">
-      <Filter>GUI\Blocks</Filter>
-    </ClCompile>
     <ClCompile Include="gui\imgui\backends\imgui_impl_dx11.cpp">
       <Filter>GUI\imgui</Filter>
     </ClCompile>
     <ClCompile Include="gui\imgui\backends\imgui_impl_win32.cpp">
       <Filter>GUI\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="gui\Blocks\SettingsBlock.cpp">
+    <ClCompile Include="gui\imgui\imgui_widgets.cpp">
+      <Filter>GUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="user\LoggingSystem.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="user\main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="user\Map.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="user\MumbleLink.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="user\MumblePlayer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Blocks\OverlayBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Blocks\PlayerInfoBlock.cpp">
       <Filter>GUI\Blocks</Filter>
     </ClCompile>
     <ClCompile Include="user\settings.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="framework\il2cpp-init.cpp">
-      <Filter>IL2CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\helpers.cpp">
-      <Filter>IL2CPP</Filter>
-    </ClCompile>
-    <ClCompile Include="gui\Blocks\OverlayBlock.cpp">
+    <ClCompile Include="gui\Blocks\SettingsBlock.cpp">
       <Filter>GUI\Blocks</Filter>
     </ClCompile>
-    <ClCompile Include="gui\Blocks\AboutBlock.cpp">
-      <Filter>GUI\Blocks</Filter>
-    </ClCompile>
-    <ClCompile Include="user\Map.cpp">
+    <ClCompile Include="user\winhttp.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="user\winhttp.def">
-      <Filter>Source</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="user\main.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="deobfuscate\2020_9_22s.h">
+      <Filter>Deobfuscate</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="deobfuscate\2020_10_22s.h">
+      <Filter>Deobfuscate</Filter>
     </ClInclude>
-    <ClInclude Include="user\CLI11.hpp">
-      <Filter>Include</Filter>
+    <ClInclude Include="deobfuscate\2020_11_17s.h">
+      <Filter>Deobfuscate</Filter>
     </ClInclude>
-    <ClInclude Include="framework\helpers.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="deobfuscate\2020_11_17s_1.h">
+      <Filter>Deobfuscate</Filter>
     </ClInclude>
-    <ClInclude Include="user\LoggingSystem.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="deobfuscate\2020_12_3s.h">
+      <Filter>Deobfuscate</Filter>
     </ClInclude>
-    <ClInclude Include="user\MumbleLink.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="deobfuscate\2020_12_5s.h">
+      <Filter>Deobfuscate</Filter>
     </ClInclude>
-    <ClInclude Include="user\Settings.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="gui\Blocks\AboutBlock.h">
+      <Filter>GUI\Blocks</Filter>
     </ClInclude>
-    <ClInclude Include="user\MumblePlayer.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="gui\D3D11Hooking.hpp">
+      <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="user\OrderedLock.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\imgui\imgui.h">
-      <Filter>GUI\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\imgui\imgui_internal.h">
-      <Filter>GUI\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\imgui\imstb_rectpack.h">
-      <Filter>GUI\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\imgui\imstb_textedit.h">
-      <Filter>GUI\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\imgui\imstb_truetype.h">
-      <Filter>GUI\imgui</Filter>
+    <ClInclude Include="gui\GUI.h">
+      <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="gui\GUIBlock.h">
-      <Filter>GUI</Filter>
+      <Filter>GUI\Blocks</Filter>
     </ClInclude>
     <ClInclude Include="gui\GUIWindow.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\Blocks\PlayerInfoBlock.h">
       <Filter>GUI\Blocks</Filter>
     </ClInclude>
-    <ClInclude Include="gui\imgui\backends\imgui_impl_dx11.h">
-      <Filter>GUI\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\imgui\backends\imgui_impl_win32.h">
-      <Filter>GUI\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\Blocks\SettingsBlock.h">
-      <Filter>GUI\Blocks</Filter>
+    <ClInclude Include="framework\helpers.h">
+      <Filter>IL2CPP</Filter>
     </ClInclude>
     <ClInclude Include="appdata\il2cpp-api-functions.h">
       <Filter>IL2CPP</Filter>
@@ -194,50 +129,104 @@
     <ClInclude Include="appdata\il2cpp-types-ptr.h">
       <Filter>IL2CPP</Filter>
     </ClInclude>
-    <ClInclude Include="gui\D3D11Hooking.hpp">
-      <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="gui\GUI.h">
-      <Filter>GUI</Filter>
-    </ClInclude>
     <ClInclude Include="gui\imgui\imconfig.h">
       <Filter>GUI\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="gui\Blocks\OverlayBlock.h">
-      <Filter>GUI\Blocks</Filter>
+    <ClInclude Include="gui\imgui\imgui.h">
+      <Filter>GUI\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="gui\Blocks\AboutBlock.h">
-      <Filter>GUI\Blocks</Filter>
+    <ClInclude Include="gui\imgui\backends\imgui_impl_dx11.h">
+      <Filter>GUI\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="deobfuscate\2020_9_22s.h">
-      <Filter>Deobfuscate</Filter>
+    <ClInclude Include="gui\imgui\backends\imgui_impl_win32.h">
+      <Filter>GUI\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="deobfuscate\2020_10_22s.h">
-      <Filter>Deobfuscate</Filter>
+    <ClInclude Include="gui\imgui\imgui_internal.h">
+      <Filter>GUI\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="deobfuscate\2020_11_17s.h">
-      <Filter>Deobfuscate</Filter>
+    <ClInclude Include="gui\imgui\imstb_rectpack.h">
+      <Filter>GUI\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="deobfuscate\2020_11_17s_1.h">
-      <Filter>Deobfuscate</Filter>
+    <ClInclude Include="gui\imgui\imstb_textedit.h">
+      <Filter>GUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\imgui\imstb_truetype.h">
+      <Filter>GUI\imgui</Filter>
     </ClInclude>
     <ClInclude Include="deobfuscate\deobfuscate.h">
       <Filter>Deobfuscate</Filter>
     </ClInclude>
-    <ClInclude Include="deobfuscate\version.h">
-      <Filter>Deobfuscate</Filter>
+    <ClInclude Include="user\LoggingSystem.h">
+      <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="framework\helpers.h">
-      <Filter>IL2CPP</Filter>
+    <ClInclude Include="user\main.h">
+      <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="user\Map.h">
       <Filter>Include</Filter>
-    <ClInclude Include="deobfuscate\2020_12_3s.h">
+    </ClInclude>
+    <ClInclude Include="user\MumbleLink.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="user\CLI11.hpp">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="user\MumblePlayer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="user\OrderedLock.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\OverlayBlock.h">
+      <Filter>GUI\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\PlayerInfoBlock.h">
+      <Filter>GUI\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="user\Settings.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\SettingsBlock.h">
+      <Filter>GUI\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="deobfuscate\version.h">
       <Filter>Deobfuscate</Filter>
     </ClInclude>
-    <ClInclude Include="deobfuscate\2020_12_5s.h">
-      <Filter>Deobfuscate</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="user\winhttp.def">
+      <Filter>Include</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Deobfuscate">
+      <UniqueIdentifier>{61a1063a-a100-4a0d-b759-c1835f552473}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{74eef34e-69eb-42c4-a661-e21006f6f5da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IL2CPP">
+      <UniqueIdentifier>{35883f3b-c0b3-4875-82b1-5459c330095c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{75de6c36-2fcf-4ea0-9ddb-ca48b6508f24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{239a8200-e0e0-4598-87f7-fc66939a0fc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{a132810a-468b-4b96-a387-a60f06d2695f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Blocks">
+      <UniqueIdentifier>{ba3ef64c-6287-4b09-87e5-68a9234a8826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\imgui">
+      <UniqueIdentifier>{8539ce86-64d6-4bd5-8115-71d292d2f58a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AUMInjector.rc">

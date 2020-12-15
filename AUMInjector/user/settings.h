@@ -5,17 +5,10 @@
 #include "LoggingSystem.h"
 
 
-// Options for settings sync
-#define SYNC_HEADER '\a'
-#define SYNC_DELEMITER ';'
-#define SYNC_NUM_OPTIONS 2
-#define SYNC_VERSION 0 // Increase this every time sync options format or amount changes
-
-// Settings sync error codes
-#define SYNC_SUCCESS 0
-#define SYNC_ERROR_NUM_ARGS 1
-#define SYNC_ERROR_VERSION 2
-#define SYNC_ERROR_FORMAT 3
+// Increase this every time sync options format or amount changes
+#define SYNC_VERSION 1 
+#define SYNC_SIZE 2 // Number of payload bytes
+#define SYNC_RPC_ID 42
 
 // Credits info string
 static const std::string CREDITS = R"(AmongUs-Mumble mod by:
@@ -98,12 +91,6 @@ class Settings
 
 		// Generate audio coordinate map
 		void RecalculateAudioMap();
-
-		// Serialize the sync settings to a string
-		std::string SerializeSync();
-
-		// Deserialize the sync settings from a string
-		int DeserializeSync(std::string& input);
 
 		// Prints the sync settings to a human readable string
 		std::string HumanReadableSync();

@@ -133,48 +133,6 @@ void Settings::RecalculateAudioMap()
 	}
 }
 
-// Serialize the sync settings to a string
-std::string Settings::SerializeSync()
-{
-	// Concat options using delemiter
-	std::stringstream b;
-	b << SYNC_VERSION;
-	b << SYNC_DELEMITER;
-	b << (directionalAudio? 1 : 0);
-	b << SYNC_DELEMITER;
-	b << static_cast<int>(ghostVoiceMode);
-	return b.str();
-}
-
-// Deserialize the sync settings from a string
-int Settings::DeserializeSync(std::string& input)
-{
-	// Split string by delemiter
-	std::stringstream ss(input);
-	std::string token;
-	std::vector<std::string> cont;
-	while (std::getline(ss, token, SYNC_DELEMITER)) cont.push_back(token);
-
-	// Check version 
-	if (cont.size() == 0) return SYNC_ERROR_NUM_ARGS;
-	try { if (std::stoi(cont[0]) != SYNC_VERSION) return SYNC_ERROR_VERSION; }
-	catch (...) { return SYNC_ERROR_FORMAT; }
-
-	// Check number of parameters ( + 1 for version flag)
-	if (cont.size() != SYNC_NUM_OPTIONS + 1) return SYNC_ERROR_NUM_ARGS;
-	try
-	{
-		// Parse parameters
-		directionalAudio = (std::stoi(cont[1]) == 1);
-		ghostVoiceMode = static_cast<GHOST_VOICE_MODE>(std::stoi(cont[2]));
-	}
-	catch (...) { return SYNC_ERROR_FORMAT; }
-
-	// Rebuild audio map for directional audio
-	RecalculateAudioMap();
-	return SYNC_SUCCESS;
-}
-
 // Prints the sync settings to a human readable string
 std::string Settings::HumanReadableSync()
 {

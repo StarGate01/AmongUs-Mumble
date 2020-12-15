@@ -156,20 +156,24 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
 
     if (mumbleLink.linkedMem != nullptr)
     {
-        if (mumbleLink.linkedMem->uiVersion != 2)
-        {
-            wcsncpy_s(mumbleLink.linkedMem->name, L"Among Us", 256);
-			wcsncpy_s(mumbleLink.linkedMem->description, L"Among Us support via the Link plugin.", 2048);
-			mumbleLink.linkedMem->uiVersion = 2;
-		}
-		mumbleLink.linkedMem->uiTick++;
-
-		// Map player position to mumble according to directional / non directional setting
-		for (int i = 0; i < 3; i++)
-		{
-			mumbleLink.linkedMem->fAvatarPosition[i] = mumblePlayer.GetMumblePos(i);
-			mumbleLink.linkedMem->fCameraPosition[i] = mumblePlayer.GetMumblePos(i);
-		}
+        // Update mumble info
+        // Map player position to mumble according to directional / non directional setting
+        #define UPDATEBLOCK(T, F, CW) { \
+        if (((T)mumbleLink.linkedMem)->uiVersion != 2) \
+        { \
+            memcpy(((T)mumbleLink.linkedMem)->name, F##"Among Us\0", 9 * CW); \
+			memcpy(((T)mumbleLink.linkedMem)->description, F##"Among Us support via the Link plugin.\0", 38 * CW); \
+            ((T)mumbleLink.linkedMem)->uiVersion = 2; \
+		} \
+        ((T)mumbleLink.linkedMem)->uiTick++; \
+		for (int i = 0; i < 3; i++) \
+		{ \
+            ((T)mumbleLink.linkedMem)->fAvatarPosition[i] = mumblePlayer.GetMumblePos(i); \
+            ((T)mumbleLink.linkedMem)->fCameraPosition[i] = mumblePlayer.GetMumblePos(i); \
+		} }
+        if (mumbleLink.IsWine()) UPDATEBLOCK(LinkedMemWine*, U, 4)
+        else UPDATEBLOCK(LinkedMemWindows*, L, 2)
+        #undef UPDATEBLOCK
 	}
 	mumblePlayer.TryLogPosition();
 }
@@ -323,6 +327,8 @@ void Run()
 
         logger.LogVariadic(LOG_CODE::INF, false, "Compiled for game version %s", version_text);
         logger.Log(LOG_CODE::INF, "DLL hosting successful");
+        if (mumbleLink.IsWine()) logger.Log(LOG_CODE::INF, "Running on Wine, disabling overlay");
+        else logger.Log(LOG_CODE::INF, "Running on Windows, enabling overlay");
 
         // Print current config
         if (!parseOk)
@@ -352,7 +358,7 @@ void Run()
 		// Setup hooks
 		DetourTransactionBegin();
 		DetourUpdateThread(GetCurrentThread());
-        GUIDetourAttach();
+        if (!mumbleLink.IsWine()) GUIDetourAttach();
 		DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
 		DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
 		DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);

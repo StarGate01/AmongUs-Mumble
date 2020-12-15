@@ -67,6 +67,7 @@ class Settings
 		bool disableOverlay;
 		LOG_CODE logVerbosity;
 		std::string logFileName;
+		int wineUID;
 
 		// Computed options
 		int audioCoordinateMap[3];

@@ -13,6 +13,7 @@ Settings::Settings() :
 	disableOverlay(false),
 	logVerbosity(LOG_CODE::MSG),
 	logFileName("ProximityLog.txt"),
+	wineUID(1000),
 	directionalAudio(false), 
 	ghostVoiceMode(GHOST_VOICE_MODE::PURGATORY)
 { 
@@ -24,6 +25,7 @@ Settings::Settings() :
 		{ "no-log-file", "Disable logging to a file", &disableLogFile, OPTION_TYPE::FLAG },
 		{ "no-overlay", "Disable the configuration button overlay", &disableOverlay, OPTION_TYPE::FLAG },
 		{ "log-verbosity", "Log verbosity", &logVerbosity, OPTION_TYPE::INTEGER },
+		{ "wine-uid", "Wine UID", &wineUID, OPTION_TYPE::INTEGER },
 		{ "ghost-voice-mode", "Set ghost voice mode\n; 0 = Purgatory\n; 1 = Spectate\n; 2 = Haunt", &ghostVoiceMode, OPTION_TYPE::INTEGER },
 		{ "directional-audio", "Enable directional audio", &directionalAudio, OPTION_TYPE::FLAG }
 	};

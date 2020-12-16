@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="framework\helpers.cpp" />
     <ClCompile Include="framework\il2cpp-init.cpp" />
+    <ClCompile Include="framework\Input.cpp" />
     <ClCompile Include="gui\Blocks\AboutBlock.cpp" />
     <ClCompile Include="gui\Blocks\OverlayBlock.cpp" />
     <ClCompile Include="gui\Blocks\PlayerInfoBlock.cpp" />
@@ -56,6 +57,7 @@
     <ClInclude Include="framework\helpers.h" />
     <ClInclude Include="framework\il2cpp-appdata.h" />
     <ClInclude Include="framework\il2cpp-init.h" />
+    <ClInclude Include="framework\Input.h" />
     <ClInclude Include="gui\Blocks\AboutBlock.h" />
     <ClInclude Include="gui\Blocks\OverlayBlock.h" />
     <ClInclude Include="gui\Blocks\PlayerInfoBlock.h" />
@@ -172,6 +174,7 @@
       <PreprocessToFile>false</PreprocessToFile>
       <DisableSpecificWarnings>4359</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

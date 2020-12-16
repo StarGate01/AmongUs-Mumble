@@ -35,7 +35,8 @@ namespace AUMDeobfuscator
                     .WithTag("FixedUpdate")
                     .OfName("FixedUpdate")
                     .WithNamedReturnType("void");
-            
+
+
             public static readonly ClassMatch ClassPlayerControl =
                 new ClassMatch()
                     .WithTag("PlayerControl")
@@ -51,9 +52,6 @@ namespace AUMDeobfuscator
                     .And()
                     .WithMethod(Die)
                     .And();
-
-
-            
 
 
         }
@@ -75,8 +73,6 @@ namespace AUMDeobfuscator
                 new EnumValueMatch(null!)
                     .OfName("Ended")
                     .OfValue("3");
-
-            
 
             public static readonly MethodMatch FixedUpdate =
                 new MethodMatch(null!)

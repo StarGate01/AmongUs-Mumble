@@ -9,6 +9,7 @@
 const char* booleanOptions[] = { "False", "True" };
 const char* voiceText[] = { "Purgatory", "Spectate", "Haunt" };
 const char* verbosityText[] = { "Error", "Warning", "Info", "Message", "Debug" };
+const char keyboardKeys[] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
 
 SettingsBlock::SettingsBlock() { }
@@ -147,6 +148,28 @@ void SettingsBlock::Update()
         ImGui::TreePop();
     }
     BoolComboHelper(appSettings.disableOverlay, "overlay");
+
+    // Change hotkey for radio
+    if (ImGui::TreeNode("Imposter Radio Hotkey"))
+    {
+        ImGui::Text("Set the hotkey for the imposter-radio");
+        ImGui::TreePop();
+    }
+    // Radio combo
+    if (ImGui::BeginCombo("##combo", &appSettings.radioKey)) // The second parameter is the label previewed before opening the combo.
+    {
+        for (int n = 0; n < sizeof(keyboardKeys); n++)
+        {
+            bool isSelected = (appSettings.radioKey == keyboardKeys[n]); // You can store your selection however you want, outside or inside your objects
+            // Create local string for imgui string to print.
+            char localKey[] = { keyboardKeys[n], 0 };
+            if (ImGui::Selectable(localKey, isSelected))
+                appSettings.radioKey = keyboardKeys[n];
+                if (isSelected)
+                    ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+        }
+        ImGui::EndCombo();
+    }
 
     // Log File
     if (ImGui::TreeNode("Logfile path:"))

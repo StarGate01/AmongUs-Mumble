@@ -8,6 +8,7 @@ using HqHudOverrideTask = NIAFLKKACLE;
 using HudOverrideTask = LFOILEODBMA;
 using ChatController = GEHKHGLKFHE;
 using AmongUsClient = FMLLKEACGIO;
+using PlayerData = EGLJNOMOGNP_DCJMABDDJCF;
 InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = KHNHJFFECBP_KGEKNMMAKKN__Enum_Joined;
 InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Started = KHNHJFFECBP_KGEKNMMAKKN__Enum_Started;
 InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = KHNHJFFECBP_KGEKNMMAKKN__Enum_Ended;
@@ -27,3 +28,6 @@ InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = KHNHJFFECB
 #define ChatController_AddChat_Trampoline GEHKHGLKFHE_AddChat
 #define MessageWriter_Write_Byte_Trampoline MessageWriter_Write_1
 #define AmongUsClient_OnPlayerJoined_Trampoline FMLLKEACGIO_BIEPKGFMACN
+#define PlayerControl_RPC_SetInfected FFGALNAPKCD_RpcSetInfected
+#define PlayerControl_RemoveInfected FFGALNAPKCD_RemoveInfected
+#define PlayerControl_GetData FFGALNAPKCD_get_Data

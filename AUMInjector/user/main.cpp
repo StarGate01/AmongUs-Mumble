@@ -64,6 +64,28 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
         // Cache network ID
         mumblePlayer.SetNetID(__this->fields._.NetId);
     }
+
+    // Grab the local player off of Among Us Static variable in Player Control
+    PlayerControl* localPlayerControl = FFGALNAPKCD__TypeInfo->static_fields->LocalPlayer;
+    if (localPlayerControl == __this)
+    {
+        // From Player Control, get the Player Data
+        PlayerData* Data = PlayerControl_GetData(localPlayerControl, nullptr);
+        // And now we can get if we are imposter.
+        bool isImposter = Data->fields.DAPKNDBLKIA;
+        mumblePlayer.SetImposter(isImposter);
+        
+        // Set if player is using radio
+        mumblePlayer.SetUsingRadio(inputSingleton.GetKey(appSettings.radioKey));
+
+        // Check if player is imposter and using radio
+        if (mumblePlayer.IsImposter() && mumblePlayer.IsUsingRadio())
+        {
+            logger.Log(LOG_CODE::MSG, "Imposter Radio");
+            // Location is moved to internal value in update player next loop.
+        }
+    }
+
 }
 
 // Gets called when a player dies
@@ -158,28 +180,6 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
         }
     }
     lastGameState = __this->fields.GameState;
-
-    // Grab the local player off of Among Us Static variable in Player Control
-    PlayerControl* localPlayerControl = FFGALNAPKCD__TypeInfo->static_fields->LocalPlayer;
-    if (localPlayerControl) 
-    {
-        // From Player Control, get the Player Data
-        PlayerData* Data = PlayerControl_GetData(localPlayerControl, nullptr);
-        // And now we can get if we are imposter.
-        bool isImposter = Data->fields.DAPKNDBLKIA;
-        mumblePlayer.SetImposter(isImposter);
-    }
-    // Set if player is using radio
-    mumblePlayer.SetUsingRadio(inputSingleton.GetKey(appSettings.radioKey));
-
-    // Check if player is imposter and using radio
-    if (mumblePlayer.IsImposter() && mumblePlayer.IsUsingRadio())
-    {
-        logger.Log(LOG_CODE::MSG, "Imposter Radio");
-        // Move his location to DEFINED
-        mumblePlayer.SetPosX(100);
-        mumblePlayer.SetPosY(100);
-    }
 
     if (mumbleLink.linkedMem != nullptr)
     {

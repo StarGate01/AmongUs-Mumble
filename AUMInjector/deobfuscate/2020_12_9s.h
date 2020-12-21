@@ -31,3 +31,5 @@ InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = KHNHJFFECB
 #define PlayerControl_RPC_SetInfected FFGALNAPKCD_RpcSetInfected
 #define PlayerControl_RemoveInfected FFGALNAPKCD_RemoveInfected
 #define PlayerControl_GetData FFGALNAPKCD_get_Data
+#define PlayerControl_TypeInfo FFGALNAPKCD__TypeInfo
+#define IsImposter DAPKNDBLKIA

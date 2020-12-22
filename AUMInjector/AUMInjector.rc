@@ -67,14 +67,14 @@ BEGIN
     BEGIN
         BLOCK "000904b0"
         BEGIN
-            VALUE "CompanyName", "chrz.de"
+            VALUE "CompanyName", "Team ESDG"
             VALUE "FileDescription", "Among Us to Mumble VoIP adapter"
             VALUE "FileVersion", "1.0.0.13"
             VALUE "InternalName", "winhttp.dll"
-            VALUE "LegalCopyright", "Copyright (C) chrz.de 2020"
+            VALUE "LegalCopyright", "Copyright (C) Team ESDG 2020"
             VALUE "OriginalFilename", "winhttp.dll"
             VALUE "ProductName", "AmongUs-Mumble"
-            VALUE "ProductVersion", "1.0.0.13"
+            VALUE "ProductVersion", "1.0.0.14"
         END
     END
     BLOCK "VarFileInfo"

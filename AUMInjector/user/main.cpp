@@ -18,7 +18,9 @@
 #include "LoggingSystem.h"
 #include "MumblePlayer.h"
 #include "GUI.h"
+#include "Input.h"
 //#include "dynamic_analysis.h"
+
 
 using namespace app;
 
@@ -52,7 +54,7 @@ void TryConnectMumble()
 void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 {
     PlayerControl_FixedUpdate_Trampoline(__this, method);
-    
+
     if (__this->fields.LightPrefab != nullptr)
     {
         // Cache position
@@ -62,6 +64,28 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
         // Cache network ID
         mumblePlayer.SetNetID(__this->fields._.NetId);
     }
+
+    // Grab the local player off of Among Us Static variable in Player Control
+    PlayerControl* localPlayerControl = PlayerControl_TypeInfo ->static_fields->LocalPlayer;
+    if (localPlayerControl == __this)
+    {
+        // From Player Control, get the Player Data
+        PlayerData* Data = PlayerControl_GetData(localPlayerControl, nullptr);
+        // And now we can get if we are imposter.
+        bool isImposter = Data->fields.IsImposter;
+        mumblePlayer.SetImposter(isImposter);
+        
+        // Set if player is using radio
+        mumblePlayer.SetUsingRadio(inputSingleton.GetKey(appSettings.radioKey));
+
+        // Check if player is imposter and using radio
+        if (mumblePlayer.IsImposter() && mumblePlayer.IsUsingRadio())
+        {
+            logger.Log(LOG_CODE::MSG, "Imposter Radio");
+            // Location is moved to internal value in update player next loop.
+        }
+    }
+
 }
 
 // Gets called when a player dies
@@ -130,6 +154,7 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
         }
     }
 
+
     // Check if game state changed to lobby
     if (__this->fields.GameState != lastGameState)
     {
@@ -150,6 +175,8 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             // Just to be sure in case some join events were missed
             if(mumblePlayer.IsHost()) appSettings.mustBroadcast = true;
             mumblePlayer.EnterGame();
+
+
         }
     }
     lastGameState = __this->fields.GameState;
@@ -292,6 +319,7 @@ void InnerNetClient_HandleGameDataInner_Hook(InnerNetClient* __this, MessageRead
         }
         else
         {
+
             // Rewind reader to allow reparsing packet in trampoline
             MessageReader_set_Position(reader, pos, NULL);
         }
@@ -377,4 +405,4 @@ void Run()
 		mumbleLink.Close();
 		logger.Log(LOG_CODE::MSG, "Unloading done");
 	}
-}
+C

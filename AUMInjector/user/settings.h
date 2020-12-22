@@ -95,6 +95,8 @@ class Settings
 		// Prints the sync settings to a human readable string
 		std::string HumanReadableSync();
 
+		// Player control to use Radio
+		char radioKey = 'E';
 };
 
 extern Settings appSettings;

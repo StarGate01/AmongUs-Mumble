@@ -39,6 +39,7 @@
 #include "Blocks/SettingsBlock.h"
 #include "Blocks/OverlayBlock.h"
 #include "Blocks/AboutBlock.h"
+#include "Input.h"
 
 IDXGISwapChain* SwapChain;
 ID3D11Device* Device;
@@ -68,6 +69,16 @@ LRESULT CALLBACK WndProcHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     ImGui::GetIO().MousePos.y = (float)mPos.y;
 
     if (uMsg == WM_KEYUP && wParam == VK_DELETE) guiShowMenu = !guiShowMenu;
+
+    // Set the alphabet when it comes in.
+    if (uMsg == WM_KEYUP && wParam >= 'A' && wParam <= 'Z')
+    {
+        inputSingleton.SetKey(wParam, false);
+    }
+    else if (uMsg == WM_KEYDOWN && wParam >= 'A' && wParam <= 'Z')
+    {
+        inputSingleton.SetKey(wParam, true);
+    }
 
     ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
     if (io.WantCaptureMouse && 

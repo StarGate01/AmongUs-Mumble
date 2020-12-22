@@ -5,24 +5,20 @@
 
 Currently only for Windows PCs and the Steam version. On Linux and OSX a small Mumble fake plugin is provided, which just sets your ingame position to `(0, 0)`.
 
-Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0.1.X`. See the table for compatibility. Please ensure that you use the correct version for your game installation. Please note *BETA BUILDS MIGHT BE UNSTABLE*.
-
-Patch versions refer to unmarked Steam updates where the game version did not change.
-
-| Game version         | Game channel | Status                        | DLL version                                                                     | GAME_VERSION |
-| -------------------- | ------------ | ----------------------------- | ------------------------------------------------------------------------------- | ------------ |
-| 2020.12.9s           | Release      | :heavy_check_mark: Maintained | [1.0.0.13](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.13) | `202012090`  |
-| 2020.12.5s           | Release      | :warning: Outdated            | [1.0.0.12](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.12) | `202012050`  |
-| 2020.12.3s           | Release      | :warning: Outdated            | [1.0.0.11](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.11) | `202012030`  |
-| 2020.11.17s Patch 1  | Release      | :warning: Outdated            | [1.0.0.10](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.10) | `202011171`  |
-| 2020.11.17s          | Release      | :warning: Outdated            | [1.0.0.8](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.8)   | `202011170`  |
-| 2020.11.4s           | Beta         | :warning: Outdated            | [1.0.1.7](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.1.7)   | `202011040`  |
-| 2020.10.22s          | Release      | :warning: Outdated            | [1.0.0.7](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.7)   | `202010220`  |
-| 2020.9.22s           | Release      | :warning: Outdated            | [1.0.0.1](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.1)   | `20209220`   |
 
 If you are looking for a community that uses this mod, join the [Discord server](https://discord.gg/4UkHEJ5sqg)!
 
 If you have any issues or find bugs, report them on our [issue tracker](https://github.com/StarGate01/AmongUs-Mumble/issues) .
+
+## Download
+
+Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0.1.X`. Please ensure that you use the correct version for your game installation. Please note *BETA BUILDS MIGHT BE UNSTABLE*.
+
+Patch versions refer to unmarked Steam updates where the game version did not change.
+
+**Latest version:**  Release 2020.12.9s, Mod download: [1.0.0.13](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.13)
+
+**Older versions:** [Versions table](https://github.com/StarGate01/AmongUs-Mumble/wiki/Versions)
 
 ## Main Features
  - Real-time proximity voice chat based on ingame player position

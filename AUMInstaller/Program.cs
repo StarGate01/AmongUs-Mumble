@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 
-namespace HelloWorld
+namespace AUMInstaller
 {
     static class Program
     {

@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace HelloWorld
+namespace AUMInstaller
 {
     public partial class ModInstaller : Form
     {

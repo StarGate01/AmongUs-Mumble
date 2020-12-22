@@ -1,5 +1,5 @@
 ﻿
-namespace HelloWorld
+namespace AUMInstaller
 {
     partial class ModInstaller
     {

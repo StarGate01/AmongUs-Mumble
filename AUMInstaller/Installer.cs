@@ -118,7 +118,7 @@ namespace AUMInstaller
                     foreach (Match match in Regex.Matches(readmeText,
                         "^\\|\\s*([^-]*?)\\s*\\|(?:.*?\\|){2}\\s*\\[(.*)\\].*$", RegexOptions.Multiline))
                     {
-                        if(match.Groups.Count == 3)
+                        if (match.Groups.Count == 3)
                         {
                             string modVersion = match.Groups[2].Value;
                             versions.Add(new ModVersion()
@@ -181,7 +181,7 @@ namespace AUMInstaller
                     File.Delete(localFileName);
                     logger.Log("Successfully installed Visual C++ 2015 redistributable");
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     // Download failed
                     logger.Log("Failed to download " + downloadUrl + ", reason: " + e.Message);
@@ -208,9 +208,9 @@ namespace AUMInstaller
                     try
                     {
                         // Rename old version if it is installed
-                        if(File.Exists(gameDirectory + @"\winhttp.dll"))
+                        if (File.Exists(gameDirectory + @"\winhttp.dll"))
                         {
-                            if(File.Exists(gameDirectory + @"\winhttp.dll.old"))
+                            if (File.Exists(gameDirectory + @"\winhttp.dll.old"))
                             {
                                 logger.Log("Deleting previous winhttp.dll.old");
                                 File.Delete(gameDirectory + @"\winhttp.dll.old");
@@ -243,6 +243,23 @@ namespace AUMInstaller
                     logger.Log("Failed to install mod");
                 }
             }
+        }
+
+        public void UninstallMod(string gameDirectory)
+        {
+            logger.Log("Uninstalling mod from " + gameDirectory);
+            if (File.Exists(gameDirectory + @"\winhttp.dll"))
+            {
+                File.Delete(gameDirectory + @"\winhttp.dll");
+                logger.Log("Removed " + gameDirectory + @"\winhttp.dll");
+            }
+            if (File.Exists(gameDirectory + @"\winhttp.dll.old"))
+            {
+                File.Delete(gameDirectory + @"\winhttp.dll.old");
+                logger.Log("Removed " + gameDirectory + @"\winhttp.dll.old");
+            }
+            logger.Log("Successfully uninstalled mod");
+            logger.CompleteStep(4);
         }
 
     }

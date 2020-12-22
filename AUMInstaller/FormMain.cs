@@ -75,6 +75,21 @@ namespace AUMInstaller
                 "Installation finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        private void buttonUninstall_Click(object sender, EventArgs e)
+        {
+            logger.Log("Starting uninstallation");
+            logger.Reset();
+            groupBoxInput.Enabled = false;
+
+            string gameDir = Path.GetDirectoryName(txtboxFilePath.Text);
+            installer.UninstallMod(gameDir);
+
+            groupBoxInput.Enabled = true;
+
+            MessageBox.Show(this, "Uninstallation finished. Check the log for details.",
+                "Uninstallation finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private void btnBrowse_Click(object sender, EventArgs e)
         {
             // Display the open file dialog
@@ -103,5 +118,6 @@ namespace AUMInstaller
             System.Diagnostics.Process.Start("https://github.com/StarGate01/AmongUs-Mumble/");
         }
 
+    
     }
 }

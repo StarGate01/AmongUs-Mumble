@@ -44,6 +44,7 @@ namespace AUMInstaller
             this.groupBoxInput = new System.Windows.Forms.GroupBox();
             this.openFileGame = new System.Windows.Forms.OpenFileDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonUninstall = new System.Windows.Forms.Button();
             this.groupBoxInstall.SuspendLayout();
             this.groupBoxInput.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -151,16 +152,18 @@ namespace AUMInstaller
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBoxLog.FormattingEnabled = true;
+            this.listBoxLog.HorizontalScrollbar = true;
             this.listBoxLog.Location = new System.Drawing.Point(9, 19);
             this.listBoxLog.Name = "listBoxLog";
             this.listBoxLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.listBoxLog.Size = new System.Drawing.Size(683, 316);
+            this.listBoxLog.Size = new System.Drawing.Size(683, 303);
             this.listBoxLog.TabIndex = 12;
             // 
             // groupBoxInstall
             // 
             this.groupBoxInstall.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxInstall.Controls.Add(this.buttonUninstall);
             this.groupBoxInstall.Controls.Add(this.label1);
             this.groupBoxInstall.Controls.Add(this.btnDownload);
             this.groupBoxInstall.Controls.Add(this.progressBarInstall);
@@ -168,10 +171,10 @@ namespace AUMInstaller
             this.groupBoxInstall.Enabled = false;
             this.groupBoxInstall.Location = new System.Drawing.Point(15, 81);
             this.groupBoxInstall.Name = "groupBoxInstall";
-            this.groupBoxInstall.Size = new System.Drawing.Size(698, 93);
+            this.groupBoxInstall.Size = new System.Drawing.Size(698, 122);
             this.groupBoxInstall.TabIndex = 13;
             this.groupBoxInstall.TabStop = false;
-            this.groupBoxInstall.Text = "Install";
+            this.groupBoxInstall.Text = "Install / Uninstall";
             // 
             // groupBoxInput
             // 
@@ -201,12 +204,23 @@ namespace AUMInstaller
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.listBoxLog);
-            this.groupBox1.Location = new System.Drawing.Point(15, 180);
+            this.groupBox1.Location = new System.Drawing.Point(15, 209);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(698, 354);
+            this.groupBox1.Size = new System.Drawing.Size(698, 337);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Installation log";
+            this.groupBox1.Text = "Log";
+            // 
+            // buttonUninstall
+            // 
+            this.buttonUninstall.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonUninstall.Location = new System.Drawing.Point(9, 89);
+            this.buttonUninstall.Name = "buttonUninstall";
+            this.buttonUninstall.Size = new System.Drawing.Size(117, 23);
+            this.buttonUninstall.TabIndex = 0;
+            this.buttonUninstall.Text = "Uninstall";
+            this.buttonUninstall.UseVisualStyleBackColor = true;
+            this.buttonUninstall.Click += new System.EventHandler(this.buttonUninstall_Click);
             // 
             // FormMain
             // 
@@ -252,6 +266,7 @@ namespace AUMInstaller
         public System.Windows.Forms.ProgressBar progressBarInstall;
         public System.Windows.Forms.ListBox listBoxLog;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button buttonUninstall;
     }
 }
 

@@ -14,8 +14,9 @@
 static const std::string CREDITS = R"(AmongUs-Mumble mod by:
   StarGate01 (chrz.de): Proxy DLL, Framework, Setup, Features.
   Alisenai (Alien):     Fixes, More Features.
-  BillyDaBongo (Billy): Management, Testing.
+  BillyDaBongo (Billy): Installer, Management, Testing.
   LelouBil:             Deobfuscation.
+  ShumWengSang:         Impostor Radio.
 
 Source code and download: https://github.com/StarGate01/AmongUs-Mumble
 Freely available and licensed under the GNU GPLv3.

@@ -29,4 +29,4 @@ InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = KHNHJFFECB
 #define MessageWriter_Write_Byte_Trampoline MessageWriter_Write_1
 #define AmongUsClient_OnPlayerJoined_Trampoline FMLLKEACGIO_BIEPKGFMACN
 #define PlayerControl_GetData_Trampoline FFGALNAPKCD_get_Data
-bool EGLJNOMOGNP_DCJMABDDJCF__Fields::* IsImposter = &EGLJNOMOGNP_DCJMABDDJCF__Fields::DAPKNDBLKIA;
+bool EGLJNOMOGNP_DCJMABDDJCF__Fields::*IsImposter = &EGLJNOMOGNP_DCJMABDDJCF__Fields::DAPKNDBLKIA;

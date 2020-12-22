@@ -361,11 +361,11 @@ void Run()
         logger.Log(LOG_CODE::MSG, "Current configuration:\n");
         logger.Log(LOG_CODE::MSG, appSettings.app.config_to_str(true, false) + "\n", false);
 
-		// Setup type and memory info
-		logger.Log(LOG_CODE::MSG, "Waiting 10s for Unity to load");
-		Sleep(10000);
-		init_il2cpp();
-		logger.Log(LOG_CODE::INF, "Type and function memory mapping successful");
+        // Setup type and memory info
+        logger.Log(LOG_CODE::MSG, "Waiting 10s for Unity to load");
+        Sleep(10000);
+        init_il2cpp();
+        logger.Log(LOG_CODE::INF, "Type and function memory mapping successful");
 
         // Print game version
         String* gameVersionRaw = Application_get_version(NULL);
@@ -377,16 +377,16 @@ void Run()
         // Start mumble connection thread
         std::thread mumbleReconnectionThread(TryConnectMumble);
 
-		// Setup hooks
-		DetourTransactionBegin();
-		DetourUpdateThread(GetCurrentThread());
+        // Setup hooks
+        DetourTransactionBegin();
+        DetourUpdateThread(GetCurrentThread());
         GUIDetourAttach();
-		DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
-		DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
-		DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);
-		DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
-		DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
-		DetourAttach(&(PVOID&)InnerNetClient_Disconnect_Trampoline, InnerNetClient_Disconnect_Hook);
+        DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
+        DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
+        DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);
+        DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
+        DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
+        DetourAttach(&(PVOID&)InnerNetClient_Disconnect_Trampoline, InnerNetClient_Disconnect_Hook);
         DetourAttach(&(PVOID&)HqHudOverrideTask_Initialize_Trampoline, HqHudOverrideTask_Initialize_Hook);
         DetourAttach(&(PVOID&)HqHudOverrideTask_Complete_Trampoline, HqHudOverrideTask_Complete_Hook);
         DetourAttach(&(PVOID&)HudOverrideTask_Initialize_Trampoline, HudOverrideTask_Initialize_Hook);
@@ -396,13 +396,13 @@ void Run()
         //DetourAttach(&(PVOID&)IGHKMHLJFLI_Detoriorate, IGHKMHLJFLI_Detoriorate_Hook);
 
         //dynamic_analysis_attach();
-		LONG errDetour = DetourTransactionCommit();
-		if (errDetour == NO_ERROR) logger.Log(LOG_CODE::INF, "Successfully detoured game functions");
-		else logger.LogVariadic(LOG_CODE::ERR, false, "Detouring game functions failed: %d", errDetour);
+        LONG errDetour = DetourTransactionCommit();
+        if (errDetour == NO_ERROR) logger.Log(LOG_CODE::INF, "Successfully detoured game functions");
+        else logger.LogVariadic(LOG_CODE::ERR, false, "Detouring game functions failed: %d", errDetour);
 
-		// Wait for thread exit and then clean up
-		WaitForSingleObject(hExit, INFINITE);
-		mumbleLink.Close();
-		logger.Log(LOG_CODE::MSG, "Unloading done");
-	}
-C
+        // Wait for thread exit and then clean up
+        WaitForSingleObject(hExit, INFINITE);
+        mumbleLink.Close();
+        logger.Log(LOG_CODE::MSG, "Unloading done");
+    }
+}

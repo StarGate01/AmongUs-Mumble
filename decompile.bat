@@ -22,7 +22,7 @@ dotnet build "..\AUMDeobfuscator\AUMDeobfuscator.csproj" -c "Release"
 "..\AUMDeobfuscator\bin\Release\net5.0\AUMDeobfuscator.exe" "cs" --gameversion "%AMONGUS_VERSION%" -o "..\AUMInjector\deobfuscate\generated_%AMONGUS_VERSION%.h"
 
 CD ..
-#DEL /s /q tmp\*  >NUL 2>&1
-#RMDIR /s /q tmp
+DEL /s /q tmp\*  >NUL 2>&1
+RMDIR /s /q tmp
 
 PAUSE

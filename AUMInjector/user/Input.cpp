@@ -1,4 +1,5 @@
 #include "Input.h"
+
 Input inputSingleton;
 
 // Expects input of 'A' to 'Z'

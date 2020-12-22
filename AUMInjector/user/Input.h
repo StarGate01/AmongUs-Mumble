@@ -1,3 +1,5 @@
+#pragma once
+
 // For now this is a thin wrapper around the keyboard keys 'A' to 'Z'
 // Note that keys have to be capitalized
 class Input

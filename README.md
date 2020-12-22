@@ -16,7 +16,9 @@ Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0
 
 Patch versions refer to unmarked Steam updates where the game version did not change.
 
-**Latest version:**  Release 2020.12.9s, Mod download: [1.0.0.13](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.13)
+**Use the installer:** TBA
+
+**Latest mod version:**  Release 2020.12.9s, Mod download: [1.0.0.13](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.13)
 
 **Older versions:** [Versions table](https://github.com/StarGate01/AmongUs-Mumble/wiki/Versions)
 
@@ -25,6 +27,7 @@ Patch versions refer to unmarked Steam updates where the game version did not ch
  - Directional audio depending on relative position of players (Optional)
  - Works with any official or unofficial Among Us server
  - Works with any Mumble server
+ - Easy to use installer
  - In-Game GUI for easy configuration
  - Automatic handling of round start, round end, emergency meetings and player deaths
  - Ghosts can always listen to emergency meetings

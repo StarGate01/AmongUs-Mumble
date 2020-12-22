@@ -55,26 +55,23 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 {
     PlayerControl_FixedUpdate_Trampoline(__this, method);
 
+    // This is a "hacky" but very fast check to see if this event is from the local player
     if (__this->fields.LightPrefab != nullptr)
     {
         // Cache position
         Vector2 pos = PlayerControl_GetTruePosition_Trampoline(__this, method);
         mumblePlayer.SetPosX(pos.x);
         mumblePlayer.SetPosY(pos.y);
+
         // Cache network ID
         mumblePlayer.SetNetID(__this->fields._.NetId);
-    }
 
-    // Grab the local player off of Among Us Static variable in Player Control
-    PlayerControl* localPlayerControl = PlayerControl_TypeInfo ->static_fields->LocalPlayer;
-    if (localPlayerControl == __this)
-    {
         // From Player Control, get the Player Data
-        PlayerData* Data = PlayerControl_GetData(localPlayerControl, nullptr);
+        PlayerData* Data = PlayerControl_GetData_Trampoline(__this, NULL);
         // And now we can get if we are imposter.
-        bool isImposter = Data->fields.IsImposter;
+        bool isImposter = Data->fields.*IsImposter;
         mumblePlayer.SetImposter(isImposter);
-        
+
         // Set if player is using radio
         mumblePlayer.SetUsingRadio(inputSingleton.GetKey(appSettings.radioKey));
 
@@ -85,7 +82,6 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
             // Location is moved to internal value in update player next loop.
         }
     }
-
 }
 
 // Gets called when a player dies

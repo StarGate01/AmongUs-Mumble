@@ -28,8 +28,5 @@ InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = KHNHJFFECB
 #define ChatController_AddChat_Trampoline GEHKHGLKFHE_AddChat
 #define MessageWriter_Write_Byte_Trampoline MessageWriter_Write_1
 #define AmongUsClient_OnPlayerJoined_Trampoline FMLLKEACGIO_BIEPKGFMACN
-#define PlayerControl_RPC_SetInfected FFGALNAPKCD_RpcSetInfected
-#define PlayerControl_RemoveInfected FFGALNAPKCD_RemoveInfected
-#define PlayerControl_GetData FFGALNAPKCD_get_Data
-#define PlayerControl_TypeInfo FFGALNAPKCD__TypeInfo
-#define IsImposter DAPKNDBLKIA
+#define PlayerControl_GetData_Trampoline FFGALNAPKCD_get_Data
+bool EGLJNOMOGNP_DCJMABDDJCF__Fields::* IsImposter = &EGLJNOMOGNP_DCJMABDDJCF__Fields::DAPKNDBLKIA;

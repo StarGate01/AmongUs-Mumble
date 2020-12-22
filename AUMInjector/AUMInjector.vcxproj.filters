@@ -102,7 +102,7 @@
     <ClCompile Include="gui\Blocks\AboutBlock.cpp">
       <Filter>GUI\Blocks</Filter>
     </ClCompile>
-    <ClCompile Include="framework\Input.cpp">
+    <ClCompile Include="user\Input.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -236,7 +236,7 @@
     <ClInclude Include="deobfuscate\2020_12_9s.h">
       <Filter>Deobfuscate</Filter>
     </ClInclude>
-    <ClInclude Include="framework\Input.h">
+    <ClInclude Include="user\Input.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>

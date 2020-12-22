@@ -1,7 +1,7 @@
 ﻿
 namespace AUMInstaller
 {
-    partial class ModInstaller
+    partial class FormMain
     {
         /// <summary>
         /// Required designer variable.
@@ -29,23 +29,32 @@ namespace AUMInstaller
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ModInstaller));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.btnDownload = new System.Windows.Forms.Button();
             this.txtPick = new System.Windows.Forms.Label();
             this.btnBrowse = new System.Windows.Forms.Button();
             this.txtboxFilePath = new System.Windows.Forms.TextBox();
-            this.linklblOldModVersions = new System.Windows.Forms.LinkLabel();
             this.linklblDiscordServer = new System.Windows.Forms.LinkLabel();
             this.linklblSourceCode = new System.Windows.Forms.LinkLabel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.comboBoxVersion = new System.Windows.Forms.ComboBox();
+            this.progressBarInstall = new System.Windows.Forms.ProgressBar();
+            this.listBoxLog = new System.Windows.Forms.ListBox();
+            this.groupBoxInstall = new System.Windows.Forms.GroupBox();
+            this.groupBoxInput = new System.Windows.Forms.GroupBox();
+            this.openFileGame = new System.Windows.Forms.OpenFileDialog();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxInstall.SuspendLayout();
+            this.groupBoxInput.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnDownload
             // 
-            this.btnDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDownload.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDownload.Location = new System.Drawing.Point(163, 54);
+            this.btnDownload.Location = new System.Drawing.Point(9, 60);
             this.btnDownload.Name = "btnDownload";
-            this.btnDownload.Size = new System.Drawing.Size(75, 23);
+            this.btnDownload.Size = new System.Drawing.Size(117, 23);
             this.btnDownload.TabIndex = 0;
             this.btnDownload.Text = "Install";
             this.btnDownload.UseVisualStyleBackColor = true;
@@ -54,47 +63,38 @@ namespace AUMInstaller
             // txtPick
             // 
             this.txtPick.AutoSize = true;
-            this.txtPick.Location = new System.Drawing.Point(2, 7);
+            this.txtPick.Location = new System.Drawing.Point(6, 16);
             this.txtPick.Name = "txtPick";
-            this.txtPick.Size = new System.Drawing.Size(248, 13);
+            this.txtPick.Size = new System.Drawing.Size(192, 13);
             this.txtPick.TabIndex = 3;
-            this.txtPick.Text = "Pick the file path where \"Among Us.exe\" is located";
+            this.txtPick.Text = "Select the file path of \"Among Us.exe\":";
             // 
             // btnBrowse
             // 
-            this.btnBrowse.Location = new System.Drawing.Point(313, 24);
+            this.btnBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBrowse.Location = new System.Drawing.Point(617, 33);
             this.btnBrowse.Name = "btnBrowse";
-            this.btnBrowse.Size = new System.Drawing.Size(75, 23);
+            this.btnBrowse.Size = new System.Drawing.Size(75, 21);
             this.btnBrowse.TabIndex = 4;
-            this.btnBrowse.Text = "Browse";
+            this.btnBrowse.Text = "Browse ...";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
             // txtboxFilePath
             // 
-            this.txtboxFilePath.Location = new System.Drawing.Point(5, 26);
+            this.txtboxFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtboxFilePath.Location = new System.Drawing.Point(9, 34);
             this.txtboxFilePath.Name = "txtboxFilePath";
-            this.txtboxFilePath.Size = new System.Drawing.Size(302, 20);
+            this.txtboxFilePath.Size = new System.Drawing.Size(602, 20);
             this.txtboxFilePath.TabIndex = 5;
-            this.txtboxFilePath.Text = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us";
-            // 
-            // linklblOldModVersions
-            // 
-            this.linklblOldModVersions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.linklblOldModVersions.AutoSize = true;
-            this.linklblOldModVersions.Location = new System.Drawing.Point(318, 65);
-            this.linklblOldModVersions.Name = "linklblOldModVersions";
-            this.linklblOldModVersions.Size = new System.Drawing.Size(75, 13);
-            this.linklblOldModVersions.TabIndex = 6;
-            this.linklblOldModVersions.TabStop = true;
-            this.linklblOldModVersions.Text = "Older Versions";
-            this.linklblOldModVersions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linklblOldModVersions_LinkClicked);
+            this.txtboxFilePath.TextChanged += new System.EventHandler(this.txtboxFilePath_TextChanged);
             // 
             // linklblDiscordServer
             // 
-            this.linklblDiscordServer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.linklblDiscordServer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linklblDiscordServer.AutoSize = true;
-            this.linklblDiscordServer.Location = new System.Drawing.Point(349, 52);
+            this.linklblDiscordServer.Location = new System.Drawing.Point(58, 549);
             this.linklblDiscordServer.Name = "linklblDiscordServer";
             this.linklblDiscordServer.Size = new System.Drawing.Size(43, 13);
             this.linklblDiscordServer.TabIndex = 7;
@@ -104,36 +104,133 @@ namespace AUMInstaller
             // 
             // linklblSourceCode
             // 
-            this.linklblSourceCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.linklblSourceCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linklblSourceCode.AutoSize = true;
-            this.linklblSourceCode.Location = new System.Drawing.Point(323, 3);
+            this.linklblSourceCode.Location = new System.Drawing.Point(12, 549);
             this.linklblSourceCode.Name = "linklblSourceCode";
-            this.linklblSourceCode.Size = new System.Drawing.Size(69, 13);
+            this.linklblSourceCode.Size = new System.Drawing.Size(40, 13);
             this.linklblSourceCode.TabIndex = 8;
             this.linklblSourceCode.TabStop = true;
-            this.linklblSourceCode.Text = "Source Code";
+            this.linklblSourceCode.Text = "GitHub";
             this.linklblSourceCode.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linklblSourceCode_LinkClicked);
             // 
-            // ModInstaller
+            // label1
             // 
-            this.AcceptButton = this.btnDownload;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(159, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Select the version of your game:";
+            // 
+            // comboBoxVersion
+            // 
+            this.comboBoxVersion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxVersion.FormattingEnabled = true;
+            this.comboBoxVersion.Location = new System.Drawing.Point(9, 33);
+            this.comboBoxVersion.Name = "comboBoxVersion";
+            this.comboBoxVersion.Size = new System.Drawing.Size(683, 21);
+            this.comboBoxVersion.TabIndex = 10;
+            // 
+            // progressBarInstall
+            // 
+            this.progressBarInstall.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBarInstall.Location = new System.Drawing.Point(132, 60);
+            this.progressBarInstall.Maximum = 4;
+            this.progressBarInstall.Name = "progressBarInstall";
+            this.progressBarInstall.Size = new System.Drawing.Size(560, 23);
+            this.progressBarInstall.Step = 1;
+            this.progressBarInstall.TabIndex = 11;
+            // 
+            // listBoxLog
+            // 
+            this.listBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxLog.FormattingEnabled = true;
+            this.listBoxLog.Location = new System.Drawing.Point(9, 19);
+            this.listBoxLog.Name = "listBoxLog";
+            this.listBoxLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.listBoxLog.Size = new System.Drawing.Size(683, 316);
+            this.listBoxLog.TabIndex = 12;
+            // 
+            // groupBoxInstall
+            // 
+            this.groupBoxInstall.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxInstall.Controls.Add(this.label1);
+            this.groupBoxInstall.Controls.Add(this.btnDownload);
+            this.groupBoxInstall.Controls.Add(this.progressBarInstall);
+            this.groupBoxInstall.Controls.Add(this.comboBoxVersion);
+            this.groupBoxInstall.Enabled = false;
+            this.groupBoxInstall.Location = new System.Drawing.Point(15, 81);
+            this.groupBoxInstall.Name = "groupBoxInstall";
+            this.groupBoxInstall.Size = new System.Drawing.Size(698, 93);
+            this.groupBoxInstall.TabIndex = 13;
+            this.groupBoxInstall.TabStop = false;
+            this.groupBoxInstall.Text = "Install";
+            // 
+            // groupBoxInput
+            // 
+            this.groupBoxInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBoxInput.Controls.Add(this.txtPick);
+            this.groupBoxInput.Controls.Add(this.btnBrowse);
+            this.groupBoxInput.Controls.Add(this.txtboxFilePath);
+            this.groupBoxInput.Location = new System.Drawing.Point(15, 12);
+            this.groupBoxInput.Name = "groupBoxInput";
+            this.groupBoxInput.Size = new System.Drawing.Size(698, 63);
+            this.groupBoxInput.TabIndex = 14;
+            this.groupBoxInput.TabStop = false;
+            this.groupBoxInput.Text = "Setup";
+            // 
+            // openFileGame
+            // 
+            this.openFileGame.DefaultExt = "exe";
+            this.openFileGame.FileName = "Among Us.exe";
+            this.openFileGame.Filter = "Among Us executable|Among Us.exe";
+            this.openFileGame.InitialDirectory = "C:\\\\";
+            this.openFileGame.Title = "Select the Among Us executable";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.listBoxLog);
+            this.groupBox1.Location = new System.Drawing.Point(15, 180);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(698, 354);
+            this.groupBox1.TabIndex = 15;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Installation log";
+            // 
+            // FormMain
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 86);
+            this.ClientSize = new System.Drawing.Size(725, 571);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBoxInput);
+            this.Controls.Add(this.groupBoxInstall);
             this.Controls.Add(this.linklblSourceCode);
             this.Controls.Add(this.linklblDiscordServer);
-            this.Controls.Add(this.linklblOldModVersions);
-            this.Controls.Add(this.txtboxFilePath);
-            this.Controls.Add(this.btnBrowse);
-            this.Controls.Add(this.txtPick);
-            this.Controls.Add(this.btnDownload);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(410, 125);
-            this.MinimumSize = new System.Drawing.Size(410, 125);
-            this.Name = "ModInstaller";
+            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(250, 400);
+            this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Proximity Mod Installer/Updater";
+            this.Text = "AmongUs-Mumble Installer and Updater";
+            this.Shown += new System.EventHandler(this.FormMain_Shown);
+            this.groupBoxInstall.ResumeLayout(false);
+            this.groupBoxInstall.PerformLayout();
+            this.groupBoxInput.ResumeLayout(false);
+            this.groupBoxInput.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -145,9 +242,16 @@ namespace AUMInstaller
         private System.Windows.Forms.Label txtPick;
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.TextBox txtboxFilePath;
-        private System.Windows.Forms.LinkLabel linklblOldModVersions;
         private System.Windows.Forms.LinkLabel linklblDiscordServer;
         private System.Windows.Forms.LinkLabel linklblSourceCode;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox comboBoxVersion;
+        private System.Windows.Forms.GroupBox groupBoxInstall;
+        private System.Windows.Forms.GroupBox groupBoxInput;
+        private System.Windows.Forms.OpenFileDialog openFileGame;
+        public System.Windows.Forms.ProgressBar progressBarInstall;
+        public System.Windows.Forms.ListBox listBoxLog;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
 

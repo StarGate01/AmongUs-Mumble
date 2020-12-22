@@ -14,116 +14,75 @@ using System.Windows.Forms;
 
 namespace AUMInstaller
 {
-    public partial class ModInstaller : Form
+    public partial class FormMain : Form
     {
-        public string modversion;
-        public string moddownload;
-        public string gameversion;
-        public ModInstaller(string downloadLink, string modVersion, string gameVersion)
+
+        private Logger logger;
+        private Installer installer;
+
+        public FormMain()
         {
             InitializeComponent();
-            modversion = modVersion;
-            moddownload = downloadLink;
-            gameversion = gameVersion;
-            txtboxFilePath.Click += TextBoxOnClick;
+
+            logger = new Logger(this);
+            installer = new Installer(logger);
         }
-        private string BrowseFilePath()
+
+        private async void FormMain_Shown(object sender, EventArgs e)
         {
-            FolderBrowserDialog folderDlg = new FolderBrowserDialog();
-            folderDlg.ShowNewFolderButton = false;
-            DialogResult result = folderDlg.ShowDialog();
-            if (result == DialogResult.OK)
+            logger.Log("Application started");
+
+            // Find game installation path
+            txtboxFilePath.Text = await installer.GetSteamGameLocation();
+
+            // Populate game version selection
+            comboBoxVersion.Items.Clear();
+            foreach(ModVersion version in await installer.GetModVersions()) 
+                comboBoxVersion.Items.Add(version);
+            if(comboBoxVersion.Items.Count > 0) comboBoxVersion.SelectedIndex = 0;
+        }
+
+        private void txtboxFilePath_TextChanged(object sender, EventArgs e)
+        {
+            // Enable install option only if selected file exists
+            groupBoxInstall.Enabled = File.Exists(txtboxFilePath.Text);
+        }
+
+        private async void btnDownload_Click(object sender, EventArgs e)
+        {
+            logger.Log("Starting installation");
+            logger.Reset();
+            groupBoxInput.Enabled = false;
+
+            // Install VC redist
+            await installer.InstallVCRedist();
+            
+            // Install mod
+            if(comboBoxVersion.SelectedItem != null)
             {
-                return folderDlg.SelectedPath;
+                string gameDir = Path.GetDirectoryName(txtboxFilePath.Text);
+                await installer.InstallMod(gameDir, (ModVersion)comboBoxVersion.SelectedItem);
             }
             else
             {
-                return txtboxFilePath.Text;
+                logger.Log("No game version selected.");
+                logger.CompleteStep(2);
             }
+
+            groupBoxInput.Enabled = true;
+
+            MessageBox.Show(this, "Installation finished. Check the log for details.", 
+                "Installation finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        private WebClient webClient = null;
-        private void btnDownload_Click(object sender, EventArgs e)
-        {
 
-            string sixtyfourbit = "https://aka.ms/vs/16/release/vc_redist.x64.exe";
-            string thirtytwobit = "https://aka.ms/vs/16/release/vc_redist.x86.exe";
-
-            // Checks if file path exists
-            if (!Directory.Exists(txtboxFilePath.Text))
-            {
-                MessageBox.Show("Please put a valid file location\n\nOne way to find the file loaction is to go to Steam and right click on Among Us in your library and do \"Manage\" then \"Browse Local Files\"");
-                txtboxFilePath.Text = BrowseFilePath();
-            }
-            else
-            {
-                btnDownload.Text = "Installing...";
-                btnDownload.Enabled = false;
-                // Windows redistributable
-                if (webClient != null)
-                    return;
-                webClient = new WebClient();
-
-                if (Environment.Is64BitOperatingSystem)
-                {
-                    // Download 64bit
-                    webClient.DownloadFile(new Uri(sixtyfourbit), txtboxFilePath.Text + "runtime.exe");
-                }
-                else
-                {
-                    // Download 32bit
-                    webClient.DownloadFile(new Uri(thirtytwobit), txtboxFilePath.Text + "runtime.exe");
-                }
-                webClient = null;
-
-                // Run runtime.exe
-                Process runtimeProcess = new Process();
-                runtimeProcess.StartInfo.FileName = txtboxFilePath.Text + "runtime.exe";
-                runtimeProcess.StartInfo.Arguments = " /install /quiet /norestart";
-                runtimeProcess.Start();
-                // Delete
-                File.Delete(Path.Combine(txtboxFilePath.Text, "runtime.exe"));
-
-                // Checks if mod already exists, if not then its then deleted
-                if (File.Exists(Path.Combine(txtboxFilePath.Text, "winhttp.dll")))
-                {
-                    File.Delete(Path.Combine(txtboxFilePath.Text, "winhttp.dll"));
-                }
-
-                if (webClient != null)
-                    return;
-
-                webClient = new WebClient();
-                webClient.DownloadFile(new Uri(moddownload), txtboxFilePath.Text + modversion);
-                webClient = null;
-
-                // Unzip mod
-                string startPath = txtboxFilePath.Text + modversion;
-                string zipPath = txtboxFilePath.Text + modversion;
-                string extractPath = txtboxFilePath.Text;
-                System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, extractPath);
-
-                // Delete mod zip file
-                File.Delete(txtboxFilePath.Text + modversion);
-
-                btnDownload.Text = "Install";
-                btnDownload.Enabled = true;
-                
-                // Download Complete!
-                MessageBox.Show("Downloaded Latest Release: " + modversion + "\n\nCompatible game version: " + gameversion + "\n\nTo file location: " + txtboxFilePath.Text + "\n\nMake sure that it downloaded to the same file lacation as \"Among Us.exe\"\n\nIf you have any issues we can help you in our Discord server!");
-            }
-        }
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            txtboxFilePath.Text = BrowseFilePath();
-        }
-
-        private void linklblOldModVersions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            // Specify that the link was visited
-            this.linklblOldModVersions.LinkVisited = true;
-
-            // Navigate to a URL
-            System.Diagnostics.Process.Start("https://github.com/StarGate01/AmongUs-Mumble#amongus-mumble");
+            // Display the open file dialog
+            DialogResult res = openFileGame.ShowDialog(this);
+            if(res == DialogResult.OK)
+            {
+                txtboxFilePath.Text = openFileGame.FileName;
+            }
         }
 
         private void linklblDiscordServer_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -134,6 +93,7 @@ namespace AUMInstaller
             // Navigate to a URL
             System.Diagnostics.Process.Start("https://discord.gg/4UkHEJ5sqg");
         }
+
         private void linklblSourceCode_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // Specify that the link was visited
@@ -142,22 +102,6 @@ namespace AUMInstaller
             // Navigate to a URL
             System.Diagnostics.Process.Start("https://github.com/StarGate01/AmongUs-Mumble/");
         }
-        private void TextBoxOnClick(object sender, EventArgs eventArgs)
-        {
-            // Select text on click
-            var textBox = (TextBox)sender;
-            textBox.SelectAll();
-            textBox.Focus();
-        }
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            // Esc button closes program
-            if (keyData == Keys.Escape)
-            {
-                this.Close();
-                return true;
-            }
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
+
     }
 }

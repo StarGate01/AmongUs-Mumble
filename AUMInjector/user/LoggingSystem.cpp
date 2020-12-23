@@ -1,6 +1,3 @@
-#include <windows.h>
-#include <iostream>
-#include <string>
 #include "helpers.h"
 #include "LoggingSystem.h"
 

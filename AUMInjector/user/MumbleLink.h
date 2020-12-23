@@ -1,8 +1,5 @@
 #pragma once
 
-#include <windows.h>
-#include <string>
-
 struct LinkedMem
 {
 #ifdef _WIN32

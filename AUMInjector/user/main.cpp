@@ -1,17 +1,9 @@
 // Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
 // Custom injected code entry point
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <iostream>
-#include <limits>
-#include <thread>
-#include <chrono>
-#include <codecvt>
 #include "il2cpp-init.h"
 #include "il2cpp-appdata.h"
 #include "helpers.h"
-#include <detours.h>
 #include "MumbleLink.h"
 #include "deobfuscate.h"
 #include "settings.h"
@@ -20,7 +12,6 @@
 #include "GUI.h"
 #include "Input.h"
 //#include "dynamic_analysis.h"
-
 
 using namespace app;
 

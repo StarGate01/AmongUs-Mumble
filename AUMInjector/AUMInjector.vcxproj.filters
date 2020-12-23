@@ -105,6 +105,9 @@
     <ClCompile Include="user\Input.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="framework\stdafx.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -237,6 +240,9 @@
       <Filter>Deobfuscate</Filter>
     </ClInclude>
     <ClInclude Include="user\Input.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\stdafx.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>

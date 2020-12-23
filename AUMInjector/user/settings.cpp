@@ -1,7 +1,3 @@
-#include <Windows.h>
-#include <string>  
-#include <iostream> 
-#include <sstream>
 #include "settings.h"
 #include "helpers.h"
 

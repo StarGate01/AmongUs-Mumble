@@ -22,14 +22,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <d3d11.h>
-#include <detours.h>
-#include <vector>
-#include "imgui.h"
-#include "backends/imgui_impl_win32.h"
-#include "backends/imgui_impl_dx11.h"
 #include "D3D11Hooking.hpp"
 #include "MumblePlayer.h"
 #include "settings.h"

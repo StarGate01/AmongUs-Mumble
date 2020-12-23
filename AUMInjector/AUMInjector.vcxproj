@@ -12,7 +12,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="framework\helpers.cpp" />
-    <ClCompile Include="framework\il2cpp-init.cpp" />
+    <ClCompile Include="framework\il2cpp-init.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="framework\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="gui\Blocks\AboutBlock.cpp" />
     <ClCompile Include="gui\Blocks\OverlayBlock.cpp" />
     <ClCompile Include="gui\Blocks\PlayerInfoBlock.cpp" />
@@ -57,6 +64,7 @@
     <ClInclude Include="framework\helpers.h" />
     <ClInclude Include="framework\il2cpp-appdata.h" />
     <ClInclude Include="framework\il2cpp-init.h" />
+    <ClInclude Include="framework\stdafx.h" />
     <ClInclude Include="gui\Blocks\AboutBlock.h" />
     <ClInclude Include="gui\Blocks\OverlayBlock.h" />
     <ClInclude Include="gui\Blocks\PlayerInfoBlock.h" />
@@ -168,13 +176,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>IMGUI_IMPL_WIN32_DISABLE_LINKING_XINPUT;IMGUI_IMPL_WIN32_DISABLE_GAMEPAD;WIN32;NDEBUG;AUMINJECTOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)gui;$(ProjectDir)gui\imgui;;$(ProjectDir)deobfuscate</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
       <DisableSpecificWarnings>4359</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <Optimization>MaxSpeed</Optimization>
+      <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

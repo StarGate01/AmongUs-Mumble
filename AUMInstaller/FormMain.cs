@@ -23,7 +23,6 @@ namespace AUMInstaller
         public FormMain()
         {
             InitializeComponent();
-            txtboxFilePath.Click += AmongUsFilePathOnClick;
             logger = new Logger(this);
             installer = new Installer(logger);
         }
@@ -39,13 +38,12 @@ namespace AUMInstaller
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-            private void AmongUsFilePathOnClick(object sender, EventArgs eventArgs)
+        private void txtboxFilePath_Click(object sender, EventArgs e)
         {
-            // Select text on click
-            var textBox = (TextBox)sender;
-            textBox.SelectAll();
-            textBox.Focus();
+            txtboxFilePath.SelectAll();
+            txtboxFilePath.Focus();
         }
+
         private async void FormMain_Shown(object sender, EventArgs e)
         {
             logger.Log("Application started");
@@ -144,6 +142,5 @@ namespace AUMInstaller
             System.Diagnostics.Process.Start("https://github.com/StarGate01/AmongUs-Mumble/");
         }
 
-    
     }
 }

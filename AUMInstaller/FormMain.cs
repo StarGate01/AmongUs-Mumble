@@ -23,11 +23,29 @@ namespace AUMInstaller
         public FormMain()
         {
             InitializeComponent();
-
+            txtboxFilePath.Click += AmongUsFilePathOnClick;
             logger = new Logger(this);
             installer = new Installer(logger);
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // Esc button closes program
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+            private void AmongUsFilePathOnClick(object sender, EventArgs eventArgs)
+        {
+            // Select text on click
+            var textBox = (TextBox)sender;
+            textBox.SelectAll();
+            textBox.Focus();
+        }
         private async void FormMain_Shown(object sender, EventArgs e)
         {
             logger.Log("Application started");
@@ -54,6 +72,10 @@ namespace AUMInstaller
             logger.Reset();
             groupBoxInput.Enabled = false;
 
+            // Disable install button
+            btnDownload.Text = "Installing...";
+            btnDownload.Enabled = false;
+
             // Install VC redist
             await installer.InstallVCRedist();
             
@@ -70,6 +92,10 @@ namespace AUMInstaller
             }
 
             groupBoxInput.Enabled = true;
+
+            // Re-enable install button
+            btnDownload.Text = "Install";
+            btnDownload.Enabled = true;
 
             MessageBox.Show(this, "Installation finished. Check the log for details.", 
                 "Installation finished", MessageBoxButtons.OK, MessageBoxIcon.Information);

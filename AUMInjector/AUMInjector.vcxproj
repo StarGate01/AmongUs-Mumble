@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="RelWithDevTools|Win32">
+      <Configuration>RelWithDevTools</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -11,18 +15,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="2020_19_9s.cpp" />
     <ClCompile Include="framework\helpers.cpp" />
     <ClCompile Include="framework\il2cpp-init.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDevTools|Win32'">NotUsing</PrecompiledHeader>
       <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDevTools|Win32'">
+      </ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ForcedIncludeFiles>
     </ClCompile>
     <ClCompile Include="framework\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDevTools|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="gui\Blocks\AboutBlock.cpp" />
     <ClCompile Include="gui\Blocks\OverlayBlock.cpp" />
     <ClCompile Include="gui\Blocks\PlayerInfoBlock.cpp" />
+    <ClCompile Include="gui\Blocks\PositionRadarBlock.cpp" />
     <ClCompile Include="gui\Blocks\SettingsBlock.cpp" />
     <ClCompile Include="gui\D3D11Hooking.cpp" />
     <ClCompile Include="gui\GUI.cpp" />
@@ -34,6 +48,7 @@
     <ClCompile Include="gui\imgui\imgui_demo.cpp" />
     <ClCompile Include="gui\imgui\imgui_draw.cpp" />
     <ClCompile Include="gui\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="user\GameData.cpp" />
     <ClCompile Include="user\Input.cpp" />
     <ClCompile Include="user\LoggingSystem.cpp" />
     <ClCompile Include="user\MumbleLink.cpp" />
@@ -68,6 +83,7 @@
     <ClInclude Include="gui\Blocks\AboutBlock.h" />
     <ClInclude Include="gui\Blocks\OverlayBlock.h" />
     <ClInclude Include="gui\Blocks\PlayerInfoBlock.h" />
+    <ClInclude Include="gui\Blocks\PositionRadarBlock.h" />
     <ClInclude Include="gui\Blocks\SettingsBlock.h" />
     <ClInclude Include="gui\D3D11Hooking.hpp" />
     <ClInclude Include="gui\GUI.h" />
@@ -83,6 +99,7 @@
     <ClInclude Include="gui\imgui\imstb_truetype.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="user\CLI11.hpp" />
+    <ClInclude Include="user\GameData.h" />
     <ClInclude Include="user\Input.h" />
     <ClInclude Include="user\LoggingSystem.h" />
     <ClInclude Include="user\MumbleLink.h" />
@@ -117,6 +134,13 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDevTools|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -126,6 +150,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDevTools|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -139,17 +166,24 @@
     <TargetName>winhttp</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDevTools|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>winhttp</TargetName>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>IMGUI_IMPL_WIN32_DISABLE_LINKING_XINPUT;IMGUI_IMPL_WIN32_DISABLE_GAMEPAD;WIN32;_DEBUG;AUMINJECTOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEV_TOOLS;IMGUI_IMPL_WIN32_DISABLE_LINKING_XINPUT;IMGUI_IMPL_WIN32_DISABLE_GAMEPAD;WIN32;_DEBUG;AUMINJECTOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)gui;$(ProjectDir)gui\imgui;;$(ProjectDir)deobfuscate</AdditionalIncludeDirectories>
       <PreprocessToFile>false</PreprocessToFile>
       <DisableSpecificWarnings>4359</DisableSpecificWarnings>
+      <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -158,7 +192,7 @@
       <ModuleDefinitionFile>user\winhttp.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>$(ProjectDir)..\vmupload.bat</Command>
+      <Command>$(ProjectDir)..\vmupload.bat $(OutDir)\winhttp.dll</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy to Steam and VMs</Message>
@@ -194,7 +228,43 @@
       <ModuleDefinitionFile>user\winhttp.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>$(ProjectDir)..\vmupload.bat</Command>
+      <Command>$(ProjectDir)..\vmupload.bat $(OutDir)\winhttp.dll</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copy to Steam and VMs</Message>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDevTools|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>DEV_TOOLS;IMGUI_IMPL_WIN32_DISABLE_LINKING_XINPUT;IMGUI_IMPL_WIN32_DISABLE_GAMEPAD;WIN32;NDEBUG;AUMINJECTOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)gui;$(ProjectDir)gui\imgui;;$(ProjectDir)deobfuscate</AdditionalIncludeDirectories>
+      <PreprocessToFile>false</PreprocessToFile>
+      <DisableSpecificWarnings>4359</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <ModuleDefinitionFile>user\winhttp.def</ModuleDefinitionFile>
+    </Link>
+    <PostBuildEvent>
+      <Command>$(ProjectDir)..\vmupload.bat $(OutDir)\winhttp.dll</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy to Steam and VMs</Message>

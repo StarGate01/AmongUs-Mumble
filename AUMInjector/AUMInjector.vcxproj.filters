@@ -108,6 +108,15 @@
     <ClCompile Include="framework\stdafx.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="user\GameData.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Blocks\PositionRadarBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="deobfuscate\2020_12_9s.cpp">
+      <Filter>Deobfuscate</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -244,6 +253,12 @@
     </ClInclude>
     <ClInclude Include="framework\stdafx.h">
       <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="user\GameData.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\PositionRadarBlock.h">
+      <Filter>GUI\Blocks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

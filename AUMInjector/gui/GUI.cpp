@@ -28,6 +28,7 @@
 #include "GUI.h"
 #include "GUIWindow.h"
 #include "Blocks/PlayerInfoBlock.h"
+#include "Blocks/PositionRadarBlock.h"
 #include "Blocks/SettingsBlock.h"
 #include "Blocks/OverlayBlock.h"
 #include "Blocks/AboutBlock.h"
@@ -175,6 +176,13 @@ HRESULT __stdcall D3D_FUNCTION_HOOK(IDXGISwapChain* pThis, UINT SyncInterval, UI
         GUIWindow* window2 = new GUIWindow("Proximity Configuration", 0);
         window2->AddBlock(new SettingsBlock());
         GUIWindows.emplace_back(window2);
+
+#ifdef DEV_TOOLS
+		GUIWindow* window3 = new GUIWindow("Positional Radar", 0);
+        window3->AddBlock(new PositionRadarBlock());
+        GUIWindows.emplace_back(window3);
+#endif
+
 
         overlayWindow = new GUIWindow("Overlay", ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize |
             ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove);

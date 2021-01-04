@@ -1,0 +1,9 @@
+#include <deobfuscate.h>
+
+// Definitions here to avoid duplicate defines
+#if GAME_VERSION == GAME_VERSION_2020_12_9s
+InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = KHNHJFFECBP_KGEKNMMAKKN__Enum_Joined;
+InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Started = KHNHJFFECBP_KGEKNMMAKKN__Enum_Started;
+InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = KHNHJFFECBP_KGEKNMMAKKN__Enum_Ended;
+bool EGLJNOMOGNP_DCJMABDDJCF__Fields::*IsImposter = &EGLJNOMOGNP_DCJMABDDJCF__Fields::DAPKNDBLKIA;
+#endif

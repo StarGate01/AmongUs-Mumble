@@ -41,10 +41,10 @@ namespace AUMInstaller
             this.progressBarInstall = new System.Windows.Forms.ProgressBar();
             this.listBoxLog = new System.Windows.Forms.ListBox();
             this.groupBoxInstall = new System.Windows.Forms.GroupBox();
+            this.buttonUninstall = new System.Windows.Forms.Button();
             this.groupBoxInput = new System.Windows.Forms.GroupBox();
             this.openFileGame = new System.Windows.Forms.OpenFileDialog();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonUninstall = new System.Windows.Forms.Button();
             this.groupBoxInstall.SuspendLayout();
             this.groupBoxInput.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -89,6 +89,7 @@ namespace AUMInstaller
             this.txtboxFilePath.Name = "txtboxFilePath";
             this.txtboxFilePath.Size = new System.Drawing.Size(602, 20);
             this.txtboxFilePath.TabIndex = 5;
+            this.txtboxFilePath.Click += new System.EventHandler(this.txtboxFilePath_Click);
             this.txtboxFilePath.TextChanged += new System.EventHandler(this.txtboxFilePath_TextChanged);
             // 
             // linklblDiscordServer
@@ -176,6 +177,17 @@ namespace AUMInstaller
             this.groupBoxInstall.TabStop = false;
             this.groupBoxInstall.Text = "Install / Uninstall";
             // 
+            // buttonUninstall
+            // 
+            this.buttonUninstall.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonUninstall.Location = new System.Drawing.Point(9, 89);
+            this.buttonUninstall.Name = "buttonUninstall";
+            this.buttonUninstall.Size = new System.Drawing.Size(117, 23);
+            this.buttonUninstall.TabIndex = 0;
+            this.buttonUninstall.Text = "Uninstall";
+            this.buttonUninstall.UseVisualStyleBackColor = true;
+            this.buttonUninstall.Click += new System.EventHandler(this.buttonUninstall_Click);
+            // 
             // groupBoxInput
             // 
             this.groupBoxInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -210,17 +222,6 @@ namespace AUMInstaller
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Log";
-            // 
-            // buttonUninstall
-            // 
-            this.buttonUninstall.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonUninstall.Location = new System.Drawing.Point(9, 89);
-            this.buttonUninstall.Name = "buttonUninstall";
-            this.buttonUninstall.Size = new System.Drawing.Size(117, 23);
-            this.buttonUninstall.TabIndex = 0;
-            this.buttonUninstall.Text = "Uninstall";
-            this.buttonUninstall.UseVisualStyleBackColor = true;
-            this.buttonUninstall.Click += new System.EventHandler(this.buttonUninstall_Click);
             // 
             // FormMain
             // 

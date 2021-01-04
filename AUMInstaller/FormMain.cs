@@ -23,9 +23,25 @@ namespace AUMInstaller
         public FormMain()
         {
             InitializeComponent();
-
             logger = new Logger(this);
             installer = new Installer(logger);
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // Esc button closes program
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void txtboxFilePath_Click(object sender, EventArgs e)
+        {
+            txtboxFilePath.SelectAll();
+            txtboxFilePath.Focus();
         }
 
         private async void FormMain_Shown(object sender, EventArgs e)
@@ -54,6 +70,10 @@ namespace AUMInstaller
             logger.Reset();
             groupBoxInput.Enabled = false;
 
+            // Disable install button
+            btnDownload.Text = "Installing...";
+            btnDownload.Enabled = false;
+
             // Install VC redist
             await installer.InstallVCRedist();
             
@@ -70,6 +90,10 @@ namespace AUMInstaller
             }
 
             groupBoxInput.Enabled = true;
+
+            // Re-enable install button
+            btnDownload.Text = "Install";
+            btnDownload.Enabled = true;
 
             MessageBox.Show(this, "Installation finished. Check the log for details.", 
                 "Installation finished", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -118,6 +142,5 @@ namespace AUMInstaller
             System.Diagnostics.Process.Start("https://github.com/StarGate01/AmongUs-Mumble/");
         }
 
-    
     }
 }

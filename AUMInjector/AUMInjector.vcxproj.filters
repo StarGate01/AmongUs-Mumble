@@ -114,7 +114,7 @@
     <ClCompile Include="gui\Blocks\PositionRadarBlock.cpp">
       <Filter>GUI\Blocks</Filter>
     </ClCompile>
-    <ClCompile Include="2020_19_9s.cpp">
+    <ClCompile Include="deobfuscate\2020_12_9s.cpp">
       <Filter>Deobfuscate</Filter>
     </ClCompile>
   </ItemGroup>

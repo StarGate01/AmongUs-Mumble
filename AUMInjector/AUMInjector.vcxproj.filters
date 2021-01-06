@@ -114,9 +114,6 @@
     <ClCompile Include="gui\Blocks\PositionRadarBlock.cpp">
       <Filter>GUI\Blocks</Filter>
     </ClCompile>
-    <ClCompile Include="deobfuscate\2020_12_9s.cpp">
-      <Filter>Deobfuscate</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

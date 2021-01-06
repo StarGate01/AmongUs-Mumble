@@ -15,7 +15,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="deobfuscate\2020_12_9s.cpp" />
     <ClCompile Include="framework\helpers.cpp" />
     <ClCompile Include="framework\il2cpp-init.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

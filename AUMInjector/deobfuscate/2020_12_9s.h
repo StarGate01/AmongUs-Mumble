@@ -8,7 +8,7 @@ using Palette = LOCPGOACAJF;
 using PlayerInfo = EGLJNOMOGNP_DCJMABDDJCF;
 
 // Part of PlayerInfo
-#define ColorId EHAHBDFODKC 
+__declspec(selectany) uint8_t EGLJNOMOGNP_DCJMABDDJCF__Fields::* ColorId = &EGLJNOMOGNP_DCJMABDDJCF__Fields::EHAHBDFODKC;
 
 using InnerNetClient = KHNHJFFECBP;
 
@@ -28,11 +28,10 @@ using PlayerData = EGLJNOMOGNP_DCJMABDDJCF;
 #define PlayerControl_GetData_Trampoline FFGALNAPKCD_get_Data
 #define PlayerControl_FixedUpdate_Trampoline FFGALNAPKCD_FixedUpdate
 
-// Externs for definitions in cpp
-extern InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined;
-extern InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Started;
-extern InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended;
-extern bool EGLJNOMOGNP_DCJMABDDJCF__Fields::* IsImposter;
+__declspec(selectany) InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = KHNHJFFECBP_KGEKNMMAKKN__Enum_Joined;
+__declspec(selectany) InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Started = KHNHJFFECBP_KGEKNMMAKKN__Enum_Started;
+__declspec(selectany) InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = KHNHJFFECBP_KGEKNMMAKKN__Enum_Ended;
+__declspec(selectany) bool EGLJNOMOGNP_DCJMABDDJCF__Fields::* IsImposter = &EGLJNOMOGNP_DCJMABDDJCF__Fields::DAPKNDBLKIA;
 
 #define GameData_Awake_Trampoline EGLJNOMOGNP_Awake
 #define GameData_GetPlayerById_Trampoline EGLJNOMOGNP_GetPlayerById

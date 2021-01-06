@@ -41,7 +41,7 @@ namespace AUM
 		// Color array not aligned correctly per il2cpp, is 4 byte aligned not 8 byte
 		app::Color32* colorArr = (Palette__TypeInfo->static_fields->PlayerColors->vector);
 		// Convert to 8 bit * 4 structure to fix alignment
-		uint8_t* color = (reinterpret_cast<uint8_t*>(colorArr) + info->fields.ColorId * 4);
+		uint8_t* color = (reinterpret_cast<uint8_t*>(colorArr) + info->fields.*ColorId * 4);
 
 		return  { color[0], color[1], color[2], color[3] };
 	}

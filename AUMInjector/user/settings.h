@@ -16,6 +16,7 @@ static const std::string CREDITS = R"(AmongUs-Mumble mod by:
   BillyDaBongo (Billy): Installer, Management, Testing.
   LelouBil:             Deobfuscation.
   ShumWengSang:         Impostor Radio.
+  Mogster7:             Debugging Tools, Radar.
 
 Source code and download: https://github.com/StarGate01/AmongUs-Mumble
 Freely available and licensed under the GNU GPLv3.

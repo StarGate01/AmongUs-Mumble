@@ -4,8 +4,10 @@
 #include "il2cpp-init.h"
 #include "il2cpp-appdata.h"
 #include "helpers.h"
+
 #include "MumbleLink.h"
 #include "deobfuscate.h"
+#include "GameData.h"
 #include "settings.h"
 #include "LoggingSystem.h"
 #include "MumblePlayer.h"
@@ -41,13 +43,27 @@ void TryConnectMumble()
     }
 }
 
+// Awake call for the Game Data object, hook used to grab the singleton pointer
+void GameData_Awake_Hook(GameData* __this, MethodInfo* method)
+{
+    GameData_Awake_Trampoline(__this, method);
+    AUM::Game::SetGameData(__this);
+}
+
+// Hook for color updates
+void GameData_UpdateColor_Hook(GameData* __this, uint8_t playerId, uint8_t colorId, MethodInfo* method)
+{
+    GameData_UpdateColor_Trampoline(__this, playerId, colorId, method);
+}
+
+
 // Fixed loop for a player object, but only get called when a player moves
 void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 {
     PlayerControl_FixedUpdate_Trampoline(__this, method);
-
     // This is a "hacky" but very fast check to see if this event is from the local player
-    if (__this->fields.LightPrefab != nullptr)
+    bool isClient = __this->fields.LightPrefab != nullptr;
+    if (isClient)
     {
         // Cache position
         Vector2 pos = PlayerControl_GetTruePosition_Trampoline(__this, method);
@@ -56,6 +72,7 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 
         // Cache network ID
         mumblePlayer.SetNetID(__this->fields._.NetId);
+
 
         // From Player Control, get the Player Data
         PlayerData* Data = PlayerControl_GetData_Trampoline(__this, NULL);
@@ -73,6 +90,7 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
             // Location is moved to internal value in update player next loop.
         }
     }
+
 }
 
 // Gets called when a player dies
@@ -368,12 +386,14 @@ void Run()
         DetourTransactionBegin();
         DetourUpdateThread(GetCurrentThread());
         GUIDetourAttach();
-        DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
-        DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
-        DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);
-        DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
-        DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
-        DetourAttach(&(PVOID&)InnerNetClient_Disconnect_Trampoline, InnerNetClient_Disconnect_Hook);
+		DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
+		DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
+		DetourAttach(&(PVOID&)GameData_Awake_Trampoline, GameData_Awake_Hook);
+		DetourAttach(&(PVOID&)GameData_UpdateColor_Trampoline, GameData_UpdateColor_Hook);
+		DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);
+		DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
+		DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
+		DetourAttach(&(PVOID&)InnerNetClient_Disconnect_Trampoline, InnerNetClient_Disconnect_Hook);
         DetourAttach(&(PVOID&)HqHudOverrideTask_Initialize_Trampoline, HqHudOverrideTask_Initialize_Hook);
         DetourAttach(&(PVOID&)HqHudOverrideTask_Complete_Trampoline, HqHudOverrideTask_Complete_Hook);
         DetourAttach(&(PVOID&)HudOverrideTask_Initialize_Trampoline, HudOverrideTask_Initialize_Hook);

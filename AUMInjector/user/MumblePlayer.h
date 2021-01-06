@@ -139,6 +139,9 @@ private:
 
 	// Reads private information to display it to the user
 	friend class PlayerInfoBlock;
+#ifdef DEV_TOOLS
+	friend class PositionRadarBlock;
+#endif
 };
 
 extern MumblePlayer mumblePlayer;

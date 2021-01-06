@@ -37,6 +37,8 @@
 #include <iterator>
 #include <locale>
 #include <map>
+#include <unordered_map>
+#include <unordered_set>
 #include <memory>
 #include <numeric>
 #include <set>

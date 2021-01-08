@@ -185,7 +185,7 @@ void MumblePlayer::SetPos(int i, float pos)
             posCache[i] = pos;
         }
     } 
-    if (this->isUsingRadio) // If you're using radio, go away. (If people think meeting radio is a bug, we'll change it)
+    if (this->isUsingRadio && this->isImposter) // If you're using radio, go away. (If people think meeting radio is a bug, we'll change it)
     {
         posCache[i] = radioOffset;
     }

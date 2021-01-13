@@ -1,8 +1,3 @@
-#include <Windows.h>
-#include <shellapi.h>
-#include <Shlwapi.h>
-#include <thread>
-#include <codecvt>
 #include "MumbleLink.h"
 #include "Settings.h"
 #include "OrderedLock.h"

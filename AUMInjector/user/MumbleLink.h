@@ -1,8 +1,5 @@
 #pragma once
 
-#include <windows.h>
-#include <string>
-
 struct LinkedMemWindows
 {
 	UINT32	uiVersion;

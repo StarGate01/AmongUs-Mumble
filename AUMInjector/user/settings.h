@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include "CLI11.hpp"
 #include "LoggingSystem.h"
 
@@ -14,8 +13,10 @@
 static const std::string CREDITS = R"(AmongUs-Mumble mod by:
   StarGate01 (chrz.de): Proxy DLL, Framework, Setup, Features.
   Alisenai (Alien):     Fixes, More Features.
-  BillyDaBongo (Billy): Management, Testing.
+  BillyDaBongo (Billy): Installer, Management, Testing.
   LelouBil:             Deobfuscation.
+  ShumWengSang:         Impostor Radio.
+  Mogster7:             Debugging Tools, Radar.
 
 Source code and download: https://github.com/StarGate01/AmongUs-Mumble
 Freely available and licensed under the GNU GPLv3.
@@ -96,6 +97,8 @@ class Settings
 		// Prints the sync settings to a human readable string
 		std::string HumanReadableSync();
 
+		// Player control to use Radio
+		char radioKey = 'E';
 };
 
 extern Settings appSettings;

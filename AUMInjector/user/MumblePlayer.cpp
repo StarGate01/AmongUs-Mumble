@@ -132,6 +132,31 @@ int MumblePlayer::GetNetID() { return netID; }
 // Sets the player's net ID
 void MumblePlayer::SetNetID(int id) { netID = id; }
 
+void MumblePlayer::SetImposter(bool imposter)
+{
+    this->isImposter = imposter;
+}
+
+void MumblePlayer::ClearImposter()
+{
+    this->isImposter = false;
+}
+
+bool MumblePlayer::IsImposter() const
+{
+    return this->isImposter;
+}
+
+bool MumblePlayer::IsUsingRadio() const
+{
+    return this->isUsingRadio;
+}
+
+void MumblePlayer::SetUsingRadio(bool usingRadio)
+{
+    this->isUsingRadio = usingRadio;
+}
+
 // In mumble (0.0f, 0.0f) lets users hear each other better
 void MumblePlayer::SetFullVolume()
 {
@@ -159,6 +184,10 @@ void MumblePlayer::SetPos(int i, float pos)
         default:
             posCache[i] = pos;
         }
+    } 
+    if (this->isUsingRadio && this->isImposter) // If you're using radio, go away. (If people think meeting radio is a bug, we'll change it)
+    {
+        posCache[i] = radioOffset;
     }
 }
 

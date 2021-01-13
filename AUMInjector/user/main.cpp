@@ -1,23 +1,18 @@
 // Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
 // Custom injected code entry point
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <iostream>
-#include <limits>
-#include <thread>
-#include <chrono>
-#include <codecvt>
 #include "il2cpp-init.h"
 #include "il2cpp-appdata.h"
 #include "helpers.h"
-#include <detours.h>
+
 #include "MumbleLink.h"
 #include "deobfuscate.h"
+#include "GameData.h"
 #include "settings.h"
 #include "LoggingSystem.h"
 #include "MumblePlayer.h"
 #include "GUI.h"
+#include "Input.h"
 //#include "dynamic_analysis.h"
 
 using namespace app;
@@ -48,20 +43,54 @@ void TryConnectMumble()
     }
 }
 
+// Awake call for the Game Data object, hook used to grab the singleton pointer
+void GameData_Awake_Hook(GameData* __this, MethodInfo* method)
+{
+    GameData_Awake_Trampoline(__this, method);
+    AUM::Game::SetGameData(__this);
+}
+
+// Hook for color updates
+void GameData_UpdateColor_Hook(GameData* __this, uint8_t playerId, uint8_t colorId, MethodInfo* method)
+{
+    GameData_UpdateColor_Trampoline(__this, playerId, colorId, method);
+}
+
+
 // Fixed loop for a player object, but only get called when a player moves
 void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 {
     PlayerControl_FixedUpdate_Trampoline(__this, method);
-    
-    if (__this->fields.LightPrefab != nullptr)
+    // This is a "hacky" but very fast check to see if this event is from the local player
+    bool isClient = __this->fields.LightPrefab != nullptr;
+    if (isClient)
     {
         // Cache position
         Vector2 pos = PlayerControl_GetTruePosition_Trampoline(__this, method);
         mumblePlayer.SetPosX(pos.x);
         mumblePlayer.SetPosY(pos.y);
+
         // Cache network ID
         mumblePlayer.SetNetID(__this->fields._.NetId);
+
+
+        // From Player Control, get the Player Data
+        PlayerData* Data = PlayerControl_GetData_Trampoline(__this, NULL);
+        // And now we can get if we are imposter.
+        bool isImposter = Data->fields.*IsImposter;
+        mumblePlayer.SetImposter(isImposter);
+
+        // Set if player is using radio
+        mumblePlayer.SetUsingRadio(inputSingleton.GetKey(appSettings.radioKey));
+
+        // Check if player is imposter and using radio
+        if (mumblePlayer.IsImposter() && mumblePlayer.IsUsingRadio())
+        {
+            logger.Log(LOG_CODE::MSG, "Imposter Radio");
+            // Location is moved to internal value in update player next loop.
+        }
     }
+
 }
 
 // Gets called when a player dies
@@ -130,6 +159,7 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
         }
     }
 
+
     // Check if game state changed to lobby
     if (__this->fields.GameState != lastGameState)
     {
@@ -150,6 +180,8 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             // Just to be sure in case some join events were missed
             if(mumblePlayer.IsHost()) appSettings.mustBroadcast = true;
             mumblePlayer.EnterGame();
+
+
         }
     }
     lastGameState = __this->fields.GameState;
@@ -296,6 +328,7 @@ void InnerNetClient_HandleGameDataInner_Hook(InnerNetClient* __this, MessageRead
         }
         else
         {
+
             // Rewind reader to allow reparsing packet in trampoline
             MessageReader_set_Position(reader, pos, NULL);
         }
@@ -339,11 +372,11 @@ void Run()
         logger.Log(LOG_CODE::MSG, "Current configuration:\n");
         logger.Log(LOG_CODE::MSG, appSettings.app.config_to_str(true, false) + "\n", false);
 
-		// Setup type and memory info
-		logger.Log(LOG_CODE::MSG, "Waiting 10s for Unity to load");
-		Sleep(10000);
-		init_il2cpp();
-		logger.Log(LOG_CODE::INF, "Type and function memory mapping successful");
+        // Setup type and memory info
+        logger.Log(LOG_CODE::MSG, "Waiting 10s for Unity to load");
+        Sleep(10000);
+        init_il2cpp();
+        logger.Log(LOG_CODE::INF, "Type and function memory mapping successful");
 
         // Print game version
         String* gameVersionRaw = Application_get_version(NULL);
@@ -361,6 +394,8 @@ void Run()
         if (!mumbleLink.IsWine()) GUIDetourAttach();
 		DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
 		DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
+		DetourAttach(&(PVOID&)GameData_Awake_Trampoline, GameData_Awake_Hook);
+		DetourAttach(&(PVOID&)GameData_UpdateColor_Trampoline, GameData_UpdateColor_Hook);
 		DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);
 		DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
 		DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
@@ -374,13 +409,13 @@ void Run()
         //DetourAttach(&(PVOID&)IGHKMHLJFLI_Detoriorate, IGHKMHLJFLI_Detoriorate_Hook);
 
         //dynamic_analysis_attach();
-		LONG errDetour = DetourTransactionCommit();
-		if (errDetour == NO_ERROR) logger.Log(LOG_CODE::INF, "Successfully detoured game functions");
-		else logger.LogVariadic(LOG_CODE::ERR, false, "Detouring game functions failed: %d", errDetour);
+        LONG errDetour = DetourTransactionCommit();
+        if (errDetour == NO_ERROR) logger.Log(LOG_CODE::INF, "Successfully detoured game functions");
+        else logger.LogVariadic(LOG_CODE::ERR, false, "Detouring game functions failed: %d", errDetour);
 
-		// Wait for thread exit and then clean up
-		WaitForSingleObject(hExit, INFINITE);
-		mumbleLink.Close();
-		logger.Log(LOG_CODE::MSG, "Unloading done");
-	}
+        // Wait for thread exit and then clean up
+        WaitForSingleObject(hExit, INFINITE);
+        mumbleLink.Close();
+        logger.Log(LOG_CODE::MSG, "Unloading done");
+    }
 }

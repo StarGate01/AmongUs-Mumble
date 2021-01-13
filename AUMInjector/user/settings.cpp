@@ -1,7 +1,3 @@
-#include <Windows.h>
-#include <string>  
-#include <iostream> 
-#include <sstream>
 #include "settings.h"
 #include "helpers.h"
 
@@ -27,7 +23,8 @@ Settings::Settings() :
 		{ "log-verbosity", "Log verbosity", &logVerbosity, OPTION_TYPE::INTEGER },
 		{ "wine-uid", "Wine UID", &wineUID, OPTION_TYPE::INTEGER },
 		{ "ghost-voice-mode", "Set ghost voice mode\n; 0 = Purgatory\n; 1 = Spectate\n; 2 = Haunt", &ghostVoiceMode, OPTION_TYPE::INTEGER },
-		{ "directional-audio", "Enable directional audio", &directionalAudio, OPTION_TYPE::FLAG }
+		{ "directional-audio", "Enable directional audio", &directionalAudio, OPTION_TYPE::FLAG },
+		{ "imposter-radio-key", "Imposter Radio Hotkey", &radioKey, OPTION_TYPE::INTEGER}
 	};
 
 	// Setup argument parser

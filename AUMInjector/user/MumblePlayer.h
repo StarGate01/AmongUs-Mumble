@@ -1,5 +1,4 @@
 #pragma once
-#include <limits>
 class MumblePlayer
 {
 public:
@@ -75,6 +74,21 @@ public:
 	// Sets the player's net ID
 	void SetNetID(int id);
 
+	// Sets whether player is imposter
+	void SetImposter(bool imposter);
+	
+	// Clears player from being imposter
+	void ClearImposter();
+
+	// Returns if player is imposter
+	bool IsImposter() const;
+
+	// Returns if player is using radio
+	bool IsUsingRadio() const;
+
+	// Sets if the player is using radio
+	void SetUsingRadio(bool usingRadio);
+
 private:
 	// --- Ghost State --- 
 	// Is the player currently a ghost
@@ -116,8 +130,18 @@ private:
 
 	bool isHost = false;
 
+	// Imposter flag
+	bool isImposter = false;
+	// Using Radio flag
+	bool isUsingRadio = false;
+	// When you're using radio, teleport here
+	const float radioOffset = 19999.0f;
+
 	// Reads private information to display it to the user
 	friend class PlayerInfoBlock;
+#ifdef DEV_TOOLS
+	friend class PositionRadarBlock;
+#endif
 };
 
 extern MumblePlayer mumblePlayer;

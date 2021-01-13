@@ -35,7 +35,8 @@ namespace AUMDeobfuscator
                     .WithTag("FixedUpdate")
                     .OfName("FixedUpdate")
                     .WithNamedReturnType("void");
-            
+
+
             public static readonly ClassMatch ClassPlayerControl =
                 new ClassMatch()
                     .WithTag("PlayerControl")
@@ -45,22 +46,153 @@ namespace AUMDeobfuscator
                     .OfName("MaxReportDistance")
                     .WithNamedType("float")
                     .And()
+                    .WithField()
+                    .WithTag("_cachedData")
+                    .And()
                     .WithMethod(FixedUpdate)
                     .And()
                     .WithMethod(GetTruePosition)
                     .And()
                     .WithMethod(Die)
                     .And();
-
-
-            
-
-
         }
+
+        public static class Palette
+		{
+            public static readonly ClassMatch ClassPlayerControl =
+                new ClassMatch()
+                    .WithTag("Palette")
+                    .WithField()
+                    .WithTag("DisabledGrey")
+                    .WithNamedType("Color")
+                    .And()
+                    .WithField()
+                    .WithTag("Black")
+                    .WithNamedType("Color")
+                    .And()
+                    .WithField()
+                    .WithTag("LightBlue")
+                    .WithNamedType("Color")
+                    .And()
+                    .WithField()
+                    .WithNamedType("Color32")
+                    .WithTag("VisorColor")
+                    .And();
+		}
+
+		public static class GameData
+		{
+            public static readonly MethodMatch GetPlayerById =
+                new MethodMatch(null!)
+                    .WithTag("GetPlayerById")
+                    .OfName("GetPlayerById");
+
+            public static readonly MethodMatch UpdateColor =
+                new MethodMatch(null!)
+                    .WithTag("UpdateColor")
+                    .OfName("UpdateColor")
+                    .WithNumberOfParameters(2);
+
+            public static readonly MethodMatch HandleDisconnect =
+                new MethodMatch(null!)
+                    .WithTag("HandleDisconnect")
+                    .OfName("HandleDisconnect")
+                    .WithNumberOfParameters(2);
+
+            public static readonly MethodMatch CompleteTask =
+                new MethodMatch(null!)
+                    .WithTag("CompleteTask")
+                    .OfName("CompleteTask")
+                    .WithNumberOfParameters(2);
+
+            public static readonly MethodMatch Awake =
+                new MethodMatch(null!)
+                    .WithTag("Awake")
+                    .OfName("Awake")
+                    .WithNumberOfParameters(0);
+
+            public static readonly ClassMatch ClassGameData =
+                new ClassMatch()
+                    .WithTag("GameData")
+                    .OfSuperClass(new ClassMatch().WithTag("InnerNetObject"))
+                    .WithField()
+                    .WithTag("CompletedTasks")
+                    .WithNamedType("int")
+                    .And()
+                    .WithField()
+                    .WithTag("TotalTasks")
+                    .WithNamedType("int")
+                    .And()
+                    .WithMethod(GetPlayerById)
+                    .And()
+                    .WithMethod(HandleDisconnect)
+                    .And()
+                    .WithMethod(CompleteTask)
+                    .And()
+                    .WithMethod(Awake)
+                    .And()
+                    .WithMethod(UpdateColor)
+                    .And();
+        }
+
+        public static class PlayerInfo
+        {
+            public static readonly MethodMatch FindTaskById =
+                new MethodMatch(null!)
+                    .WithTag("FindTaskById")
+                    .WithModifier("public")
+                    .WithNumberOfParameters(1)
+                    .WithParameter()
+                    .WithNamedType("uint").And();
+
+            public static readonly MethodMatch Deserialize =
+                new MethodMatch(null!)
+                    .WithTag("Deserialize")
+                    .WithModifier("public")
+                    .WithNumberOfParameters(1)
+                    .WithParameter()
+                    .WithNamedType("MessageReader").And();
+
+            public static readonly MethodMatch Serialize =
+                new MethodMatch(null!)
+                    .WithTag("Serialize")
+                    .WithModifier("public")
+                    .WithNumberOfParameters(1)
+                    .WithParameter()
+                    .WithNamedType("MessageWriter").And();
+
+            public static readonly ClassMatch ClassPlayerInfo =
+                new ClassMatch()
+                    .WithTag("PlayerInfo")
+                    .WithField()
+                    .WithNamedType("byte")
+                    .And()
+                    .WithField()
+                    .WithNamedType("bool")
+                    .And()
+                    .WithField()
+                    .WithNamedType("string")
+                    .And()
+                    .WithField()
+                    .WithNamedType("uint")
+                    .And()
+                    .WithMethod(FindTaskById)
+                    .And()
+                    .WithMethod(Deserialize)
+                    .And()
+                    .WithMethod(Serialize)
+					.And();
+
+            public static readonly FieldMatch FieldColorId =
+                new FieldMatch(ClassPlayerInfo)
+                    .WithTag("ColorId")
+                    .WithNamedType("byte");
+        }
+
+
 
         public static class InnerNetClient
         {
-
             public static readonly EnumValueMatch Joined = 
                 new EnumValueMatch(null!)
                     .OfName("Joined")
@@ -75,8 +207,6 @@ namespace AUMDeobfuscator
                 new EnumValueMatch(null!)
                     .OfName("Ended")
                     .OfValue("3");
-
-            
 
             public static readonly MethodMatch FixedUpdate =
                 new MethodMatch(null!)
@@ -261,8 +391,6 @@ namespace AUMDeobfuscator
                     .And()
                     .WithMethod(AddChat)
                     .And();
-            
-            
         }
 
         public static class AmongUsClient

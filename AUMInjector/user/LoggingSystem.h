@@ -1,10 +1,5 @@
 #pragma once
 
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <cstdarg>
-
 enum class LOG_CODE
 {
 	// Something went wrong

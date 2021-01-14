@@ -360,8 +360,18 @@ void Run()
 
         logger.LogVariadic(LOG_CODE::INF, false, "Compiled for game version %s", version_text);
         logger.Log(LOG_CODE::INF, "DLL hosting successful");
-        if (mumbleLink.IsWine()) logger.Log(LOG_CODE::INF, "Running on Wine, disabling overlay");
-        else logger.Log(LOG_CODE::INF, "Running on Windows, enabling overlay");
+        if (mumbleLink.IsWine())
+        {
+            logger.Log(LOG_CODE::INF, "Running on Wine");
+            if (appSettings.disableDirectx) logger.Log(LOG_CODE::INF, "DirectX hooks are disabled.");
+            else logger.Log(LOG_CODE::INF, "DirectX hooks are enabled. Make sure your system and Wine installation support this.");
+        }
+        else
+        {
+            logger.Log(LOG_CODE::INF, "Running on Windows");
+            if (appSettings.disableDirectx) logger.Log(LOG_CODE::INF, "DirectX hooks are disabled, but Windows supports them.");
+            else logger.Log(LOG_CODE::INF, "DirectX hooks are enabled.");
+        }
 
         // Print current config
         if (!parseOk)
@@ -391,7 +401,7 @@ void Run()
 		// Setup hooks
 		DetourTransactionBegin();
 		DetourUpdateThread(GetCurrentThread());
-        if (!mumbleLink.IsWine()) GUIDetourAttach();
+        if (!appSettings.disableDirectx) GUIDetourAttach();
 		DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
 		DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
 		DetourAttach(&(PVOID&)GameData_Awake_Trampoline, GameData_Awake_Hook);

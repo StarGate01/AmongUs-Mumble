@@ -1,5 +1,6 @@
 #pragma once
 
+// Strings are wchar_t for NT
 struct LinkedMemWindows
 {
 	UINT32	uiVersion;
@@ -17,6 +18,7 @@ struct LinkedMemWindows
 	wchar_t description[2048];
 };
 
+// Strings are char32_t for Linux
 struct LinkedMemWine
 {
 	UINT32	uiVersion;
@@ -34,7 +36,6 @@ struct LinkedMemWine
 	char32_t description[2048];
 };
 
-
 class MumbleLink
 {
 
@@ -50,7 +51,6 @@ class MumbleLink
 	private:
 		bool isWine;
 		HANDLE mapHandle = nullptr;
-		void ExecCommand(const char* cmd);
 
 };
 

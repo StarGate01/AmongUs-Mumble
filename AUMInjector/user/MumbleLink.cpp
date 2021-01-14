@@ -2,7 +2,6 @@
 #include "Settings.h"
 #include "OrderedLock.h"
 
-
 MumbleLink mumbleLink;
 OrderedLock mumbleRPCLock;
 
@@ -44,7 +43,8 @@ DWORD MumbleLink::Init()
 	}
 
 	// Write inital state to IPC, write identity and context
-	// Init shared memeory
+	// and init shared memeory
+	// This macro trickery is needed to select the correct memory layout for NT or Linux
 	#define INITBLOCK(T, F, CW) {\
 	if (((T)linkedMem)->uiVersion != 2) \
 	{ \
@@ -99,7 +99,7 @@ void MumbleLink::Mute(bool mute)
 {
 	bool iswine = IsWine();
 	// Defer to new thread because system() is slow
-	std::thread t([mute, iswine] 
+	std::thread t([mute, iswine]
 	{
 		// Aquire mutex to ensure sequential order of operation
 		// Autodestructor on scope exit will release it
@@ -112,8 +112,8 @@ void MumbleLink::Mute(bool mute)
 		}
 		else
 		{
-			if (mute) system(("cmd.exe /c \"start /wait /unix " + appSettings.mumbleExe + " rpc mute\"").c_str());
-			else system(("cmd.exe /c \"start /wait /unix " + appSettings.mumbleExe + " rpc unmute\"").c_str());
+			if (mute) system(("start /unix " + appSettings.mumbleExe + " rpc mute").c_str());
+			else system(("start /unix " + appSettings.mumbleExe + " rpc unmute").c_str());
 		}
 	});
 	t.detach();

@@ -66,8 +66,10 @@ class Settings
 		bool disableLogConsole;
 		bool disableLogFile;
 		bool disableOverlay;
+		bool disableDirectx;
 		LOG_CODE logVerbosity;
 		std::string logFileName;
+		int wineUID;
 
 		// Computed options
 		int audioCoordinateMap[3];

@@ -24,7 +24,7 @@ void LoggingSystem::EnableConsoleLogging()
 		// Open a console (to log to)
 		AllocConsole();
 		freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
-		ShowWindow(GetConsoleWindow(), SW_MINIMIZE);
+		//ShowWindow(GetConsoleWindow(), SW_MINIMIZE);
 	}
 }
 

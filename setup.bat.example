@@ -12,8 +12,11 @@ SET "PD32=pd32.exe"
 SET "AUMDEOBFUSCATOR=.\AUMDeobfuscator\bin\Release\net5.0\AUMDeobfuscator.exe"
 
 REM setup virtual machines for deployment
-REM uncomment the following line to enable vm upload
+REM uncomment the following line to enable vm upload or remote upload
 REM SET "VM_UPLOAD=yes"
 SET "VM_BASENAME=GAMECLIENT"
 SET "VM_SUFFIXES=A B C"
 SET "VM_AMONGUS=Users\Christoph\Desktop\Among Us"
+REM SET "REMOTE_UPLOAD=yes"
+SET "REMOTE_NAME=redstar"
+SET "REMOTE_AMONGUS=Among Us"

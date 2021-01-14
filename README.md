@@ -3,7 +3,7 @@
 # AmongUs-Mumble
 [Mumble VoIP](https://www.mumble.info/) Plugin and mod for the popular game "[Among Us](https://store.steampowered.com/app/945360/Among_Us/)" by [Innersloth](http://www.innersloth.com/) to enable **Proximity and Directional Voice Chat**.
 
-Currently only for Windows PCs and the Steam version. On Linux and OSX a small Mumble fake plugin is provided, which just sets your ingame position to `(0, 0)`.
+Currently for Windows and Linux PCs using the Steam version. On OSX a small Mumble fake plugin is provided, which just sets your ingame position to `(0, 0)`.
 
 
 If you are looking for a community that uses this mod, join the [Discord server](https://discord.gg/4UkHEJ5sqg)!
@@ -40,6 +40,7 @@ Patch versions refer to unmarked Steam updates where the game version did not ch
  - Easy installation process, just copy one file
  - Smart linking, no need to start the game and Mumble in any particular order
  - Easy configuration using a configuration file or command line options
+ - Windows and Linux (via Wine) support
 
 ## Documentation
  - [Installation and Setup](https://github.com/StarGate01/AmongUs-Mumble/wiki/Installation-and-Setup)

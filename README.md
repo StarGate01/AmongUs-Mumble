@@ -10,6 +10,8 @@ If you are looking for a community that uses this mod, join the [Discord server]
 
 If you have any issues or find bugs, report them on our [issue tracker](https://github.com/StarGate01/AmongUs-Mumble/issues) .
 
+You can also read a [blog post](https://chrz.de/2021/01/21/a-proximity-chat-mod-for-among-us/) about this mod.
+
 ## Download
 
 Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0.1.X`. Please ensure that you use the correct version for your game installation. Please note *BETA BUILDS MIGHT BE UNSTABLE*.

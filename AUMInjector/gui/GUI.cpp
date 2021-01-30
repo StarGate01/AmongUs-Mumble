@@ -32,6 +32,7 @@
 #include "Blocks/SettingsBlock.h"
 #include "Blocks/OverlayBlock.h"
 #include "Blocks/AboutBlock.h"
+#include "Blocks/RadioSignalBlock.h"
 #include "Input.h"
 
 IDXGISwapChain* SwapChain;
@@ -50,6 +51,7 @@ HWND window;
 
 std::vector<GUIWindow*> GUIWindows;
 GUIWindow* overlayWindow;
+GUIWindow* imposterRadioWindow;
 
 LRESULT CALLBACK WndProcHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -177,6 +179,8 @@ HRESULT __stdcall D3D_FUNCTION_HOOK(IDXGISwapChain* pThis, UINT SyncInterval, UI
         window2->AddBlock(new SettingsBlock());
         GUIWindows.emplace_back(window2);
 
+
+
 #ifdef DEV_TOOLS
 		GUIWindow* window3 = new GUIWindow("Positional Radar", 0);
         window3->AddBlock(new PositionRadarBlock());
@@ -187,6 +191,9 @@ HRESULT __stdcall D3D_FUNCTION_HOOK(IDXGISwapChain* pThis, UINT SyncInterval, UI
         overlayWindow = new GUIWindow("Overlay", ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize |
             ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove);
         overlayWindow->AddBlock(new OverlayBlock(&guiShowMenu));
+
+        imposterRadioWindow = new GUIWindow("Imposter Radio Active", 0);
+        imposterRadioWindow->AddBlock(new RadioSignalBlock());
     }
 
     ImGui_ImplDX11_NewFrame();
@@ -206,7 +213,13 @@ HRESULT __stdcall D3D_FUNCTION_HOOK(IDXGISwapChain* pThis, UINT SyncInterval, UI
         ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x / 2.0f, 10.0f),
             ImGuiCond_Always, ImVec2(0.5f, 0.0f));
         ImGui::SetNextWindowBgAlpha(0.5f);
+
         overlayWindow->Update();
+    }
+
+    // Render imposter radio
+    if (mumblePlayer.IsImposter()) {
+        imposterRadioWindow->Update();
     }
 
     ImGui::Render();

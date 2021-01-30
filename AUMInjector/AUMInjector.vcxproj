@@ -36,6 +36,7 @@
     <ClCompile Include="gui\Blocks\OverlayBlock.cpp" />
     <ClCompile Include="gui\Blocks\PlayerInfoBlock.cpp" />
     <ClCompile Include="gui\Blocks\PositionRadarBlock.cpp" />
+    <ClCompile Include="gui\Blocks\RadioSignalBlock.cpp" />
     <ClCompile Include="gui\Blocks\SettingsBlock.cpp" />
     <ClCompile Include="gui\D3D11Hooking.cpp" />
     <ClCompile Include="gui\GUI.cpp" />
@@ -83,6 +84,7 @@
     <ClInclude Include="gui\Blocks\OverlayBlock.h" />
     <ClInclude Include="gui\Blocks\PlayerInfoBlock.h" />
     <ClInclude Include="gui\Blocks\PositionRadarBlock.h" />
+    <ClInclude Include="gui\Blocks\RadioSignalBlock.h" />
     <ClInclude Include="gui\Blocks\SettingsBlock.h" />
     <ClInclude Include="gui\D3D11Hooking.hpp" />
     <ClInclude Include="gui\GUI.h" />

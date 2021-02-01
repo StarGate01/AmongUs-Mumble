@@ -8,6 +8,7 @@
 #define SYNC_VERSION 1 
 #define SYNC_SIZE 2 // Number of payload bytes
 #define SYNC_RPC_ID 42
+#define IMPOSTER_RADIO_RPC_ID 50
 
 // Credits info string
 static const std::string CREDITS = R"(AmongUs-Mumble mod by:
@@ -82,6 +83,8 @@ class Settings
 		bool mustBroadcast = false;
 		long long lastBroadcastMs = 0;
 
+		// Last time the radio broadcast signal was sent
+		long long lastBroadcastRadioMs = 0;
 
 		// Setup argument parser
 		Settings();

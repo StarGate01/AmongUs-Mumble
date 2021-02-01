@@ -114,6 +114,9 @@
     <ClCompile Include="gui\Blocks\PositionRadarBlock.cpp">
       <Filter>GUI\Blocks</Filter>
     </ClCompile>
+    <ClCompile Include="gui\Blocks\RadioSignalBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -255,6 +258,9 @@
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="gui\Blocks\PositionRadarBlock.h">
+      <Filter>GUI\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\RadioSignalBlock.h">
       <Filter>GUI\Blocks</Filter>
     </ClInclude>
   </ItemGroup>

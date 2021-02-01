@@ -89,6 +89,18 @@ public:
 	// Sets if the player is using radio
 	void SetUsingRadio(bool usingRadio);
 
+	// Returnsif the player received or sends a radio signal
+	bool IsRadioInUse() const;
+
+	// Sets if the player received or sends a radio signal
+	void SetRadioInUse(bool use);
+
+	// Returns the time for when the last radio signal was received
+	long long LastRadioReceived() const;
+
+	// Sets the time for when the last radio signal was received
+	void SetLastRadioReceived(long long t);
+
 private:
 	// --- Ghost State --- 
 	// Is the player currently a ghost
@@ -128,6 +140,7 @@ private:
 	// Cached player network id
 	int netID = 0;
 
+	// Is host flag
 	bool isHost = false;
 
 	// Imposter flag
@@ -136,6 +149,12 @@ private:
 	bool isUsingRadio = false;
 	// When you're using radio, teleport here
 	const float radioOffset = 19999.0f;
+
+	// When radio is in use by you or another imposter
+	bool radioIsInUse = false;
+
+	// Last time the radio signal was received
+	long long lastReceived = 0;
 
 	// Reads private information to display it to the user
 	friend class PlayerInfoBlock;

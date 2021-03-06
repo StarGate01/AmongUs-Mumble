@@ -114,6 +114,9 @@
     <ClCompile Include="gui\Blocks\PositionRadarBlock.cpp">
       <Filter>GUI\Blocks</Filter>
     </ClCompile>
+    <ClCompile Include="gui\Blocks\RadioSignalBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -259,6 +262,8 @@
     </ClInclude>
     <ClInclude Include="deobfuscate\2021_3_5s.h">
       <Filter>Deobfuscate</Filter>
+    <ClInclude Include="gui\Blocks\RadioSignalBlock.h">
+      <Filter>GUI\Blocks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

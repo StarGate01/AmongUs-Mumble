@@ -73,7 +73,6 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
         // Cache network ID
         mumblePlayer.SetNetID(__this->fields._.NetId);
 
-
         // From Player Control, get the Player Data
         PlayerInfo* Data = PlayerControl_GetData_Trampoline(__this, NULL);
         // And now we can get if we are imposter.
@@ -137,6 +136,16 @@ void BroadcastSettings(InnerNetClient* client)
     MessageWriter_EndMessage(writer, NULL);
 }
 
+// Broadcast the current settings
+void ImposterRadioUse(InnerNetClient* client)
+{
+    logger.Log(LOG_CODE::MSG, "Imposter Radio Useage is sent");
+
+    // Broadcast radio usage via RPC
+    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, mumblePlayer.GetNetID(), IMPOSTER_RADIO_RPC_ID, SendOption__Enum_Reliable, NULL);
+    MessageWriter_EndMessage(writer, NULL);
+}
+
 // Fixed loop for the game client
 void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
 {
@@ -159,6 +168,29 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
         }
     }
 
+    if (mumblePlayer.IsImposter()) {
+        long long timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch()).count();
+        if(mumblePlayer.IsUsingRadio()) 
+        {
+            // Only broadcast at most every second to prevent network overload
+            if ((timestamp - appSettings.lastBroadcastRadioMs) >= 500)
+            {
+                ImposterRadioUse(__this);
+                appSettings.lastBroadcastRadioMs = timestamp;
+                mumblePlayer.SetLastRadioReceived(timestamp);
+                mumblePlayer.SetRadioInUse(true);
+            }
+        }
+        else {
+            if ((timestamp - mumblePlayer.LastRadioReceived()) >= 600)
+            {
+                appSettings.lastBroadcastRadioMs = 0;
+                mumblePlayer.SetLastRadioReceived(0);
+                mumblePlayer.SetRadioInUse(false);
+            }
+        }
+    }
 
     // Check if game state changed to lobby
     if (__this->fields.GameState != lastGameState)
@@ -180,10 +212,9 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
             // Just to be sure in case some join events were missed
             if(mumblePlayer.IsHost()) appSettings.mustBroadcast = true;
             mumblePlayer.EnterGame();
-
-
         }
     }
+
     lastGameState = __this->fields.GameState;
 
     if (mumbleLink.linkedMem != nullptr)
@@ -287,7 +318,7 @@ void InnerNetClient_HandleGameDataInner_Hook(InnerNetClient* __this, MessageRead
         int32_t pos = MessageReader_get_Position(reader, NULL);
         uint32_t targetObject = MessageReader_ReadPackedUInt32(reader, NULL); // Ignored
         uint8_t rpcId = MessageReader_ReadByte(reader, NULL);
-
+        
         // Check if this is a mod config packet
         if (rpcId == SYNC_RPC_ID)
         {
@@ -316,6 +347,19 @@ void InnerNetClient_HandleGameDataInner_Hook(InnerNetClient* __this, MessageRead
             appSettings.directionalAudio = (MessageReader_ReadByte(reader, NULL) == 1);
             appSettings.RecalculateAudioMap();
             logger.Log(LOG_CODE::MSG, "Got configuration: " + appSettings.HumanReadableSync());
+
+            // Swallow this packet
+            return;
+        }
+        // Check if this is an imposter radio call
+        else if (rpcId == IMPOSTER_RADIO_RPC_ID) 
+        {
+            if (mumblePlayer.IsImposter()) {
+                long long timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::system_clock::now().time_since_epoch()).count();
+                mumblePlayer.SetLastRadioReceived(timestamp);
+                mumblePlayer.SetRadioInUse(true);
+            }
 
             // Swallow this packet
             return;

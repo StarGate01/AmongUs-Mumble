@@ -262,6 +262,7 @@
     </ClInclude>
     <ClInclude Include="deobfuscate\2021_3_5s.h">
       <Filter>Deobfuscate</Filter>
+    </ClInclude>
     <ClInclude Include="gui\Blocks\RadioSignalBlock.h">
       <Filter>GUI\Blocks</Filter>
     </ClInclude>

@@ -75,7 +75,7 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 
 
         // From Player Control, get the Player Data
-        PlayerData* Data = PlayerControl_GetData_Trampoline(__this, NULL);
+        PlayerInfo* Data = PlayerControl_GetData_Trampoline(__this, NULL);
         // And now we can get if we are imposter.
         bool isImposter = Data->fields.*IsImposter;
         mumblePlayer.SetImposter(isImposter);
@@ -277,12 +277,6 @@ void AmongUsClient_OnPlayerJoined_Hook(AmongUsClient* __this, ClientData* data, 
     }
 }
 
-//// This sets the keypad on mirahq to 10% speed for testing
-//void IGHKMHLJFLI_Detoriorate_Hook(IGHKMHLJFLI* __this, float PCHPGLOMPLD, MethodInfo* method)
-//{
-//    IGHKMHLJFLI_Detoriorate(__this, PCHPGLOMPLD * 0.1f, method);
-//}
-
 // Gets called when a game data packet is received
 void InnerNetClient_HandleGameDataInner_Hook(InnerNetClient* __this, MessageReader* reader, int32_t count, MethodInfo* method)
 {
@@ -373,6 +367,10 @@ void Run()
             else logger.Log(LOG_CODE::INF, "DirectX hooks are enabled.");
         }
 
+        #ifdef DEV_TOOLS
+            logger.Log(LOG_CODE::INF, "Development tools are enabled.");
+        #endif
+
         // Print current config
         if (!parseOk)
         {
@@ -416,7 +414,6 @@ void Run()
         DetourAttach(&(PVOID&)HudOverrideTask_Complete_Trampoline, HudOverrideTask_Complete_Hook);
         DetourAttach(&(PVOID&)AmongUsClient_OnPlayerJoined_Trampoline, AmongUsClient_OnPlayerJoined_Hook);
         DetourAttach(&(PVOID&)InnerNetClient_HandleGameDataInner_Trampoline, InnerNetClient_HandleGameDataInner_Hook);
-        //DetourAttach(&(PVOID&)IGHKMHLJFLI_Detoriorate, IGHKMHLJFLI_Detoriorate_Hook);
 
         //dynamic_analysis_attach();
         LONG errDetour = DetourTransactionCommit();

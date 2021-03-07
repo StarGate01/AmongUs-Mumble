@@ -28,6 +28,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Source\PlayerStates">
+      <UniqueIdentifier>{57010452-47f2-4db4-a9f7-4ebd216c8ec1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="user\main.cpp">
@@ -101,6 +104,27 @@
     </ClCompile>
     <ClCompile Include="gui\Blocks\AboutBlock.cpp">
       <Filter>GUI\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="player_states\PlayerStateMachine.cpp">
+      <Filter>Source\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="player_states\PlayerStateLobby.cpp">
+      <Filter>Source\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="player_states\PlayerStateAlive.cpp">
+      <Filter>Source\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="player_states\PlayerStateGhost.cpp">
+      <Filter>Source\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="player_states\PlayerStateMeeting.cpp">
+      <Filter>Source\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="player_states\PlayerState.cpp">
+      <Filter>Source\PlayerStates</Filter>
+    </ClCompile>
+    <ClCompile Include="player_states\PlayerStateMenu.cpp">
+      <Filter>Source\PlayerStates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +255,33 @@
       <Filter>Deobfuscate</Filter>
     </ClInclude>
     <ClInclude Include="deobfuscate\2020_12_9s.h">
+      <Filter>Deobfuscate</Filter>
+    </ClInclude>
+    <ClInclude Include="player_states\PlayerStateMenu.h">
+      <Filter>Source\PlayerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="player_states\PlayerStateMachine.h">
+      <Filter>Source\PlayerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="player_states\PlayerStateLobby.h">
+      <Filter>Source\PlayerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="player_states\PlayerStateAlive.h">
+      <Filter>Source\PlayerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="player_states\PlayerStateGhost.h">
+      <Filter>Source\PlayerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="player_states\PlayerStateMeeting.h">
+      <Filter>Source\PlayerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="player_states\PlayerStates.h">
+      <Filter>Source\PlayerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="player_states\PlayerState.h">
+      <Filter>Source\PlayerStates</Filter>
+    </ClInclude>
+    <ClInclude Include="deobfuscate\2021_3_5s.h">
       <Filter>Deobfuscate</Filter>
     </ClInclude>
   </ItemGroup>

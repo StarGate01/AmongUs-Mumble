@@ -2,6 +2,45 @@
 // Custom injected code entry point
 
 #define WIN32_LEAN_AND_MEAN
+#define NOGDICAPMASKS
+#define NOVIRTUALKEYCODES
+#define NOWINMESSAGES
+#define NOWINSTYLES
+#define NOSYSMETRICS
+#define NOMENUS
+#define NOICONS
+#define NOKEYSTATES
+#define NOSYSCOMMANDS
+#define NORASTEROPS
+#define NOSHOWWINDOW
+#define OEMRESOURCE
+#define NOATOM
+#define NOCLIPBOARD
+#define NOCOLOR
+#define NOCTLMGR
+#define NODRAWTEXT
+#define NOGDI
+#define NOKERNEL
+#define NOUSER
+#define NONLS
+#define NOMB
+#define NOMEMMGR
+#define NOMETAFILE
+#define NOMINMAX
+#define NOMSG
+#define NOOPENFILE
+#define NOSCROLL
+#define NOSERVICE
+#define NOSOUND
+#define NOTEXTMETRIC
+#define NOWH
+#define NOWINOFFSETS
+#define NOCOMM
+#define NOKANJI
+#define NOHELP
+#define NOPROFILER
+#define NODEFERWINDOWPOS
+#define NOMCX
 #include <Windows.h>
 #include <iostream>
 #include <limits>
@@ -16,7 +55,9 @@
 #include "deobfuscate.h"
 #include "settings.h"
 #include "LoggingSystem.h"
-#include "MumblePlayer.h"
+//#include "MumblePlayer.h"
+#include "../player_states/PlayerStateMachine.h"
+#include "../player_states/PlayerStates.h"
 #include "GUI.h"
 //#include "dynamic_analysis.h"
 
@@ -42,7 +83,7 @@ void TryConnectMumble()
         else
         {
             logger.LogVariadic(LOG_CODE::INF, false, "Mumble link init successful, attempt %d", attempt);
-            mumblePlayer.TryLogPosition(true);
+            playerStateMachine.TryLogPosition(true);
             mumbleLink.Mute(false);
         }
     }
@@ -57,10 +98,10 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
     {
         // Cache position
         Vector2 pos = PlayerControl_GetTruePosition_Trampoline(__this, method);
-        mumblePlayer.SetPosX(pos.x);
-        mumblePlayer.SetPosY(pos.y);
+        playerStateMachine.SetPos(0, pos.x);
+        playerStateMachine.SetPos(1, pos.y);
         // Cache network ID
-        mumblePlayer.SetNetID(__this->fields._.NetId);
+        playerStateMachine.SetNetID(__this->fields._.NetId);
     }
 }
 
@@ -72,7 +113,7 @@ void PlayerControl_Die_Hook(PlayerControl* __this, Player_Die_Reason__Enum reaso
     if (__this->fields.LightPrefab != nullptr)
     {
         logger.Log(LOG_CODE::MSG, "You died");
-        mumblePlayer.EnterGhostState();
+        playerStateMachine.TransferState<PlayerStateGhost>();
     }
 }
 
@@ -81,8 +122,8 @@ void MeetingHud_Close_Hook(MeetingHud* __this, MethodInfo* method)
 {
     MeetingHud_Close_Trampoline(__this, method);
     logger.Log(LOG_CODE::MSG, "Meeting ended");
-    // Spectators aren't allowd to talk
-    mumblePlayer.EndMeeting();
+    // Go back to being alive or a ghost
+    playerStateMachine.TransferToPreviousState();
 }
 
 // Gets called when a meeting starts
@@ -91,7 +132,7 @@ void MeetingHud_Start_Hook(MeetingHud* __this, MethodInfo* method)
     MeetingHud_Start_Trampoline(__this, method);
     logger.Log(LOG_CODE::MSG, "Meeting started");
     // Mute ALL ghosts
-    mumblePlayer.StartMeeting();
+    playerStateMachine.TransferState<PlayerStateMeeting>();
 }
 
 // Broadcast the current settings
@@ -100,7 +141,7 @@ void BroadcastSettings(InnerNetClient* client)
     logger.Log(LOG_CODE::MSG, "Sending configuration: " + appSettings.HumanReadableSync());
 
     // Broadcast config via RPC
-    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, mumblePlayer.GetNetID(), SYNC_RPC_ID, SendOption__Enum_Reliable, NULL);
+    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, playerStateMachine.GetNetID(), SYNC_RPC_ID, SendOption__Enum_Reliable, NULL);
     MessageWriter_Write_Byte_Trampoline(writer, SYNC_VERSION, NULL);
     // Serialize settings
     MessageWriter_Write_Byte_Trampoline(writer, (int8_t)appSettings.ghostVoiceMode, NULL);
@@ -114,10 +155,10 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
     InnerNetClient_FixedUpdate_Trampoline(__this, method);
 
     // Set if player is host
-    mumblePlayer.SetHost(__this->fields.ClientId == __this->fields.HostId);
+    playerStateMachine.SetHost(__this->fields.ClientId == __this->fields.HostId);
 
     // Check if the host should broadcast the settings due to GUI change
-    if (appSettings.mustBroadcast && mumblePlayer.IsHost())
+    if (appSettings.mustBroadcast && playerStateMachine.IsHost())
     {
         // Only broadcast at most every second to prevent network overload
         long long timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -140,16 +181,15 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
 
             // Reset options to local version
             appSettings.Parse();
-            mumblePlayer.ResetState();
-            mumblePlayer.EnterLobby();
+            playerStateMachine.TransferState<PlayerStateLobby>();
         }
         else if (__this->fields.GameState == InnerNetClient_GameState__Enum_Started)
         {
             logger.Log(LOG_CODE::MSG, "Round started");
 
             // Just to be sure in case some join events were missed
-            if(mumblePlayer.IsHost()) appSettings.mustBroadcast = true;
-            mumblePlayer.EnterGame();
+            if(playerStateMachine.IsHost()) appSettings.mustBroadcast = true;
+            playerStateMachine.TransferState<PlayerStateAlive>();
         }
     }
     lastGameState = __this->fields.GameState;
@@ -167,11 +207,11 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
 		// Map player position to mumble according to directional / non directional setting
 		for (int i = 0; i < 3; i++)
 		{
-			mumbleLink.linkedMem->fAvatarPosition[i] = mumblePlayer.GetMumblePos(i);
-			mumbleLink.linkedMem->fCameraPosition[i] = mumblePlayer.GetMumblePos(i);
+			mumbleLink.linkedMem->fAvatarPosition[i] = playerStateMachine.GetMumblePos(i);
+			mumbleLink.linkedMem->fCameraPosition[i] = playerStateMachine.GetMumblePos(i);
 		}
 	}
-	mumblePlayer.TryLogPosition();
+	playerStateMachine.TryLogPosition();
 }
 
 // Gets called when the client disconencts for whatsever reason
@@ -179,8 +219,7 @@ void InnerNetClient_Disconnect_Hook(InnerNetClient* __this, InnerNet_DisconnectR
 {
     InnerNetClient_Disconnect_Trampoline(__this, reason, stringReason, method);
     logger.Log(LOG_CODE::MSG, "Disconnected from server");
-    mumblePlayer.ResetState();
-    mumblePlayer.ExitGame();
+    playerStateMachine.TransferState<PlayerStateMenu>();
 }
 
 // Comms sabotage helper
@@ -189,12 +228,12 @@ void UpdateComms(bool isSabotaged)
     if (isSabotaged)
     {
         logger.Log(LOG_CODE::MSG, "Comms sabotaged");
-        mumblePlayer.StartCommunicationsSabotaged();
+		playerStateMachine.StartCommunicationsSabotaged();
     }
     else
     {
         logger.Log(LOG_CODE::MSG, "Comms repaired");
-        mumblePlayer.EndCommunicationsSabotaged();
+		playerStateMachine.EndCommunicationsSabotaged();
     }
 }
 
@@ -303,6 +342,11 @@ void InnerNetClient_HandleGameDataInner_Hook(InnerNetClient* __this, MessageRead
 // Entrypoint of the injected thread
 void Run()
 {
+    playerStateMachine.AddState(new PlayerStateMeeting());
+    playerStateMachine.AddState(new PlayerStateGhost());
+    playerStateMachine.AddState(new PlayerStateAlive());
+    playerStateMachine.AddState(new PlayerStateLobby());
+
     // Check what process the dll was loaded into
     // If loaded into the wrong process, exit injected thread
     TCHAR hostExe[MAX_PATH];
@@ -340,32 +384,33 @@ void Run()
 		logger.Log(LOG_CODE::INF, "Type and function memory mapping successful");
 
         // Print game version
-        String* gameVersionRaw = Application_get_version(NULL);
-        std::wstring_convert<std::codecvt_utf8<wchar_t>> wideToNarrow;
-        std::string gameVersion = wideToNarrow.to_bytes(std::wstring((const wchar_t*)
-            (&((Il2CppString*)gameVersionRaw)->chars), ((Il2CppString*)gameVersionRaw)->length));
-        logger.Log(LOG_CODE::INF, "Running in game version " + gameVersion);
+        //String* gameVersionRaw = Application_get_version(NULL);
+        //std::wstring_convert<std::codecvt_utf8<wchar_t>> wideToNarrow;
+        //std::string gameVersion = wideToNarrow.to_bytes(std::wstring((const wchar_t*)
+        //    (&((Il2CppString*)gameVersionRaw)->chars), ((Il2CppString*)gameVersionRaw)->length));
+        //logger.Log(LOG_CODE::INF, "Running in game version " + gameVersion);
 
         // Start mumble connection thread
         std::thread mumbleReconnectionThread(TryConnectMumble);
 
-		// Setup hooks
-		DetourTransactionBegin();
-		DetourUpdateThread(GetCurrentThread());
-        GUIDetourAttach();
-		DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
-		DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
-		DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);
-		DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
-		DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
-		DetourAttach(&(PVOID&)InnerNetClient_Disconnect_Trampoline, InnerNetClient_Disconnect_Hook);
+        // Setup hooks
+        DetourTransactionBegin();
+        DetourUpdateThread(GetCurrentThread());
+        /*if (!appSettings.disableDirectx) */GUIDetourAttach();
+        DetourAttach(&(PVOID&)PlayerControl_FixedUpdate_Trampoline, PlayerControl_FixedUpdate_Hook);
+        DetourAttach(&(PVOID&)PlayerControl_Die_Trampoline, PlayerControl_Die_Hook);
+        //DetourAttach(&(PVOID&)GameData_Awake_Trampoline, GameData_Awake_Hook);
+        //DetourAttach(&(PVOID&)GameData_UpdateColor_Trampoline, GameData_UpdateColor_Hook);
+        DetourAttach(&(PVOID&)MeetingHud_Close_Trampoline, MeetingHud_Close_Hook);
+        DetourAttach(&(PVOID&)MeetingHud_Start_Trampoline, MeetingHud_Start_Hook);
+        DetourAttach(&(PVOID&)InnerNetClient_FixedUpdate_Trampoline, InnerNetClient_FixedUpdate_Hook);
+        DetourAttach(&(PVOID&)InnerNetClient_Disconnect_Trampoline, InnerNetClient_Disconnect_Hook);
         DetourAttach(&(PVOID&)HqHudOverrideTask_Initialize_Trampoline, HqHudOverrideTask_Initialize_Hook);
         DetourAttach(&(PVOID&)HqHudOverrideTask_Complete_Trampoline, HqHudOverrideTask_Complete_Hook);
         DetourAttach(&(PVOID&)HudOverrideTask_Initialize_Trampoline, HudOverrideTask_Initialize_Hook);
         DetourAttach(&(PVOID&)HudOverrideTask_Complete_Trampoline, HudOverrideTask_Complete_Hook);
         DetourAttach(&(PVOID&)AmongUsClient_OnPlayerJoined_Trampoline, AmongUsClient_OnPlayerJoined_Hook);
         DetourAttach(&(PVOID&)InnerNetClient_HandleGameDataInner_Trampoline, InnerNetClient_HandleGameDataInner_Hook);
-        //DetourAttach(&(PVOID&)IGHKMHLJFLI_Detoriorate, IGHKMHLJFLI_Detoriorate_Hook);
 
         //dynamic_analysis_attach();
 		LONG errDetour = DetourTransactionCommit();

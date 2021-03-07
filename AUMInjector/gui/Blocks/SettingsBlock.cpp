@@ -3,7 +3,10 @@
 #include "Settings.h"
 #include <string.h>
 #include "LoggingSystem.h"
-#include "MumblePlayer.h"
+#include "../player_states/PlayerStateMachine.h"
+#include "../player_states/PlayerStateGhost.h"
+#include "../player_states/PlayerStateAlive.h"
+#include "../player_states/PlayerStateLobby.h"
 
 // Based on enums (wish we hand non-standard GCC extensions here)
 const char* booleanOptions[] = { "False", "True" };
@@ -81,11 +84,14 @@ void SettingsBlock::Update()
     // Config settings that can be changed each round
     ImGui::Text("[ Game Settings ]");
 
+    bool isInGame = (playerStateMachine.GetCurrentStateID() == PlayerStateGhost::stateID_ ||
+        playerStateMachine.GetCurrentStateID() == PlayerStateAlive::stateID_);
+
     // If the user is in a game, don't let them change the settings and only display them
-    if (mumblePlayer.IsInGame() || (mumblePlayer.IsInLobby() && !mumblePlayer.IsHost()))
+    if ( isInGame || (playerStateMachine.GetCurrentStateID() == PlayerStateLobby::stateID_ && !playerStateMachine.IsHost()))
     {
         // Print current settings only, as they can't be changed.
-        if (mumblePlayer.IsInGame())
+        if (isInGame)
         {
             ImGui::Text("You cannot change game settings while in a round.");
         }

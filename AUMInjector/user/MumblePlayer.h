@@ -36,7 +36,7 @@ public:
 	void SetPosY(float posY);
 
 	// In mumble (0.0f, 0.0f) lets users hear each other better
-	void SetFullVolume();
+	//void SetFullVolume();
 
 	// Sets the position cache, class may choose to override this value
 	void SetPos(int i, float pos);

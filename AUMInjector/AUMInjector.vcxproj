@@ -27,6 +27,13 @@
     <ClCompile Include="gui\imgui\imgui_demo.cpp" />
     <ClCompile Include="gui\imgui\imgui_draw.cpp" />
     <ClCompile Include="gui\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="player_states\PlayerState.cpp" />
+    <ClCompile Include="player_states\PlayerStateAlive.cpp" />
+    <ClCompile Include="player_states\PlayerStateGhost.cpp" />
+    <ClCompile Include="player_states\PlayerStateLobby.cpp" />
+    <ClCompile Include="player_states\PlayerStateMachine.cpp" />
+    <ClCompile Include="player_states\PlayerStateMeeting.cpp" />
+    <ClCompile Include="player_states\PlayerStateMenu.cpp" />
     <ClCompile Include="user\LoggingSystem.cpp" />
     <ClCompile Include="user\MumbleLink.cpp" />
     <ClCompile Include="user\main.cpp" />
@@ -51,6 +58,7 @@
     <ClInclude Include="deobfuscate\2020_12_5s.h" />
     <ClInclude Include="deobfuscate\2020_12_9s.h" />
     <ClInclude Include="deobfuscate\2020_9_22s.h" />
+    <ClInclude Include="deobfuscate\2021_3_5s.h" />
     <ClInclude Include="deobfuscate\deobfuscate.h" />
     <ClInclude Include="deobfuscate\version.h" />
     <ClInclude Include="framework\helpers.h" />
@@ -72,6 +80,14 @@
     <ClInclude Include="gui\imgui\imstb_rectpack.h" />
     <ClInclude Include="gui\imgui\imstb_textedit.h" />
     <ClInclude Include="gui\imgui\imstb_truetype.h" />
+    <ClInclude Include="player_states\PlayerState.h" />
+    <ClInclude Include="player_states\PlayerStateAlive.h" />
+    <ClInclude Include="player_states\PlayerStateGhost.h" />
+    <ClInclude Include="player_states\PlayerStateLobby.h" />
+    <ClInclude Include="player_states\PlayerStateMachine.h" />
+    <ClInclude Include="player_states\PlayerStateMeeting.h" />
+    <ClInclude Include="player_states\PlayerStateMenu.h" />
+    <ClInclude Include="player_states\PlayerStates.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="user\CLI11.hpp" />
     <ClInclude Include="user\LoggingSystem.h" />
@@ -133,7 +149,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>IMGUI_IMPL_WIN32_DISABLE_LINKING_XINPUT;IMGUI_IMPL_WIN32_DISABLE_GAMEPAD;WIN32;_DEBUG;AUMINJECTOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMGUI_IMPL_WIN32_DISABLE_LINKING_XINPUT;IMGUI_IMPL_WIN32_DISABLE_GAMEPAD;WIN32;_DEBUG;AUMINJECTOR_EXPORTS;_WINDOWS;_USRDLL;GAME_VERSION=202012090;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>

@@ -85,7 +85,8 @@ We thank the developers of Mumble for not only providing their software for free
  - https://github.com/Impostor/Impostor For providing private testing servers
  - https://github.com/denverquane/amonguscapture For general info about game data structures
  - https://github.com/TheNullicorn/among-us-api For general info about the games network protocol
- - https://wiki.weewoo.net/wiki/Main_Page For detailed info about the games network protocol
+ - https://wiki.weewoo.net/wiki/Main_Page For info about the games network protocol
+ - https://github.com/codyphobe/among-us-protocol For further protocol info
  - https://github.com/willardf/Hazel-Networking For implementation info about the games network protocol
 
 

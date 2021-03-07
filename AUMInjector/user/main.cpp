@@ -182,7 +182,8 @@ void InnerNetClient_FixedUpdate_Hook(InnerNetClient* __this, MethodInfo* method)
                 mumblePlayer.SetRadioInUse(true);
             }
         }
-        else {
+        else
+        {
             if ((timestamp - mumblePlayer.LastRadioReceived()) >= 600)
             {
                 appSettings.lastBroadcastRadioMs = 0;
@@ -308,72 +309,82 @@ void AmongUsClient_OnPlayerJoined_Hook(AmongUsClient* __this, ClientData* data, 
     }
 }
 
-// Gets called when a game data packet is received
-void InnerNetClient_HandleGameDataInner_Hook(InnerNetClient* __this, MessageReader* reader, int32_t count, MethodInfo* method)
+// Gets called when a game data packet is parsed
+void InnerNetClient_HandleGameData_Hook(InnerNetClient* __this, MessageReader* reader, MethodInfo* method)
 {
-    // Tag 2 = RPC call
-    if (reader->fields.Tag == 2)
+    // Tag 5 = GameData
+    if (reader->fields.Tag == 5)
     {
-        // Read packet header
-        int32_t pos = MessageReader_get_Position(reader, NULL);
-        uint32_t targetObject = MessageReader_ReadPackedUInt32(reader, NULL); // Ignored
-        uint8_t rpcId = MessageReader_ReadByte(reader, NULL);
-        
-        // Check if this is a mod config packet
-        if (rpcId == SYNC_RPC_ID)
+        // Store current reader position
+        int32_t rh = reader->fields.readHead;
+        int32_t pos = reader->fields._position;
+
+        // Decode packet header
+        uint16_t length = MessageReader_ReadUInt16(reader, NULL);
+        uint8_t subTag = MessageReader_ReadByte(reader, NULL);
+
+        if (subTag == 2) // Tag 2 = RPC
         {
-            // Validate packet
-            int32_t packetSize = MessageReader_get_BytesRemaining(reader, NULL);
-            if (packetSize == 0)
+            // Read packet header
+            uint32_t senderNetId = MessageReader_ReadPackedUInt32(reader, NULL); // Ignored
+            uint8_t rpcId = MessageReader_ReadByte(reader, NULL);
+
+            // Check if this is a mod config packet
+            if (rpcId == SYNC_RPC_ID)
             {
-                logger.Log(LOG_CODE::ERR, "Got bad configuration (empty payload), ignoring");
+                // Validate packet
+                int32_t packetSize = MessageReader_get_BytesRemaining(reader, NULL);
+                if (packetSize == 0)
+                {
+                    logger.Log(LOG_CODE::ERR, "Got bad configuration (empty payload), ignoring");
+                    return;
+                }
+                uint8_t version = MessageReader_ReadByte(reader, NULL);
+                if (version != SYNC_VERSION)
+                {
+                    logger.Log(LOG_CODE::ERR, "Got bad configuration (wrong version), ignoring");
+                    return;
+                }
+                packetSize = MessageReader_get_BytesRemaining(reader, NULL);
+                if (packetSize < SYNC_SIZE)
+                {
+                    logger.Log(LOG_CODE::ERR, "Got bad configuration (payload size too small), ignoring");
+                    return;
+                }
+
+                // Read configuration
+                appSettings.ghostVoiceMode = (Settings::GHOST_VOICE_MODE)MessageReader_ReadByte(reader, NULL);
+                appSettings.directionalAudio = (MessageReader_ReadByte(reader, NULL) == 1);
+                appSettings.RecalculateAudioMap();
+                logger.Log(LOG_CODE::MSG, "Got configuration: " + appSettings.HumanReadableSync());
+
+                // Swallow this packet
                 return;
             }
-            uint8_t version = MessageReader_ReadByte(reader, NULL);
-            if (version != SYNC_VERSION)
+            // Check if this is an imposter radio call
+            else if (rpcId == IMPOSTER_RADIO_RPC_ID)
             {
-                logger.Log(LOG_CODE::ERR, "Got bad configuration (wrong version), ignoring");
+                if (mumblePlayer.IsImposter()) 
+                {
+                    long long timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
+                        std::chrono::system_clock::now().time_since_epoch()).count();
+                    mumblePlayer.SetLastRadioReceived(timestamp);
+                    mumblePlayer.SetRadioInUse(true);
+                }
+
+                // Swallow this packet
                 return;
             }
-            packetSize = MessageReader_get_BytesRemaining(reader, NULL);
-            if (packetSize != SYNC_SIZE)
-            {
-                logger.Log(LOG_CODE::ERR, "Got bad configuration (invalid payload size), ignoring");
-                return;
-            }
-
-            // Read configuration
-            appSettings.ghostVoiceMode = (Settings::GHOST_VOICE_MODE)MessageReader_ReadByte(reader, NULL);
-            appSettings.directionalAudio = (MessageReader_ReadByte(reader, NULL) == 1);
-            appSettings.RecalculateAudioMap();
-            logger.Log(LOG_CODE::MSG, "Got configuration: " + appSettings.HumanReadableSync());
-
-            // Swallow this packet
-            return;
         }
-        // Check if this is an imposter radio call
-        else if (rpcId == IMPOSTER_RADIO_RPC_ID) 
-        {
-            if (mumblePlayer.IsImposter()) {
-                long long timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
-                    std::chrono::system_clock::now().time_since_epoch()).count();
-                mumblePlayer.SetLastRadioReceived(timestamp);
-                mumblePlayer.SetRadioInUse(true);
-            }
 
-            // Swallow this packet
-            return;
-        }
-        else
-        {
-
-            // Rewind reader to allow reparsing packet in trampoline
-            MessageReader_set_Position(reader, pos, NULL);
-        }
+        // Rewind reader to allow reparsing packet in trampoline
+        reader->fields.readHead = rh;
+        reader->fields._position = pos;
     }
 
-    InnerNetClient_HandleGameDataInner_Trampoline(__this, reader, count, method);
+    InnerNetClient_HandleGameData_Trampoline(__this, reader, method);
 }
+
 
 // Entrypoint of the injected thread
 void Run()
@@ -457,7 +468,7 @@ void Run()
         DetourAttach(&(PVOID&)HudOverrideTask_Initialize_Trampoline, HudOverrideTask_Initialize_Hook);
         DetourAttach(&(PVOID&)HudOverrideTask_Complete_Trampoline, HudOverrideTask_Complete_Hook);
         DetourAttach(&(PVOID&)AmongUsClient_OnPlayerJoined_Trampoline, AmongUsClient_OnPlayerJoined_Hook);
-        DetourAttach(&(PVOID&)InnerNetClient_HandleGameDataInner_Trampoline, InnerNetClient_HandleGameDataInner_Hook);
+        DetourAttach(&(PVOID&)InnerNetClient_HandleGameData_Trampoline, InnerNetClient_HandleGameData_Hook);
 
         //dynamic_analysis_attach();
         LONG errDetour = DetourTransactionCommit();

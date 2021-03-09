@@ -1,46 +1,56 @@
 #pragma once
 
-#include <windows.h>
-#include <string>
-
-struct LinkedMem
+// Strings are wchar_t for NT
+struct LinkedMemWindows
 {
-#ifdef _WIN32
 	UINT32	uiVersion;
 	DWORD	uiTick;
-#else
-	uint32_t uiVersion;
-	uint32_t uiTick;
-#endif
 	float	fAvatarPosition[3];
 	float	fAvatarFront[3];
 	float	fAvatarTop[3];
-	wchar_t	name[256];
+	wchar_t name[256];
 	float	fCameraPosition[3];
 	float	fCameraFront[3];
 	float	fCameraTop[3];
-	wchar_t	identity[256];
-#ifdef _WIN32
+	wchar_t identity[256];
 	UINT32	context_len;
-#else
-	uint32_t context_len;
-#endif
 	unsigned char context[256];
 	wchar_t description[2048];
+};
+
+// Strings are char32_t for Linux
+struct LinkedMemWine
+{
+	UINT32	uiVersion;
+	DWORD	uiTick;
+	float	fAvatarPosition[3];
+	float	fAvatarFront[3];
+	float	fAvatarTop[3];
+	char32_t name[256];
+	float	fCameraPosition[3];
+	float	fCameraFront[3];
+	float	fCameraTop[3];
+	char32_t identity[256];
+	UINT32	context_len;
+	unsigned char context[256];
+	char32_t description[2048];
 };
 
 class MumbleLink
 {
 
 	public:
-		LinkedMem* linkedMem = nullptr;
+		void* linkedMem = nullptr;
+
+		MumbleLink();
 		DWORD Init();
 		void Close();
 		void Mute(bool mute = true);
+		bool IsWine() { return isWine; }
 
 	private:
+		bool isWine;
 		HANDLE mapHandle = nullptr;
-		void ExecCommand(const char* cmd);
 
 };
 

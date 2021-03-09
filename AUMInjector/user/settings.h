@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include "CLI11.hpp"
 #include "LoggingSystem.h"
 
@@ -9,13 +8,16 @@
 #define SYNC_VERSION 1 
 #define SYNC_SIZE 2 // Number of payload bytes
 #define SYNC_RPC_ID 42
+#define IMPOSTER_RADIO_RPC_ID 50
 
 // Credits info string
 static const std::string CREDITS = R"(AmongUs-Mumble mod by:
   StarGate01 (chrz.de): Proxy DLL, Framework, Setup, Features.
   Alisenai (Alien):     Fixes, More Features.
-  BillyDaBongo (Billy): Management, Testing.
+  BillyDaBongo (Billy): Installer, Management, Testing.
   LelouBil:             Deobfuscation.
+  ShumWengSang, Leanny: Impostor Radio.
+  Mogster7:             Debugging Tools, Radar.
 
 Source code and download: https://github.com/StarGate01/AmongUs-Mumble
 Freely available and licensed under the GNU GPLv3.
@@ -65,8 +67,10 @@ class Settings
 		bool disableLogConsole;
 		bool disableLogFile;
 		bool disableOverlay;
+		bool disableDirectx;
 		LOG_CODE logVerbosity;
 		std::string logFileName;
+		int wineUID;
 
 		// Computed options
 		int audioCoordinateMap[3];
@@ -79,6 +83,8 @@ class Settings
 		bool mustBroadcast = false;
 		long long lastBroadcastMs = 0;
 
+		// Last time the radio broadcast signal was sent
+		long long lastBroadcastRadioMs = 0;
 
 		// Setup argument parser
 		Settings();
@@ -95,6 +101,8 @@ class Settings
 		// Prints the sync settings to a human readable string
 		std::string HumanReadableSync();
 
+		// Player control to use Radio
+		char radioKey;
 };
 
 extern Settings appSettings;

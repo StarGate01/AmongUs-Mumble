@@ -1496,9 +1496,10 @@ template <typename T,
           enable_if_t<classify_object<T>::value == object_category::floating_point, detail::enabler> = detail::dummy>
 bool lexical_cast(const std::string &input, T &output) {
     try {
-        std::size_t n = 0;
-        output = static_cast<T>(std::stold(input, &n));
-        return n == input.size();
+        //std::size_t n = 0;
+        //output = static_cast<T>(std::stold(input, &n));
+        //return n == input.size();
+        return false;
     } catch(const std::invalid_argument &) {
         return false;
     } catch(const std::out_of_range &) {

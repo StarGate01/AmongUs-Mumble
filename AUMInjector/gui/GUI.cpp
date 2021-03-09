@@ -22,23 +22,18 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <d3d11.h>
-#include <detours.h>
-#include <vector>
-#include "imgui.h"
-#include "backends/imgui_impl_win32.h"
-#include "backends/imgui_impl_dx11.h"
 #include "D3D11Hooking.hpp"
 #include "MumblePlayer.h"
 #include "settings.h"
 #include "GUI.h"
 #include "GUIWindow.h"
 #include "Blocks/PlayerInfoBlock.h"
+#include "Blocks/PositionRadarBlock.h"
 #include "Blocks/SettingsBlock.h"
 #include "Blocks/OverlayBlock.h"
 #include "Blocks/AboutBlock.h"
+#include "Blocks/RadioSignalBlock.h"
+#include "Input.h"
 
 IDXGISwapChain* SwapChain;
 ID3D11Device* Device;
@@ -56,6 +51,7 @@ HWND window;
 
 std::vector<GUIWindow*> GUIWindows;
 GUIWindow* overlayWindow;
+GUIWindow* imposterRadioWindow;
 
 LRESULT CALLBACK WndProcHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -68,6 +64,16 @@ LRESULT CALLBACK WndProcHook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     ImGui::GetIO().MousePos.y = (float)mPos.y;
 
     if (uMsg == WM_KEYUP && wParam == VK_DELETE) guiShowMenu = !guiShowMenu;
+
+    // Set the alphabet when it comes in.
+    if (uMsg == WM_KEYUP && wParam >= 'A' && wParam <= 'Z')
+    {
+        inputSingleton.SetKey(wParam, false);
+    }
+    else if (uMsg == WM_KEYDOWN && wParam >= 'A' && wParam <= 'Z')
+    {
+        inputSingleton.SetKey(wParam, true);
+    }
 
     ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
     if (io.WantCaptureMouse && 
@@ -173,9 +179,21 @@ HRESULT __stdcall D3D_FUNCTION_HOOK(IDXGISwapChain* pThis, UINT SyncInterval, UI
         window2->AddBlock(new SettingsBlock());
         GUIWindows.emplace_back(window2);
 
+
+
+#ifdef DEV_TOOLS
+		GUIWindow* window3 = new GUIWindow("Positional Radar", 0);
+        window3->AddBlock(new PositionRadarBlock());
+        GUIWindows.emplace_back(window3);
+#endif
+
+
         overlayWindow = new GUIWindow("Overlay", ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize |
             ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove);
         overlayWindow->AddBlock(new OverlayBlock(&guiShowMenu));
+
+        imposterRadioWindow = new GUIWindow("Imposter Radio Active", 0);
+        imposterRadioWindow->AddBlock(new RadioSignalBlock());
     }
 
     ImGui_ImplDX11_NewFrame();
@@ -195,7 +213,13 @@ HRESULT __stdcall D3D_FUNCTION_HOOK(IDXGISwapChain* pThis, UINT SyncInterval, UI
         ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x / 2.0f, 10.0f),
             ImGuiCond_Always, ImVec2(0.5f, 0.0f));
         ImGui::SetNextWindowBgAlpha(0.5f);
+
         overlayWindow->Update();
+    }
+
+    // Render imposter radio
+    if (mumblePlayer.IsImposter()) {
+        imposterRadioWindow->Update();
     }
 
     ImGui::Render();

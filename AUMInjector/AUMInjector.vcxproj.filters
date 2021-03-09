@@ -102,6 +102,21 @@
     <ClCompile Include="gui\Blocks\AboutBlock.cpp">
       <Filter>GUI\Blocks</Filter>
     </ClCompile>
+    <ClCompile Include="user\Input.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="framework\stdafx.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="user\GameData.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Blocks\PositionRadarBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\Blocks\RadioSignalBlock.cpp">
+      <Filter>GUI\Blocks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -232,6 +247,24 @@
     </ClInclude>
     <ClInclude Include="deobfuscate\2020_12_9s.h">
       <Filter>Deobfuscate</Filter>
+    </ClInclude>
+    <ClInclude Include="user\Input.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\stdafx.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="user\GameData.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\PositionRadarBlock.h">
+      <Filter>GUI\Blocks</Filter>
+    </ClInclude>
+    <ClInclude Include="deobfuscate\2021_3_5s.h">
+      <Filter>Deobfuscate</Filter>
+    </ClInclude>
+    <ClInclude Include="gui\Blocks\RadioSignalBlock.h">
+      <Filter>GUI\Blocks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

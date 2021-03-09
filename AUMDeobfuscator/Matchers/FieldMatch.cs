@@ -33,5 +33,12 @@ namespace AUMDeobfuscator.Matchers
             AddPred($"name : {name}",f => f.Declaration.Variables[0].Identifier.ToString() == name);
             return this;
         }
+
+        public FieldMatch OfNameContains(string contains)
+        {
+            AddPred($"name contains : {contains}",f => f.Declaration.Variables[0].Identifier.ToString().Contains(contains));
+            return this;
+        }
+
     }
 }

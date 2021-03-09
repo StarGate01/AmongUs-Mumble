@@ -73,6 +73,8 @@ void MumblePlayer::ResetState()
     InvalidatePositionCache();
     isSabotaged = false;
     isInMeeting = false;
+    lastReceived = 0;
+    radioIsInUse = false;
     if (isGhost)
         ExitGhostState();
     SetFullVolume();
@@ -132,6 +134,48 @@ int MumblePlayer::GetNetID() { return netID; }
 // Sets the player's net ID
 void MumblePlayer::SetNetID(int id) { netID = id; }
 
+void MumblePlayer::SetImposter(bool imposter)
+{
+    this->isImposter = imposter;
+}
+
+void MumblePlayer::ClearImposter()
+{
+    this->isImposter = false;
+}
+
+bool MumblePlayer::IsImposter() const
+{
+    return this->isImposter;
+}
+
+bool MumblePlayer::IsUsingRadio() const
+{
+    return this->isUsingRadio;
+}
+
+void MumblePlayer::SetUsingRadio(bool usingRadio)
+{
+    // Ensures that no one but imposters can use the radio
+    this->isUsingRadio = usingRadio && this->isImposter;
+}
+
+bool MumblePlayer::IsRadioInUse() const {
+    return radioIsInUse;
+}
+
+void MumblePlayer::SetRadioInUse(bool use) {
+    radioIsInUse = use;
+}
+
+long long MumblePlayer::LastRadioReceived() const {
+    return lastReceived;
+}
+
+void MumblePlayer::SetLastRadioReceived(long long t) {
+    lastReceived = t;
+}
+
 // In mumble (0.0f, 0.0f) lets users hear each other better
 void MumblePlayer::SetFullVolume()
 {
@@ -142,10 +186,10 @@ void MumblePlayer::SetFullVolume()
 // Sets the position cache, class may choose to override this value
 void MumblePlayer::SetPos(int i, float pos)
 {
-	if (isInMeeting) // Everyone in a meeting should be at 0,0
-		posCache[i] = 0.0f;
-	else if (!IsGhost())
-		posCache[i] = pos;
+    if (isInMeeting) // Everyone in a meeting should be at 0,0
+        posCache[i] = 0.0f;
+    else if (!IsGhost())
+        posCache[i] = pos;
     else
     {
         // Override position based on ghost voice mode
@@ -159,6 +203,10 @@ void MumblePlayer::SetPos(int i, float pos)
         default:
             posCache[i] = pos;
         }
+    } 
+    if (this->isUsingRadio && this->isImposter) // If you're using radio, go away. (If people think meeting radio is a bug, we'll change it)
+    {
+        posCache[i] = radioOffset;
     }
 }
 

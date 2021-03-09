@@ -102,7 +102,7 @@ class Settings
 		std::string HumanReadableSync();
 
 		// Player control to use Radio
-		char radioKey = 'E';
+		char radioKey;
 };
 
 extern Settings appSettings;

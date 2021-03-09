@@ -12,7 +12,8 @@ Settings::Settings() :
 	logFileName("ProximityLog.txt"),
 	wineUID(1000),
 	directionalAudio(false), 
-	ghostVoiceMode(GHOST_VOICE_MODE::PURGATORY)
+	ghostVoiceMode(GHOST_VOICE_MODE::PURGATORY),
+	radioKey('T')
 { 
 	// Define config options
 	optionDetails = {
@@ -26,7 +27,7 @@ Settings::Settings() :
 		{ "wine-uid", "Wine UID", &wineUID, OPTION_TYPE::INTEGER },
 		{ "ghost-voice-mode", "Set ghost voice mode\n; 0 = Purgatory\n; 1 = Spectate\n; 2 = Haunt", &ghostVoiceMode, OPTION_TYPE::INTEGER },
 		{ "directional-audio", "Enable directional audio", &directionalAudio, OPTION_TYPE::FLAG },
-		{ "imposter-radio-key", "Imposter Radio Hotkey", &radioKey, OPTION_TYPE::INTEGER}
+		{ "imposter-radio-key", "Imposter Radio Hotkey", &radioKey, OPTION_TYPE::INTEGER }
 	};
 
 	// Setup argument parser

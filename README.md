@@ -18,9 +18,9 @@ Version numbering: Release compatible builds use `1.0.0.X`, beta builds use `1.0
 
 Patch versions refer to unmarked Steam updates where the game version did not change.
 
-**Use the installer:** TBA
+**Use the installer:** Download: [Latest release](https://github.com/StarGate01/AmongUs-Mumble/releases/download/v1.0.0.14/AmongUs-Mumble-Installer.exe)
 
-**Latest mod version:**  Release 2021.3.5s, Mod download: [1.0.0.14](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.14)
+**Latest mod version:**  Release 2021.3.5s, Mod manual download: [1.0.0.14](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.14)
 
 **Older versions:** [Versions table](https://github.com/StarGate01/AmongUs-Mumble/wiki/Versions)
 
@@ -42,7 +42,7 @@ Patch versions refer to unmarked Steam updates where the game version did not ch
  - Easy installation process, just copy one file
  - Smart linking, no need to start the game and Mumble in any particular order
  - Easy configuration using a configuration file or command line options
- - Windows and Linux (via Wine) support
+ - Windows and Linux (via Wine/Proton, see the Wiki) support
 
 ## Documentation
  - [Installation and Setup](https://github.com/StarGate01/AmongUs-Mumble/wiki/Installation-and-Setup)

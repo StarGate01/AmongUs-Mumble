@@ -38,6 +38,7 @@ Patch versions refer to unmarked Steam updates where the game version did not ch
    - *Spectate:* Ghosts are muted, but can listen to remaining players if they are close enough (Optional)
    - *Haunt:* Ghosts can talk and listen to remaining players if they are close enough (Optional)
  - Everyone gets muted during communication sabotage events
+ - Impostors are able to covertly talk to each other
  - Automatic settings synchronisation for all players in a lobby.
  - Easy installation process, just copy one file
  - Smart linking, no need to start the game and Mumble in any particular order

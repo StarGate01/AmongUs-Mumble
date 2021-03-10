@@ -20,7 +20,7 @@ using PlayerInfo = GameData_GOOIGLGKMCE;
 __declspec(selectany) InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = InnerNetClient_CGJDIIGHLGC__Enum_Joined;
 __declspec(selectany) InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Started = InnerNetClient_CGJDIIGHLGC__Enum_Started;
 __declspec(selectany) InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = InnerNetClient_CGJDIIGHLGC__Enum_Ended;
-__declspec(selectany) bool GameData_GOOIGLGKMCE__Fields::* IsImposter = &GameData_GOOIGLGKMCE__Fields::HKELEMPLDPK;
+__declspec(selectany) bool GameData_GOOIGLGKMCE__Fields::* IsImposter = &GameData_GOOIGLGKMCE__Fields::LGEGJEHCFOG;
 __declspec(selectany) uint8_t GameData_GOOIGLGKMCE__Fields::* ColorId = &GameData_GOOIGLGKMCE__Fields::ACBLKMFEPKC;
 __declspec(selectany) Color32__Array* KOBANOHPIIA__StaticFields::* PlayerColors = &KOBANOHPIIA__StaticFields::KLOCHKGCNGP;
 

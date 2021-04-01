@@ -2,7 +2,7 @@
 
 // For now this is a thin wrapper around the keyboard keys 'A' to 'Z'
 // Note that keys have to be capitalized
-class Input
+class ModInput
 {
 public:
 	void SetKey(char key, bool value);
@@ -13,4 +13,4 @@ private:
 };
 
 // One instance of this class exists in the program
-extern Input inputSingleton;
+extern ModInput inputSingleton;

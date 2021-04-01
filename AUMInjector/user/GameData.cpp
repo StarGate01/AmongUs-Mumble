@@ -39,7 +39,7 @@ namespace AUM
 		// Get the player info 
 		PlayerInfo* info = PlayerControl_GetData_Trampoline(control, NULL);
 		// Color array not aligned correctly per il2cpp, is 4 byte aligned not 8 byte
-		app::Color32* colorArr = (((Palette__TypeInfo->static_fields)->*PlayerColors)->vector);
+		app::Color32* colorArr = ((((*Palette__TypeInfo)->static_fields)->*PlayerColors)->vector);
 		// Convert to 8 bit * 4 structure to fix alignment
 		uint8_t* color = (reinterpret_cast<uint8_t*>(colorArr) + info->fields.*ColorId * 4);
 
@@ -73,7 +73,7 @@ namespace AUM
 	{
 		// Get all current PlayerControls found in the game
 		std::vector<PlayerControl*> result;
-		ArrayList* controlList = reinterpret_cast<ArrayList*>(PlayerControl__TypeInfo->static_fields->AllPlayerControls);
+		ArrayList* controlList = reinterpret_cast<ArrayList*>((*PlayerControl__TypeInfo)->static_fields->AllPlayerControls);
 		int count = ArrayList_get_Count(
 			controlList,
 			NULL);

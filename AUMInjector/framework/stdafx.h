@@ -2,6 +2,8 @@
 // Stable stdafx.h file that includes minimal windows.h
 // as well as stl libs, 3rd party libs
 
+#include "il2cpp-appdata.h"
+
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 

@@ -17,7 +17,7 @@ print("Matching on: " + needle + "\n")
 
 hooks = []
 with open(output_file, "w") as ofp:
-    ofp.write("#include \"il2cpp-appdata.h\"\n#include <detours.h>\n#include <cstdio>\n\nusing namespace app;\n\n")
+    ofp.write("#include <detours.h>\n#include <cstdio>\n\nusing namespace app;\n\n")
     with open(functions_file) as fp:
         line = fp.readline()
         cnt = 1

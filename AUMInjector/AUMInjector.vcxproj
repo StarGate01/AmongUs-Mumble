@@ -74,6 +74,7 @@
     <ClInclude Include="deobfuscate\2020_12_5s.h" />
     <ClInclude Include="deobfuscate\2020_12_9s.h" />
     <ClInclude Include="deobfuscate\2020_9_22s.h" />
+    <ClInclude Include="deobfuscate\2021_3_31_2s.h" />
     <ClInclude Include="deobfuscate\2021_3_5s.h" />
     <ClInclude Include="deobfuscate\deobfuscate.h" />
     <ClInclude Include="deobfuscate\version.h" />
@@ -186,6 +187,7 @@
       <DisableSpecificWarnings>4359</DisableSpecificWarnings>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
       <FunctionLevelLinking>true</FunctionLevelLinking>
+      <ForcedUsingFiles>stdafx.h</ForcedUsingFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -220,6 +222,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <Optimization>MaxSpeed</Optimization>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <ForcedUsingFiles>stdafx.h</ForcedUsingFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -256,6 +260,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <Optimization>MaxSpeed</Optimization>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
+      <ForcedUsingFiles>stdafx.h</ForcedUsingFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

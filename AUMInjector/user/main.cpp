@@ -2,7 +2,6 @@
 // Custom injected code entry point
 
 #include "il2cpp-init.h"
-#include "il2cpp-appdata.h"
 #include "helpers.h"
 
 #include "MumbleLink.h"
@@ -128,7 +127,7 @@ void BroadcastSettings(InnerNetClient* client)
     logger.Log(LOG_CODE::MSG, "Sending configuration: " + appSettings.HumanReadableSync());
 
     // Broadcast config via RPC
-    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, mumblePlayer.GetNetID(), SYNC_RPC_ID, SendOption__Enum_Reliable, NULL);
+    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, mumblePlayer.GetNetID(), SYNC_RPC_ID, SendOption__Enum::Reliable, NULL);
     MessageWriter_Write_Byte_Trampoline(writer, SYNC_VERSION, NULL);
     // Serialize settings
     MessageWriter_Write_Byte_Trampoline(writer, (int8_t)appSettings.ghostVoiceMode, NULL);
@@ -142,7 +141,7 @@ void ImposterRadioUse(InnerNetClient* client)
     logger.Log(LOG_CODE::MSG, "Imposter Radio Useage is sent");
 
     // Broadcast radio usage via RPC
-    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, mumblePlayer.GetNetID(), IMPOSTER_RADIO_RPC_ID, SendOption__Enum_Reliable, NULL);
+    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, mumblePlayer.GetNetID(), IMPOSTER_RADIO_RPC_ID, SendOption__Enum::Reliable, NULL);
     MessageWriter_EndMessage(writer, NULL);
 }
 
@@ -439,13 +438,11 @@ void Run()
         logger.Log(LOG_CODE::MSG, "Waiting 10s for Unity to load");
         Sleep(10000);
         init_il2cpp();
+        il2cpp_thread_attach(il2cpp_domain_get());
         logger.Log(LOG_CODE::INF, "Type and function memory mapping successful");
 
         // Print game version
-        String* gameVersionRaw = Application_get_version(NULL);
-        std::wstring_convert<std::codecvt_utf8<wchar_t>> wideToNarrow;
-        std::string gameVersion = wideToNarrow.to_bytes(std::wstring((const wchar_t*)
-            (&((Il2CppString*)gameVersionRaw)->chars), ((Il2CppString*)gameVersionRaw)->length));
+        std::string gameVersion = il2cppi_to_string(Application_get_version(NULL));
         logger.Log(LOG_CODE::INF, "Running in game version " + gameVersion);
 
         // Start mumble connection thread

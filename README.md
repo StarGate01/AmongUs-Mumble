@@ -3,7 +3,7 @@
 # AmongUs-Mumble
 [Mumble](https://www.mumble.info/) Proximity Mod for [Among Us](https://store.steampowered.com/app/945360/Among_Us/) by [Innersloth](http://www.innersloth.com/).
 
-Currently for Windows and Linux PCs using the Steam version. On OSX a small Mumble fake plugin is provided, which just sets your ingame position to `(0, 0)`.
+Currently for Windows and Linux PCs using the Steam version. On OSX a small Mumble fake plugin is provided, which just sets your in-game position to `(0, 0)`.
 
 
 If you are looking for a community that uses this mod, join the [Discord server](https://discord.gg/4UkHEJ5sqg)!
@@ -20,12 +20,12 @@ Patch versions refer to unmarked Steam updates where the game version did not ch
 
 **Use the installer:** Download: [Latest release](https://github.com/StarGate01/AmongUs-Mumble/releases/download/v1.0.0.14/AmongUs-Mumble-Installer.exe)
 
-**Latest mod version:**  Release 2021.3.31s, Mod manual download: [1.0.0.16](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.16)
+**Latest mod version:**  Release 2021.3.31.3s, Mod manual download: [1.0.0.16](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.16)
 
 **Older versions:** [Versions table](https://github.com/StarGate01/AmongUs-Mumble/wiki/Versions)
 
 ## Main Features
- - Real-time proximity voice chat based on ingame player position
+ - Real-time proximity voice chat based on in-game player position
  - Directional audio depending on relative position of players (Optional)
  - Works with any official or unofficial Among Us server
  - Works with any Mumble server
@@ -39,7 +39,7 @@ Patch versions refer to unmarked Steam updates where the game version did not ch
    - *Haunt:* Ghosts can talk and listen to remaining players if they are close enough (Optional)
  - Everyone gets muted during communication sabotage events
  - Impostors are able to covertly talk to each other
- - Automatic settings synchronisation for all players in a lobby.
+ - Automatic settings synchronization for all players in a lobby.
  - Easy installation process, just copy one file
  - Smart linking, no need to start the game and Mumble in any particular order
  - Easy configuration using a configuration file or command line options

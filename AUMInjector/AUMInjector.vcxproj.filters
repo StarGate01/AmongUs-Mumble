@@ -266,6 +266,9 @@
     <ClInclude Include="gui\Blocks\RadioSignalBlock.h">
       <Filter>GUI\Blocks</Filter>
     </ClInclude>
+    <ClInclude Include="deobfuscate\2021_3_31_3s.h">
+      <Filter>Deobfuscate</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AUMInjector.rc">

@@ -10,6 +10,9 @@
 #define SYNC_RPC_ID 42
 #define IMPOSTER_RADIO_RPC_ID 50
 
+#define RELIABLE_DUMMY_COMMAND 6
+#define RELIABLE_SIGN 254
+
 // Credits info string
 static const std::string CREDITS = R"(AmongUs-Mumble mod by:
   StarGate01 (chrz.de): Proxy DLL, Framework, Setup, Features.

@@ -61,7 +61,7 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 {
     PlayerControl_FixedUpdate_Trampoline(__this, method);
     // This is a "hacky" but very fast check to see if this event is from the local player
-    bool isClient = __this->fields.LightPrefab != nullptr;
+    bool isClient = &(__this->fields)->*MyLight != nullptr;
     if (isClient)
     {
         // Cache position
@@ -96,7 +96,7 @@ void PlayerControl_Die_Hook(PlayerControl* __this, Player_Die_Reason__Enum reaso
 {
     PlayerControl_Die_Trampoline(__this, reason, method);
 
-    if (__this->fields.LightPrefab != nullptr)
+    if (&(__this->fields)->*MyLight != nullptr)
     {
         logger.Log(LOG_CODE::MSG, "You died");
         mumblePlayer.EnterGhostState();
@@ -121,13 +121,27 @@ void MeetingHud_Start_Hook(MeetingHud* __this, MethodInfo* method)
     mumblePlayer.StartMeeting();
 }
 
+// Reliable Package Writer
+MessageWriter* StartRpc_Reliable(InnerNetClient* client, uint8_t rpc_command) {
+    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, mumblePlayer.GetNetID(), RELIABLE_DUMMY_COMMAND, SendOption__Enum::Reliable, NULL);
+    MessageWriter_Write_Byte_Trampoline(writer, RELIABLE_SIGN, NULL);
+    MessageWriter_Write_Byte_Trampoline(writer, rpc_command, NULL);
+    return writer;
+}
+
+// Unreliable Package Writer
+MessageWriter* StartRpc_Unreliable(InnerNetClient* client, uint8_t rpc_command) {
+    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, mumblePlayer.GetNetID(), rpc_command, SendOption__Enum::None, NULL);
+    return writer;
+}
+
 // Broadcast the current settings
 void BroadcastSettings(InnerNetClient* client)
 {
     logger.Log(LOG_CODE::MSG, "Sending configuration: " + appSettings.HumanReadableSync());
 
     // Broadcast config via RPC
-    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, mumblePlayer.GetNetID(), SYNC_RPC_ID, SendOption__Enum::Reliable, NULL);
+    MessageWriter* writer = StartRpc_Reliable(client, SYNC_RPC_ID);
     MessageWriter_Write_Byte_Trampoline(writer, SYNC_VERSION, NULL);
     // Serialize settings
     MessageWriter_Write_Byte_Trampoline(writer, (int8_t)appSettings.ghostVoiceMode, NULL);
@@ -141,7 +155,7 @@ void ImposterRadioUse(InnerNetClient* client)
     logger.Log(LOG_CODE::MSG, "Imposter Radio Useage is sent");
 
     // Broadcast radio usage via RPC
-    MessageWriter* writer = InnerNetClient_StartRpc_Trampoline(client, mumblePlayer.GetNetID(), IMPOSTER_RADIO_RPC_ID, SendOption__Enum::Reliable, NULL);
+    MessageWriter* writer = StartRpc_Unreliable(client, IMPOSTER_RADIO_RPC_ID);
     MessageWriter_EndMessage(writer, NULL);
 }
 
@@ -308,6 +322,56 @@ void AmongUsClient_OnPlayerJoined_Hook(AmongUsClient* __this, ClientData* data, 
     }
 }
 
+bool HandleRpc(InnerNetClient* __this, MessageReader* reader, uint8_t rpcId) {
+    // Check if this is a mod config packet
+    if (rpcId == SYNC_RPC_ID)
+    {
+        // Validate packet
+        int32_t packetSize = MessageReader_get_BytesRemaining(reader, NULL);
+        if (packetSize == 0)
+        {
+            logger.Log(LOG_CODE::ERR, "Got bad configuration (empty payload), ignoring");
+            return true;
+        }
+        uint8_t version = MessageReader_ReadByte(reader, NULL);
+        if (version != SYNC_VERSION)
+        {
+            logger.Log(LOG_CODE::ERR, "Got bad configuration (wrong version), ignoring");
+            return true;
+        }
+        packetSize = MessageReader_get_BytesRemaining(reader, NULL);
+        if (packetSize < SYNC_SIZE)
+        {
+            logger.Log(LOG_CODE::ERR, "Got bad configuration (payload size too small), ignoring");
+            return true;
+        }
+
+        // Read configuration
+        appSettings.ghostVoiceMode = (Settings::GHOST_VOICE_MODE)MessageReader_ReadByte(reader, NULL);
+        appSettings.directionalAudio = (MessageReader_ReadByte(reader, NULL) == 1);
+        appSettings.RecalculateAudioMap();
+        logger.Log(LOG_CODE::MSG, "Got configuration: " + appSettings.HumanReadableSync());
+
+        // Swallow this packet
+        return true;
+    }
+    // Check if this is an imposter radio call
+    else if (rpcId == IMPOSTER_RADIO_RPC_ID)
+    {
+        if (mumblePlayer.IsImposter())
+        {
+            long long timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::system_clock::now().time_since_epoch()).count();
+            mumblePlayer.SetLastRadioReceived(timestamp);
+            mumblePlayer.SetRadioInUse(true);
+        }
+
+        // Swallow this packet
+        return true;
+    }
+    return false;
+}
+
 // Gets called when a game data packet is parsed
 void InnerNetClient_HandleGameData_Hook(InnerNetClient* __this, MessageReader* reader, MethodInfo* method)
 {
@@ -328,52 +392,23 @@ void InnerNetClient_HandleGameData_Hook(InnerNetClient* __this, MessageReader* r
             uint32_t senderNetId = MessageReader_ReadPackedUInt32(reader, NULL); // Ignored
             uint8_t rpcId = MessageReader_ReadByte(reader, NULL);
 
-            // Check if this is a mod config packet
-            if (rpcId == SYNC_RPC_ID)
-            {
-                // Validate packet
-                int32_t packetSize = MessageReader_get_BytesRemaining(reader, NULL);
-                if (packetSize == 0)
-                {
-                    logger.Log(LOG_CODE::ERR, "Got bad configuration (empty payload), ignoring");
-                    return;
+            // Handle reliable packages
+            if (rpcId == RELIABLE_DUMMY_COMMAND) {
+                uint8_t rSign = MessageReader_ReadByte(reader, NULL);
+                if (rSign == RELIABLE_SIGN) {
+                    rpcId = MessageReader_ReadByte(reader, NULL);
+                    if (HandleRpc(__this, reader, rpcId)) {
+                        // Swallow this packet
+                        return;
+                    }
                 }
-                uint8_t version = MessageReader_ReadByte(reader, NULL);
-                if (version != SYNC_VERSION)
-                {
-                    logger.Log(LOG_CODE::ERR, "Got bad configuration (wrong version), ignoring");
-                    return;
-                }
-                packetSize = MessageReader_get_BytesRemaining(reader, NULL);
-                if (packetSize < SYNC_SIZE)
-                {
-                    logger.Log(LOG_CODE::ERR, "Got bad configuration (payload size too small), ignoring");
-                    return;
-                }
-
-                // Read configuration
-                appSettings.ghostVoiceMode = (Settings::GHOST_VOICE_MODE)MessageReader_ReadByte(reader, NULL);
-                appSettings.directionalAudio = (MessageReader_ReadByte(reader, NULL) == 1);
-                appSettings.RecalculateAudioMap();
-                logger.Log(LOG_CODE::MSG, "Got configuration: " + appSettings.HumanReadableSync());
-
+            }
+            // Handle unreliable packages
+            else if (HandleRpc(__this, reader, rpcId)) {
                 // Swallow this packet
                 return;
             }
-            // Check if this is an imposter radio call
-            else if (rpcId == IMPOSTER_RADIO_RPC_ID)
-            {
-                if (mumblePlayer.IsImposter()) 
-                {
-                    long long timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
-                        std::chrono::system_clock::now().time_since_epoch()).count();
-                    mumblePlayer.SetLastRadioReceived(timestamp);
-                    mumblePlayer.SetRadioInUse(true);
-                }
 
-                // Swallow this packet
-                return;
-            }
         }
 
         // Rewind reader to allow reparsing packet in trampoline

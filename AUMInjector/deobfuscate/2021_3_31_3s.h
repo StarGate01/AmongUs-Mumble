@@ -23,6 +23,7 @@ __declspec(selectany) InnerNetClient_GameState__Enum InnerNetClient_GameState__E
 __declspec(selectany) bool GameData_OFKOJOKOOAK__Fields::* IsImposter = &GameData_OFKOJOKOOAK__Fields::CIDDOFDJHJH;
 __declspec(selectany) int32_t GameData_OFKOJOKOOAK__Fields::* ColorId = &GameData_OFKOJOKOOAK__Fields::JFHFMIKFHGG;
 __declspec(selectany) Color32__Array* GLNPIJPGGNJ__StaticFields::* PlayerColors = &GLNPIJPGGNJ__StaticFields::CALCLMEEPGL; 
+_declspec(selectany) LightSource* PlayerControl__Fields::* MyLight = &PlayerControl__Fields::BBELGDJLCCL;
 
 #define GameData_Awake_Trampoline GameData_Awake
 #define GameData_GetPlayerById_Trampoline GameData_GetPlayerById

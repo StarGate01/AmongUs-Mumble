@@ -61,7 +61,7 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
 {
     PlayerControl_FixedUpdate_Trampoline(__this, method);
     // This is a "hacky" but very fast check to see if this event is from the local player
-    bool isClient = __this->fields.BBELGDJLCCL != nullptr;
+    bool isClient = &(__this->fields)->*MyLight != nullptr;
     if (isClient)
     {
         // Cache position
@@ -96,7 +96,7 @@ void PlayerControl_Die_Hook(PlayerControl* __this, Player_Die_Reason__Enum reaso
 {
     PlayerControl_Die_Trampoline(__this, reason, method);
 
-    if (__this->fields.BBELGDJLCCL != nullptr) // myLight
+    if (&(__this->fields)->*MyLight != nullptr)
     {
         logger.Log(LOG_CODE::MSG, "You died");
         mumblePlayer.EnterGhostState();

@@ -9,8 +9,9 @@
 #define GAME_VERSION_2021_3_5s 202103050
 #define GAME_VERSION_2021_3_31_3s 202103313
 #define GAME_VERSION_2021_4_12s 202104120
+#define GAME_VERSION_2021_4_12s 202104140
 #ifndef GAME_VERSION
-	#define GAME_VERSION GAME_VERSION_2021_4_12s
+	#define GAME_VERSION GAME_VERSION_2021_4_14s
 #endif
 
 #if GAME_VERSION == GAME_VERSION_2020_9_22s
@@ -35,6 +36,8 @@
 	#define version_text "2021.3.31.3s"
 #elif GAME_VERSION == GAME_VERSION_2021_4_12s
 	#define version_text "2021.4.12s"
+#elif GAME_VERSION == GAME_VERSION_2021_4_14s
+	#define version_text "2021.4.14s"
 #else
 	#error Unknown game version!
 #endif

@@ -78,6 +78,7 @@
     <ClInclude Include="deobfuscate\2021_3_5s.h" />
     <ClInclude Include="deobfuscate\2021_4_12s.h" />
     <ClInclude Include="deobfuscate\2021_4_14s.h" />
+    <ClInclude Include="deobfuscate\2021_5_10s.h" />
     <ClInclude Include="deobfuscate\deobfuscate.h" />
     <ClInclude Include="deobfuscate\version.h" />
     <ClInclude Include="framework\helpers.h" />

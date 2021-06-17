@@ -20,7 +20,7 @@ Patch versions refer to unmarked Steam updates where the game version did not ch
 
 **Use the installer:** Download: [Latest release](https://github.com/StarGate01/AmongUs-Mumble/releases/download/v1.0.0.14/AmongUs-Mumble-Installer.exe)
 
-**Latest mod version:**  Release 2021.5.25.2s, Mod manual download: [1.0.0.20](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.20)
+**Latest mod version:**  Release 2021.6.15s, Mod manual download: [1.0.0.21](https://github.com/StarGate01/AmongUs-Mumble/releases/tag/v1.0.0.21)
 
 **Older versions:** [Versions table](https://github.com/StarGate01/AmongUs-Mumble/wiki/Versions)
 

@@ -93,7 +93,9 @@ We thank the developers of Mumble for not only providing their software for free
 
 ## Disclaimer
 
-This modification would be detected by any simple anti-cheat engine. At the time of writing, Among Us uses no such technology. However, I am not responsible for any bans or other problems arising from the usage of this mod. 
+This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. © Innersloth LLC.
+
+This modification would be detected by any simple anti-cheat engine. At the time of writing, Among Us uses no such technology. However, we are not responsible for any bans or other problems arising from the usage of this mod. 
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT

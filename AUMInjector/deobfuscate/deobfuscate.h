@@ -34,6 +34,8 @@ using namespace app;
 	#include "unobfuscated.h"
 #elif GAME_VERSION == GAME_VERSION_2021_5_25s
 	#include "unobfuscated.h"
+#elif GAME_VERSION == GAME_VERSION_2021_6_15s
+	#include "unobfuscated.h"
 #else
 	#error Unknown game version!
 #endif

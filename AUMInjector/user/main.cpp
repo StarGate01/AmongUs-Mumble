@@ -419,6 +419,12 @@ void InnerNetClient_HandleGameData_Hook(InnerNetClient* __this, MessageReader* r
     InnerNetClient_HandleGameData_Trampoline(__this, reader, method);
 }
 
+// Show mod stamp to conform to policy
+void ModManager_LateUpdate_Hook(ModManager* __this, MethodInfo* method)
+{
+    ModManager_LateUpdate(__this, method);
+    ModManager_ShowModStamp(__this, NULL);
+}
 
 // Entrypoint of the injected thread
 void Run()
@@ -501,6 +507,7 @@ void Run()
         DetourAttach(&(PVOID&)HudOverrideTask_Complete_Trampoline, HudOverrideTask_Complete_Hook);
         DetourAttach(&(PVOID&)AmongUsClient_OnPlayerJoined_Trampoline, AmongUsClient_OnPlayerJoined_Hook);
         DetourAttach(&(PVOID&)InnerNetClient_HandleGameData_Trampoline, InnerNetClient_HandleGameData_Hook);
+        DetourAttach(&(PVOID&)ModManager_LateUpdate, ModManager_LateUpdate_Hook);
 
         //dynamic_analysis_attach();
         LONG errDetour = DetourTransactionCommit();

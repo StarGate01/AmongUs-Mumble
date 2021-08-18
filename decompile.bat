@@ -12,9 +12,9 @@ REM Decompile game data
 REM Copy c++ signatures to project
 XCOPY "cpp\appdata\*.*" "..\AUMInjector\appdata\" /K /D /H /Y
 
-REM Generate deobfuctation map
-dotnet build "..\AUMDeobfuscator\AUMDeobfuscator.csproj" -c "Release"
-"..\AUMDeobfuscator\bin\Release\net5.0\AUMDeobfuscator.exe" "cs" --gameversion "%AMONGUS_VERSION%" -o "..\AUMInjector\deobfuscate\generated_%AMONGUS_VERSION%.h"
+@REM REM Generate deobfuctation map
+@REM dotnet build "..\AUMDeobfuscator\AUMDeobfuscator.csproj" -c "Release"
+@REM "..\AUMDeobfuscator\bin\Release\net5.0\AUMDeobfuscator.exe" "cs" --gameversion "%AMONGUS_VERSION%" -o "..\AUMInjector\deobfuscate\generated_%AMONGUS_VERSION%.h"
 
 CD ..
 DEL /s /q tmp\*  >NUL 2>&1

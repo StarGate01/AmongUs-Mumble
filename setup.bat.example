@@ -4,7 +4,7 @@ REM set the path to your game folder
 SET "AMONGUS=C:\Steam\steamapps\common\Among Us"
 
 REM set the version of the generated deobfuscations
-SET "AMONGUS_VERSION=2021_6_15s"
+SET "AMONGUS_VERSION=2021_6_30s"
 
 REM set the path of tools
 SET "IL2CPPINSPECTOR=C:\Users\Christoph\Documents\GitHub\Il2CppInspector\Il2CppInspector.CLI\bin\Release\netcoreapp3.1\win-x64\publish\Il2CppInspector.exe"

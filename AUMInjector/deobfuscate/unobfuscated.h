@@ -12,6 +12,7 @@ using HudOverrideTask = HudOverrideTask;
 using ChatController = ChatController;
 using AmongUsClient = AmongUsClient;
 using PlayerInfo = GameData_PlayerInfo;
+using ModManager = ModManager;
 #define PlayerControl_GetTruePosition_Trampoline PlayerControl_GetTruePosition
 #define PlayerControl_Die_Trampoline PlayerControl_Die
 #define PlayerControl_GetData_Trampoline PlayerControl_get_Data
@@ -43,3 +44,5 @@ __declspec(selectany) LightSource* PlayerControl__Fields::* MyLight = &PlayerCon
 #define HudOverrideTask_Complete_Trampoline HudOverrideTask_Complete
 #define MessageWriter_Write_Byte_Trampoline MessageWriter_Write_1
 #define AmongUsClient_OnPlayerJoined_Trampoline AmongUsClient_OnPlayerJoined
+#define ModManager_LateUpdate ModManager_LateUpdate
+#define ModManager_ShowModStamp ModManager_ShowModStamp

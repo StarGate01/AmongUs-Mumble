@@ -26,10 +26,15 @@ namespace AUM
 		// Get current list of player controls in game
 		static std::vector<PlayerControl*> GetControls();
 
+#ifdef DEV_TOOLS
+
 		// Get color from existing player control
 		static Color GetColor(PlayerControl* control);
 		// Get updated player control from Net ID and then grab color
 		static Color GetColor(int netID);
+
+#endif
+
 		// Get position from existing player control
 		static Vec2 GetPosition(PlayerControl* control);
 		// Get updated player control from Net ID and then grab position

@@ -33,6 +33,7 @@ namespace AUM
 		return *iter;
 	}
 
+#ifdef DEV_TOOLS
 
 	Color Game::GetColor(PlayerControl* control)
 	{
@@ -54,6 +55,8 @@ namespace AUM
 
 		return GetColor(control);
 	}
+
+#endif
 
 	Vec2 Game::GetPosition(PlayerControl* control)
 	{

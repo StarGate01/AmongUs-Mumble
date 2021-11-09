@@ -75,7 +75,7 @@ void PlayerControl_FixedUpdate_Hook(PlayerControl* __this, MethodInfo* method)
         // From Player Control, get the Player Data
         PlayerInfo* Data = PlayerControl_GetData_Trampoline(__this, NULL);
         // And now we can get if we are imposter.
-        bool isImposter = Data->fields.*IsImposter;
+        bool isImposter = (int32_t)Data->fields.Role->fields.TeamType & (int32_t)RoleTeamTypes__Enum::Impostor;
         mumblePlayer.SetImposter(isImposter);
 
         // Set if player is using radio

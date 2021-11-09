@@ -21,8 +21,7 @@ using ModManager = ModManager;
 __declspec(selectany) InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Joined = InnerNetClient_GameStates__Enum::Joined;
 __declspec(selectany) InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Started = InnerNetClient_GameStates__Enum::Started;
 __declspec(selectany) InnerNetClient_GameState__Enum InnerNetClient_GameState__Enum_Ended = InnerNetClient_GameStates__Enum::Ended;
-__declspec(selectany) bool GameData_PlayerInfo__Fields::* IsImposter = &GameData_PlayerInfo__Fields::IsImpostor;
-__declspec(selectany) int32_t GameData_PlayerInfo__Fields::* ColorId = &GameData_PlayerInfo__Fields::ColorId;
+
 __declspec(selectany) Color32__Array* Palette__StaticFields::* PlayerColors = &Palette__StaticFields::PlayerColors;
 __declspec(selectany) LightSource* PlayerControl__Fields::* MyLight = &PlayerControl__Fields::myLight;
 

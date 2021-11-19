@@ -181,7 +181,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DEV_TOOLS;IMGUI_IMPL_WIN32_DISABLE_LINKING_XINPUT;IMGUI_IMPL_WIN32_DISABLE_GAMEPAD;WIN32;_DEBUG;AUMINJECTOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMGUI_IMPL_WIN32_DISABLE_LINKING_XINPUT;IMGUI_IMPL_WIN32_DISABLE_GAMEPAD;WIN32;_DEBUG;AUMINJECTOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
